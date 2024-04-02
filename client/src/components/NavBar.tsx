@@ -17,7 +17,12 @@ export default function NavBar() {
         setAnchorEl(null);
     };
     return (
-        <AppBar sx={{ flexGrow: 1 }} id="navbar">
+        <AppBar
+            sx={{ flexGrow: 1 }}
+            id="navbar"
+            position="absolute"
+            style={{ zIndex: 1100 }}
+        >
             <Toolbar>
                 <Typography
                     variant="h5"

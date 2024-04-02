@@ -5,7 +5,7 @@ function App() {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    userService.getAllUsers().then((res) => {
+    userService.getAll<User>().then((res) => {
       setUsers(res.data);
     }).catch((err) => {
       console.log(err);

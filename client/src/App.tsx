@@ -5,6 +5,7 @@ import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";
 import Splash from "./components/Splash";
 import SplashScreen from "./components/SplashScreen";
+import { Box } from "@mui/material";
 
 function App() {
     const [users, setUsers] = useState<User[]>([]);
@@ -27,9 +28,11 @@ function App() {
                 <li key={user.id}>{user.name}</li>
             ))} */}
             {/* <PathwayScreen /> */}
-            {/* <NavBar />
-            <SideBar /> */}
-            <SplashScreen />
+            <Box sx={{ display: "flex" }}>
+                <NavBar />
+                <SideBar />
+            </Box>
+            {/* <SplashScreen /> */}
         </div>
     );
 }

@@ -42,6 +42,7 @@ export default function SideBar() {
             }}
             variant="permanent"
             anchor="left"
+            style={{ zIndex: 1000 }}
         >
             <Toolbar />
             <List>

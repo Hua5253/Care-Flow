@@ -8,6 +8,7 @@ import SplashScreen from "./components/SplashScreen";
 import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
 import Accounts from "./components/Accounts";
+import AppBanner from "./components/AppBanner";
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -25,17 +26,9 @@ function App() {
 
   return (
     <Container id="app" sx={{ display: "flex" }}>
-      {/* <div>Hello Care Flow</div> */}
-      {/* {users.map((user) => (
-                <li key={user.id}>{user.name}</li>
-            ))} */}
-      {/* <PathwayScreen /> */}
-      {/* <Box sx={{ display: "flex" }}>
-                <NavBar />
-                <SideBar />
-            </Box>
-            <Accounts /> */}
-      <SplashScreen />
+      <AppBanner />
+      <PathwayScreen />
+      {/* <SplashScreen /> */}
     </Container>
   );
 }

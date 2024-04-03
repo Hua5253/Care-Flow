@@ -7,7 +7,7 @@ import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
 
 export default function NavBar() {
-  const login = true;
+  const login = false;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

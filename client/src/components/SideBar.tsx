@@ -14,47 +14,47 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { Divider, Toolbar } from "@mui/material";
 
 export default function SideBar() {
-    const drawerWidth = 240;
-    const resourceTabs = [
-        { icon: <LocalHospitalIcon />, name: "Resource" },
-        { icon: <AssignmentIcon />, name: "Pathway" },
-        { icon: <ListIcon />, name: "Template" },
-        { icon: <MailIcon />, name: "Message" },
-    ];
-    const caregiverTabs = [
-        { icon: <EventAvailableIcon />, name: "Schedule" },
-        { icon: <MailIcon />, name: "Message" },
-    ];
-    const adminTabs = [
-        { icon: <GroupIcon />, name: "Accounts" },
-        { icon: <MailIcon />, name: "Message" },
-    ];
+  // const drawerWidth = 240;
+  const resourceTabs = [
+    { icon: <LocalHospitalIcon />, name: "Resource" },
+    { icon: <AssignmentIcon />, name: "Pathway" },
+    { icon: <ListIcon />, name: "Template" },
+    { icon: <MailIcon />, name: "Message" },
+  ];
+  const caregiverTabs = [
+    { icon: <EventAvailableIcon />, name: "Schedule" },
+    { icon: <MailIcon />, name: "Message" },
+  ];
+  const adminTabs = [
+    { icon: <GroupIcon />, name: "Accounts" },
+    { icon: <MailIcon />, name: "Message" },
+  ];
 
-    return (
-        <Drawer
-            sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                "& .MuiDrawer-paper": {
-                    width: drawerWidth,
-                    boxSizing: "border-box",
-                },
-            }}
-            variant="permanent"
-            anchor="left"
-            style={{ zIndex: 1000 }}
-        >
-            <Toolbar />
-            <List>
-                {resourceTabs.map(({ icon, name }, index) => (
-                    <ListItem key={index} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>{icon}</ListItemIcon>
-                            <ListItemText primary={name} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </Drawer>
-    );
+  return (
+    <Drawer
+      sx={{
+        width: 240,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: 240,
+          boxSizing: "border-box",
+        },
+      }}
+      variant="permanent"
+      anchor="left"
+      style={{ zIndex: 1000 }}
+    >
+      <Toolbar />
+      <List>
+        {adminTabs.map(({ icon, name }, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
 }

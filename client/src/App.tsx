@@ -9,6 +9,7 @@ import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
 import Accounts from "./components/Accounts";
 import AppBanner from "./components/AppBanner";
+import AccountsScreen from "./components/AccountsScreen";
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -25,10 +26,12 @@ function App() {
   }, []);
 
   return (
-    <Container id="app" sx={{ display: "flex" }}>
-      <AppBanner />
-      <PathwayScreen />
+    <Container id="app">
+      {/* <AppBanner /> */}
+      {/* <PathwayScreen /> */}
       {/* <SplashScreen /> */}
+      {/* <Accounts /> */}
+      <AccountsScreen />
     </Container>
   );
 }

@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import Notifications from "./Notifications";
 import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
-
 export default function NavBar() {
   const login = true;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -18,13 +17,22 @@ export default function NavBar() {
   };
   return (
     <AppBar
-      sx={{ flexGrow: 1 }}
+      sx={{
+        flexGrow: 1,
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+      }}
       id="navbar"
-      position="absolute"
-      style={{ zIndex: 1100 }}
+      position="fixed"
+      // style={{
+      //   zIndex: 1100,
+      // }}
     >
       <Toolbar>
-        <Typography variant="h5" noWrap sx={{ flexGrow: 1, textAlign: "left" }}>
+        <Typography
+          variant="h5"
+          noWrap
+          sx={{ flexGrow: 1, textAlign: "left", paddingLeft: "2em" }}
+        >
           CareFlow
         </Typography>
         {!login ? (
@@ -32,7 +40,7 @@ export default function NavBar() {
         ) : (
           <>
             <Notifications />
-            <Box sx={{ paddingLeft: "1em" }}>
+            <Box sx={{ paddingLeft: "2em", paddingRight: "2em" }}>
               <IconButton onClick={handleClick}>
                 <Avatar />
               </IconButton>

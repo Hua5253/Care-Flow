@@ -13,8 +13,9 @@ import GroupIcon from "@mui/icons-material/Group";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { Divider, Toolbar } from "@mui/material";
 
+const drawerWidth = 240;
+
 export default function SideBar() {
-  // const drawerWidth = 240;
   const resourceTabs = [
     { icon: <LocalHospitalIcon />, name: "Resource" },
     { icon: <AssignmentIcon />, name: "Pathway" },
@@ -33,16 +34,16 @@ export default function SideBar() {
   return (
     <Drawer
       sx={{
-        width: 240,
+        width: drawerWidth - 100,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: 240,
+          width: drawerWidth,
           boxSizing: "border-box",
         },
       }}
       variant="permanent"
       anchor="left"
-      style={{ zIndex: 1000 }}
+      // style={{ zIndex: 1000, position: "fixed" }}
     >
       <Toolbar />
       <List>

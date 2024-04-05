@@ -1,4 +1,4 @@
-import { Box, FormControl, IconButton, InputLabel, MenuItem, Modal, Select } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 
@@ -71,6 +71,7 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
               <MenuItem value={"template3"}>Template 3</MenuItem>
             </Select>
           </FormControl>
+          <Button variant="contained">Create</Button>
         </Box>
       </Modal>
     </>

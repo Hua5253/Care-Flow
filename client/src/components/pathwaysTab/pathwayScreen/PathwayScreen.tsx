@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import PathwayList from "./PathwayList";
-import CreatePathwayModal from "./CreatePathwayModal";
+import CreatePathwayModal from "../modals/CreatePathwayModal";
 import { useState } from "react";
 
 export default function PathwayScreen() {

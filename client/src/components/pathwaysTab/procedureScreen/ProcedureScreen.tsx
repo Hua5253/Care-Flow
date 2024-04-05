@@ -6,11 +6,13 @@ import AppBanner from "../../AppBanner/AppBanner";
 import { useState } from "react";
 import FooterButtons from "./FooterButton";
 import DeleteProcedureModal from "../modals/DeleteProcedureModal";
+import EditProcedureModal from "../modals/EditProcedureModal";
 
 function ProcedureScreen() {
   const [inEdit, setInEdit] = useState(true);
   const [showDeleteProcedureModal, setShowDeleteProcedureModal] =
     useState(false);
+  const [showEditProcedureModal, setShowEditProcedureModal] = useState(false);
 
   return (
     <Container id="app">
@@ -19,7 +21,10 @@ function ProcedureScreen() {
         <ProcedureBanner />
         <ProcedureList />
         {inEdit ? (
-          <InEditFooterButtons handleSaveClick={() => setInEdit(false)} />
+          <InEditFooterButtons
+            handleSaveClick={() => setInEdit(false)}
+            handleAddProcedure={() => setShowEditProcedureModal(true)}
+          />
         ) : (
           <FooterButtons
             handleEditClick={() => setInEdit(true)}
@@ -32,6 +37,7 @@ function ProcedureScreen() {
             handleCancel={() => setShowDeleteProcedureModal(false)}
           />
         )}
+        {showEditProcedureModal && <EditProcedureModal />}
       </Box>
     </Container>
   );

@@ -1,6 +1,7 @@
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute" as "absolute",
@@ -23,6 +24,7 @@ interface closeModal {
 
 function TemplatePathwayModal({ handleClose }: closeModal) {
   const [template, setTemplate] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setTemplate(event.target.value as string);
@@ -71,7 +73,7 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
               <MenuItem value={"template3"}>Template 3</MenuItem>
             </Select>
           </FormControl>
-          <Button variant="contained">Create</Button>
+          <Button variant="contained" onClick={() => {navigate('/manager-procedure')}}>Create</Button>
         </Box>
       </Modal>
     </>

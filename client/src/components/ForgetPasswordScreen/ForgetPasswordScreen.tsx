@@ -13,7 +13,7 @@ export default function ForgetPasswordScreen() {
         marginTop: "10%",
       }}
     >
-      <NavBar />
+      <NavBar cred={false} />
       <ForgetPassword />
     </Container>
   );

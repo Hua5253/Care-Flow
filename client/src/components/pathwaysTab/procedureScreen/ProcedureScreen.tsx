@@ -7,6 +7,7 @@ import { useState } from "react";
 import FooterButtons from "./FooterButton";
 import DeleteProcedureModal from "../modals/DeleteProcedureModal";
 import EditProcedureModal from "../modals/EditProcedureModal";
+import ManagerSideBar from "../../SideBar/ManagerSideBar";
 
 function ProcedureScreen() {
   const [inEdit, setInEdit] = useState(true);
@@ -17,7 +18,8 @@ function ProcedureScreen() {
   return (
     <Container id="app">
       <Box sx={{ flexGrow: 1, mt: 8 }}>
-        <AppBanner cred={true} section={"pathway"} />
+        <AppBanner cred={true} />
+        <ManagerSideBar />
         <ProcedureBanner />
         <ProcedureList />
         {inEdit ? (

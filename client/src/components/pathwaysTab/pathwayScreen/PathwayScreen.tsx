@@ -4,6 +4,7 @@ import CreatePathwayModal from "../modals/CreatePathwayModal";
 import { useState } from "react";
 import AppBanner from "../../AppBanner/AppBanner";
 import { Container } from "@mui/material";
+import ManagerSideBar from "../../SideBar/ManagerSideBar";
 
 export default function PathwayScreen() {
   const [showAddPathwayModal, setShowAddPathwayModal] = useState(false);
@@ -25,7 +26,8 @@ export default function PathwayScreen() {
           minWidth: 0,
         }}
       >
-        <AppBanner cred={true} section={"Pathway"} />
+        <AppBanner cred={true} />
+        <ManagerSideBar />
         <PathwayList showModal={handleAddPathwayModalClick} />
         {showAddPathwayModal && (
           <CreatePathwayModal

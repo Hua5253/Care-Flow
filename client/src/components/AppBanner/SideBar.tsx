@@ -20,8 +20,8 @@ interface Props {
 }
 
 export default function SideBar({ section }: Props) {
-  const resourceTabs = [
-    { icon: <LocalHospitalIcon />, name: "Resource", path: "/..." },
+  const managerTabs = [
+    { icon: <LocalHospitalIcon />, name: "Resource", path: "/resources" },
     { icon: <AssignmentIcon />, name: "Pathway", path: "/manager-pathway" },
     { icon: <ListIcon />, name: "Template", path: "/..." },
     { icon: <MailIcon />, name: "Message", path: "/Messages/" },
@@ -52,7 +52,8 @@ export default function SideBar({ section }: Props) {
   return (
     <Drawer
       sx={{
-        width: drawerWidth - 100,
+        // fixed scroll
+        // width: drawerWidth - 100,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: drawerWidth,

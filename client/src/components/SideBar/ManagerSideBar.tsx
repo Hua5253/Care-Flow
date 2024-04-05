@@ -18,7 +18,7 @@ export default function ManagerSideBar() {
     { icon: <LocalHospitalIcon />, name: "Resource", path: "/resources" },
     { icon: <AssignmentIcon />, name: "Pathway", path: "/manager-pathway" },
     { icon: <ListIcon />, name: "Template", path: "/..." },
-    { icon: <MailIcon />, name: "Message", path: "/Messages/" },
+    { icon: <MailIcon />, name: "Message", path: "/Messages/manager" },
   ];
 
   const navigate = useNavigate();
@@ -43,9 +43,7 @@ export default function ManagerSideBar() {
       <List>
         {managerTabs.map(({ icon, name, path }, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton
-              onClick={() => goTo(path)}
-            >
+            <ListItemButton onClick={() => goTo(path)}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={name} />
             </ListItemButton>

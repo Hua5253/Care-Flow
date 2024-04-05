@@ -13,11 +13,25 @@ export default function PathwayScreen() {
   };
 
   return (
-    <Container id="app">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBanner />
+    <Container sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          marginLeft: "6em",
+          marginTop: 8,
+          width: "100%",
+          overflowX: "auto",
+          minWidth: 0,
+        }}
+      >
+        <AppBanner cred={true} section={"Pathway"} />
         <PathwayList showModal={handleAddPathwayModalClick} />
-        {showAddPathwayModal && <CreatePathwayModal handleClose={() => setShowAddPathwayModal(false)}/>}
+        {showAddPathwayModal && (
+          <CreatePathwayModal
+            handleClose={() => setShowAddPathwayModal(false)}
+          />
+        )}
       </Box>
     </Container>
   );

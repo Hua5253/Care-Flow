@@ -1,13 +1,13 @@
 import Container from "@mui/material/Container";
 import PathwayScreen from "./components/pathwaysTab/pathwayScreen";
-import SplashScreen from "./components/SplashTab/SplashScreen";
+import SplashScreen from "./components/SplashScreen/SplashScreen";
 import AccountsScreen from "./components/AccountsTab/AccountsScreen";
 
 function App() {
 
   return (
     <Container id="app">
-      <AccountsScreen />
+      <SplashScreen />
     </Container>
   );
 }

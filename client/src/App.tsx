@@ -1,15 +1,13 @@
 import Container from "@mui/material/Container";
-import AppBanner from "./components/AppBanner";
 import PathwayScreen from "./components/pathwaysTab/pathwayScreen";
-import ProcedureScreen from "./components/pathwaysTab/procedureScreen";
+import SplashScreen from "./components/SplashTab/SplashScreen";
+import AccountsScreen from "./components/AccountsTab/AccountsScreen";
 
 function App() {
 
   return (
-    <Container id="app" sx={{ display: "flex" }}>
-      <AppBanner />
-      {/* <PathwayScreen /> */}
-      <ProcedureScreen />
+    <Container id="app">
+      <AccountsScreen />
     </Container>
   );
 }

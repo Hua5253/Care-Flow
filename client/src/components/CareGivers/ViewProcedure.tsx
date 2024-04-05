@@ -2,7 +2,7 @@ import * as React from 'react';
 import  { useState } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography, Button, Box, TextField, } from '@mui/material';
 
-import ConfirmationModal from './Modals/ConfirmationModal';
+import ConfirmationModal from '../Modals/ConfirmationModal';
 
 export default function ViewProcedure() {
 

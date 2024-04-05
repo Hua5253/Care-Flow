@@ -16,6 +16,7 @@ import {
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ResetPasswordModal from "../CareGivers/Modals/ResetPasswordModal";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 interface user {
   id: String;
@@ -79,10 +80,30 @@ const usersList: user[] = [
 
 export default function AccountsTable() {
   const [resetPsModal, setResetPsModal] = useState(false);
+  const [openConfirmation, setOpenConfirmation] = useState(false); // State to control the ConfirmationModal
+
   const handleClose = () => {
     setResetPsModal(false);
   };
+
+  const handleCloseDelete = () => {
+    // Call this to close the modal
+    setOpenConfirmation(false);
+  };
+
+  const handleConfirmDelete = () => {
+    // Handle the confirmation action here
+    console.log("Procedure started");
+    setOpenConfirmation(false); // Close modal after confirmation
+  };
+
+  const handleDeleteUser = () => {
+    // Call this when you want to open the confirmation modal
+    setOpenConfirmation(true);
+  };
+
   return (
+    <Box>
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
@@ -122,7 +143,10 @@ export default function AccountsTable() {
                 >
                   Change Password
                 </Button>
-                <IconButton size="medium" sx={{ ml: 3 }}>
+                <IconButton 
+                  size="medium" sx={{ ml: 3 }}
+                  onClick={handleDeleteUser}
+                >
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
@@ -131,5 +155,13 @@ export default function AccountsTable() {
         </TableBody>
       </Table>
     </TableContainer>
+    
+    <ConfirmationModal
+        open={openConfirmation}
+        onClose={handleCloseDelete}
+        onConfirm={handleConfirmDelete}
+      />
+
+    </Box>
   );
 }

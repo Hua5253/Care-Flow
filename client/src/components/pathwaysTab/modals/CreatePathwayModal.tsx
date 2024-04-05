@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
 import TemplatePathwayModal from "./TemplatePathwayModal";
 import IconButton from "@mui/material/IconButton";

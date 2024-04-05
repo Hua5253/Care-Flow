@@ -56,6 +56,7 @@ export default function ViewProcedure() {
         width: '100%',
         padding: 2,
         margin: 'auto',
+        marginTop: 8,
         maxWidth: 'none',
         backgroundColor: '#9DB4C0',
         flexGrow: 1,

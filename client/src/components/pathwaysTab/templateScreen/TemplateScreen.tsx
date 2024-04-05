@@ -27,7 +27,17 @@ function TemplateScreen() {
 
   return (
     <Container id="app">
-      <Box sx={{ flexGrow: 1, mt: 10 }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          marginLeft: "6em",
+          marginTop: 8,
+          width: "100%",
+          overflowX: "auto",
+          minWidth: 0,
+        }}
+      >
         <AppBanner cred={true} />
         <ManagerSideBar />
         <Button

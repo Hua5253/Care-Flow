@@ -34,7 +34,8 @@ export default function SideBar() {
   return (
     <Drawer
       sx={{
-        width: drawerWidth - 100,
+        // fixed scroll
+        // width: drawerWidth - 100,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: drawerWidth,

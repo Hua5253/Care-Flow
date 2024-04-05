@@ -11,7 +11,8 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   // Should we put these stylings into css files separately?
@@ -36,6 +37,26 @@ export default function Login() {
     mt: 3,
     mb: 2,
   };
+
+  const navigate = useNavigate();
+  const [usernameValue, setUsernameValue] = useState("");
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // Update the inputValue state with the current input
+    setUsernameValue(event.target.value);
+  };
+
+  const handleLogin = () => {
+    if (usernameValue === "admin") {
+      navigate("/Accounts");
+    } else if (usernameValue === "manager") {
+      navigate("/...");
+    } else if (usernameValue === "caregiver") {
+      navigate("/schedule");
+    } else {
+      navigate("/");
+    }
+  };
   return (
     <Box sx={boxStyle} id="login-modal">
       <Container>
@@ -53,6 +74,7 @@ export default function Login() {
             InputProps={{
               startAdornment: <AccountCircle sx={{ mr: 1, my: 0.5 }} />,
             }}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
@@ -68,7 +90,7 @@ export default function Login() {
             }}
           />
           <Link
-            href="#"
+            href="/forgetPassword"
             variant="body2"
             sx={{ display: "block", textAlign: "center", mt: 2 }}
           >
@@ -79,6 +101,7 @@ export default function Login() {
             variant="contained"
             color="primary"
             sx={buttonStyle}
+            onClick={handleLogin}
           >
             Login
           </Button>

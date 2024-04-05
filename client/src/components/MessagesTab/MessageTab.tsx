@@ -7,7 +7,7 @@ import ChatBox from "./ChatBox";
 export default function MessageTab() {
   return (
     <Container sx={{ display: "flex", flexDirection: "column" }}>
-      <AppBanner />
+      <AppBanner cred={true} section={"Message"} />
       <MessagesContent />
     </Container>
   );

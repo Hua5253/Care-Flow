@@ -3,11 +3,16 @@ import React from "react";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 
-export default function AppBanner() {
+interface Prop {
+  cred: Boolean;
+  section: String;
+}
+
+export default function AppBanner({ cred, section }: Prop) {
   return (
     <Box sx={{ display: "flex", overflow: "auto" }}>
-      <NavBar />
-      <SideBar />
+      <NavBar cred={cred} />
+      <SideBar section={section} />
     </Box>
   );
 }

@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgetPassword() {
   // Should we put these stylings into css files separately?
@@ -36,6 +37,11 @@ export default function ForgetPassword() {
     border: "1px solid #A8A8A8",
     mt: 1,
     width: "fit-content",
+  };
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate("/login");
   };
   return (
     <Box sx={boxStyle} id="login-modal">
@@ -67,7 +73,7 @@ export default function ForgetPassword() {
             <Button type="submit" sx={buttonStyle}>
               Send Request
             </Button>
-            <Button color="primary" sx={buttonStyle}>
+            <Button color="primary" sx={buttonStyle} onClick={handleBack}>
               Back
             </Button>
           </Box>

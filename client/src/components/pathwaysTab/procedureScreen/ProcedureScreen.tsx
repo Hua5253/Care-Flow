@@ -17,7 +17,7 @@ function ProcedureScreen() {
   return (
     <Container id="app">
       <Box sx={{ flexGrow: 1, mt: 8 }}>
-        <AppBanner />
+        <AppBanner cred={true} section={"pathway"} />
         <ProcedureBanner />
         <ProcedureList />
         {inEdit ? (

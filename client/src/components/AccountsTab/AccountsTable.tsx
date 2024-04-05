@@ -13,8 +13,9 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ResetPasswordModal from "../CareGivers/Modals/ResetPasswordModal";
 
 interface user {
   id: String;
@@ -77,11 +78,16 @@ const usersList: user[] = [
 ];
 
 export default function AccountsTable() {
+  const [resetPsModal, setResetPsModal] = useState(false);
+  const handleClose = () => {
+    setResetPsModal(false);
+  };
   return (
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
+      {resetPsModal && <ResetPasswordModal onclose={handleClose} />}
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -109,7 +115,11 @@ export default function AccountsTable() {
               <TableCell align="right">{user.phoneNumber}</TableCell>
               <TableCell align="right">{user.role}</TableCell>
               <TableCell align="right" size="medium">
-                <Button variant="outlined" sx={{ fontSize: "13px" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ fontSize: "13px" }}
+                  onClick={() => setResetPsModal(true)}
+                >
                   Change Password
                 </Button>
                 <IconButton size="medium" sx={{ ml: 3 }}>

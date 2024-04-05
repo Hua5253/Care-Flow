@@ -13,7 +13,7 @@ export default function LoginScreen() {
         marginTop: "10%",
       }}
     >
-      <NavBar />
+      <NavBar cred={false} />
       <Login />
     </Container>
   );

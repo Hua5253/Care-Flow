@@ -17,7 +17,7 @@ export default function ManagerSideBar() {
   const managerTabs = [
     { icon: <LocalHospitalIcon />, name: "Resource", path: "/resources" },
     { icon: <AssignmentIcon />, name: "Pathway", path: "/manager-pathway" },
-    { icon: <ListIcon />, name: "Template", path: "/..." },
+    { icon: <ListIcon />, name: "Template", path: "/manager-template" },
     { icon: <MailIcon />, name: "Message", path: "/Messages/" },
   ];
 

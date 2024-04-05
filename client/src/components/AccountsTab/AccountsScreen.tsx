@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Paper } from "@mui/material";
 import React from "react";
-import AppBanner from "./AppBanner";
+import AppBanner from "../AppBanner/AppBanner";
 import Accounts from "./Accounts";
 
 export default function AccountsScreen() {

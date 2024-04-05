@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import userService, { User } from "./services/user-service";
 import PathwayScreen from "./components/PathwayScreen";
-import SideBar from "./components/SideBar";
-import NavBar from "./components/NavBar";
-import Splash from "./components/Splash";
-import SplashScreen from "./components/SplashScreen";
+import SideBar from "./components/AppBanner/SideBar";
+import NavBar from "./components/AppBanner/NavBar";
+import Splash from "./components/SplashTab/Splash";
+import SplashScreen from "./components/SplashTab/SplashScreen";
 import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
-import Accounts from "./components/Accounts";
-import AppBanner from "./components/AppBanner";
-import AccountsScreen from "./components/AccountsScreen";
+import Accounts from "./components/AccountsTab/Accounts";
+import AppBanner from "./components/AppBanner/AppBanner";
+import AccountsScreen from "./components/AccountsTab/AccountsScreen";
+import LoginScreen from "./components/LoginTab/LoginScreen";
+import ForgetPassword from "./components/ForgetPasswordTab/ForgetPassword";
+import ForgetPasswordScreen from "./components/ForgetPasswordTab/ForgetPasswordScreen";
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -30,8 +33,9 @@ function App() {
       {/* <AppBanner /> */}
       {/* <PathwayScreen /> */}
       {/* <SplashScreen /> */}
-      {/* <Accounts /> */}
       <AccountsScreen />
+      {/* <LoginScreen /> */}
+      {/* <ForgetPasswordScreen /> */}
     </Container>
   );
 }

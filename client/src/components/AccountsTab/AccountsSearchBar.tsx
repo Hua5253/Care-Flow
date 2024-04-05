@@ -2,15 +2,10 @@ import {
   Box,
   Button,
   Divider,
-  FormControl,
-  Grid,
-  IconButton,
-  InputAdornment,
   InputBase,
   Menu,
   MenuItem,
   Paper,
-  TextField,
 } from "@mui/material";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";

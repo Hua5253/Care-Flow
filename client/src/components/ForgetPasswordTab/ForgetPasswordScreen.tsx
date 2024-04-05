@@ -1,11 +1,11 @@
 import { Box, Container } from "@mui/material";
-import Splash from "./Splash";
-import NavBar from "./NavBar";
+import NavBar from "../AppBanner/NavBar";
+import ForgetPassword from "./ForgetPassword";
 
-export default function SplashScreen() {
+export default function ForgetPasswordScreen() {
   return (
     <Container
-      id="splashScreen"
+      id="forgetPasswordScreen"
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -14,7 +14,7 @@ export default function SplashScreen() {
       }}
     >
       <NavBar />
-      <Splash />
+      <ForgetPassword />
     </Container>
   );
 }

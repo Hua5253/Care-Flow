@@ -11,11 +11,10 @@ import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
-
 export default function AdminSideBar() {
   const adminTabs = [
     { icon: <GroupIcon />, name: "Accounts", path: "/accounts" },
-    { icon: <MailIcon />, name: "Message", path: "/Messages/" },
+    { icon: <MailIcon />, name: "Message", path: "/Messages/admin" },
   ];
   const navigate = useNavigate();
 
@@ -39,9 +38,7 @@ export default function AdminSideBar() {
       <List>
         {adminTabs.map(({ icon, name, path }, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton
-              onClick={() => goTo(path)}
-            >
+            <ListItemButton onClick={() => goTo(path)}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={name} />
             </ListItemButton>

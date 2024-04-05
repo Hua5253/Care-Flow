@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -74,7 +75,9 @@ export default function Table() {
         <TableHead>
           <TableRow>
             <TableCell>Item Name</TableCell>
-            <TableCell align="right">Item ID</TableCell>
+            <TableCell align="right">
+              <TableSortLabel active={true}>Item ID</TableSortLabel>
+            </TableCell>
             <TableCell align="right">Category</TableCell>
             <TableCell align="right">Quantity Available</TableCell>
             <TableCell align="right">Status</TableCell>

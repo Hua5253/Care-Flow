@@ -2,7 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Notifications from "../Notifications";
+import Notifications from "./Notifications";
 import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
 export default function NavBar() {

@@ -78,9 +78,9 @@ export default function ChatBox() {
             overflow: "auto",
           }}
         >
-          {msglist.map((item) => {
+          {msglist.map((item, index) => {
             return (
-              <Message
+              <Message key={index}
                 message={item.message}
                 date={item.date}
                 self={item.self}

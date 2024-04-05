@@ -9,7 +9,7 @@ function App() {
 
   return (
     <Container id="app">
-      <CaregiverScreen />
+      <PathwayScreen />
     </Container>
   );
 }

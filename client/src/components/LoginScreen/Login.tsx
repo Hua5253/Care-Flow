@@ -50,7 +50,7 @@ export default function Login() {
     if (usernameValue === "admin") {
       navigate("/Accounts");
     } else if (usernameValue === "manager") {
-      navigate("/...");
+      navigate("/resources");
     } else if (usernameValue === "caregiver") {
       navigate("/schedule");
     } else {

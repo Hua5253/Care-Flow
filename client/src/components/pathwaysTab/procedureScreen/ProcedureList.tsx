@@ -34,7 +34,7 @@ const ProcedureList = () => {
           <TableCell>Procedure</TableCell>
           <TableCell>Status</TableCell>
           <TableCell>Location</TableCell>
-          <TableCell>Action</TableCell>
+          <TableCell></TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

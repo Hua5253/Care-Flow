@@ -2,7 +2,7 @@ import {
   Button,
   IconButton,
   Paper,
-  Table as MaterialTable,
+  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -52,7 +52,7 @@ const dataSource: MedicalEquipment[] = [
   },
 ];
 
-export default function Table() {
+export default function TableMedicalEquipment() {
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       "In Stock": "#409832",
@@ -67,21 +67,25 @@ export default function Table() {
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
-      <MaterialTable
-        aria-label="simple table"
-        stickyHeader
-        sx={{ width: "100%" }}
-      >
+      <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
           <TableRow>
-            <TableCell>Item Name</TableCell>
-            <TableCell align="right">
+            <TableCell align="left" sx={{ fontWeight: 700 }}>
+              <TableSortLabel active={true}>Item Name</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Item ID</TableSortLabel>
             </TableCell>
-            <TableCell align="right">Category</TableCell>
-            <TableCell align="right">Quantity Available</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="center">Actions</TableCell>
+            <TableCell align="left" sx={{ fontWeight: 700 }}>
+              <TableSortLabel active={true}>Category</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={{ fontWeight: 700 }}>
+              <TableSortLabel active={true}>Quantity Available</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={{ fontWeight: 700 }}>
+              <TableSortLabel active={true}>Status</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={{ fontWeight: 700 }}>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -90,19 +94,19 @@ export default function Table() {
               key={index}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell align="left" component="th" scope="row">
                 {data.name}
               </TableCell>
-              <TableCell align="right">{data.id}</TableCell>
-              <TableCell align="right">{data.category}</TableCell>
-              <TableCell align="right">{data.quantity}</TableCell>
+              <TableCell align="left">{data.id}</TableCell>
+              <TableCell align="left">{data.category}</TableCell>
+              <TableCell align="left">{data.quantity}</TableCell>
               <TableCell
-                align="right"
+                align="left"
                 style={{ color: getStatusColor(data.status) }}
               >
                 {data.status}
               </TableCell>
-              <TableCell align="right" size="medium">
+              <TableCell align="left" size="medium">
                 <Button variant="outlined" sx={{ fontSize: "13px" }}>
                   Edit
                 </Button>
@@ -113,7 +117,7 @@ export default function Table() {
             </TableRow>
           ))}
         </TableBody>
-      </MaterialTable>
+      </Table>
     </TableContainer>
   );
 }

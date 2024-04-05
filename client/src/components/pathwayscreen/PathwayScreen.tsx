@@ -12,8 +12,8 @@ export default function PathwayScreen() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <PathwayList showModal={handleAddPathwayModalClick} />
-      {showAddPathwayModal && <CreatePathwayModal />}
+      <PathwayList showModal={handleAddPathwayModalClick} /> 
+      {showAddPathwayModal && <CreatePathwayModal handleClose={() => setShowAddPathwayModal(false)}/>}
     </Box>
   );
 }

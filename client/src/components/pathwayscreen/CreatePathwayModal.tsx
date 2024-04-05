@@ -1,5 +1,8 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { useState } from "react";
+import TemplatePathwayModal from "./TemplatePathwayModal";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute" as "absolute",
@@ -15,57 +18,46 @@ const style = {
   pb: 3,
 };
 
-function ChildModal() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <>
-      <Button onClick={handleOpen}>Open Child Modal</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...style, width: 200 }}>
-          <h2 id="child-modal-title">Text in a child modal</h2>
-          <p id="child-modal-description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
-          <Button onClick={handleClose}>Close Child Modal</Button>
-        </Box>
-      </Modal>
-    </>
-  );
+interface closeModal {
+  handleClose: () => void;
 }
 
-function createPathwayModal() {
-  const [open, setOpen] = useState(true);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+function createPathwayModal({handleClose}: closeModal) {
+  const [showChildModal, setShowChildModal] = useState(false);
 
   return (
     <div>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={true}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title">Text in a modal</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-          <ChildModal />
+        <Box
+          sx={{
+            ...style,
+            width: 400,
+            textAlign: "center",
+            "& button": { m: 1 },
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <h2 id="parent-modal-title">Create Pathway</h2>
+          <Button variant="contained" onClick={() => {setShowChildModal(true)}}>
+            Template
+          </Button>
+          <Button variant="contained">Blank Pathway</Button>
+          {showChildModal && <TemplatePathwayModal handleClose={() => setShowChildModal(false)} />}
         </Box>
       </Modal>
     </div>

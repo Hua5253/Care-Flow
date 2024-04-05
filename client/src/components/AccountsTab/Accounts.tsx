@@ -3,8 +3,13 @@ import AccountsTable from "./AccountsTable";
 import AccountsSearchBar from "./AccountsSearchBar";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
+import CreateNewUserModal from "../CareGivers/Modals/CreateNewUserModal";
+import { useState } from "react";
+interface showModal {
+  showModal: () => void;
+}
 
-export default function Accounts() {
+export default function Accounts({ showModal }: showModal) {
   return (
     <Box
       sx={{
@@ -43,6 +48,7 @@ export default function Accounts() {
                 borderRadius: 1,
                 height: "45px",
               }}
+              onClick={showModal}
             >
               <AddIcon fontSize="small" />
               Create User

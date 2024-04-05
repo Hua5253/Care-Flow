@@ -5,8 +5,12 @@ import Typography from "@mui/material/Typography";
 import Notifications from "./Notifications";
 import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
-export default function NavBar() {
-  const login = true;
+import { useNavigate } from "react-router-dom";
+interface Prop {
+  cred: Boolean;
+}
+export default function NavBar({ cred }: Prop) {
+  const login = cred;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -14,6 +18,13 @@ export default function NavBar() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const navigate = useNavigate();
+  const handleNavToLoginScreen = () => {
+    navigate("/login");
+  };
+  const handleLogout = () => {
+    navigate("/");
   };
   return (
     <AppBar
@@ -36,7 +47,9 @@ export default function NavBar() {
           CareFlow
         </Typography>
         {!login ? (
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={handleNavToLoginScreen}>
+            Login
+          </Button>
         ) : (
           <>
             <Notifications />
@@ -52,7 +65,7 @@ export default function NavBar() {
                 onClick={handleClose}
               >
                 <MenuItem>Change Password</MenuItem>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </Box>
           </>

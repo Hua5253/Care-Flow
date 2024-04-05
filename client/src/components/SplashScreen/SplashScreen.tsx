@@ -13,7 +13,7 @@ export default function SplashScreen() {
         marginTop: "10%",
       }}
     >
-      <NavBar />
+      <NavBar cred={false} />
       <Splash />
     </Container>
   );

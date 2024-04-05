@@ -5,7 +5,7 @@ import SideBar from "./SideBar";
 
 export default function AppBanner() {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", overflow: "auto" }}>
       <NavBar />
       <SideBar />
     </Box>

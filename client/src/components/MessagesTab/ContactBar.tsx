@@ -1,6 +1,4 @@
-import React from "react";
 import {
-  Drawer,
   List,
   ListItem,
   ListItemAvatar,
@@ -9,14 +7,9 @@ import {
   Typography,
   Box,
   TextField,
-  Divider,
-  Toolbar,
   Paper,
-  Container,
 } from "@mui/material";
-import MailIcon from "@mui/icons-material/Mail";
-import { BorderBottom } from "@mui/icons-material";
-const drawerWidth = 250;
+
 const contacts = [
   {
     id: 1,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   TextField,
   Button,
@@ -11,19 +11,13 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+
 interface Prop {
   onclose: () => void;
 }
 
 export default function CreateNewUserModal({ onclose }: Prop) {
-  // const [open, setOpen] = useState(true);
   const [role, setRole] = useState("");
-
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
 
   const handleRoleChange = (event: SelectChangeEvent<string>) => {
     setRole(event.target.value);

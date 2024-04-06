@@ -5,7 +5,7 @@ import ViewProcedure from "./ViewProcedure";
 export default function ViewProcedureScreen() {
   return (
     <Container sx={{ display: "flex" }}>
-      <AppBanner cred={true} section={"Schedule"} />
+      <AppBanner cred={true} />
       <ViewProcedure />
     </Container>
   );

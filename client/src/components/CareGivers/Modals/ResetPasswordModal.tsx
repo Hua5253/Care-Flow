@@ -1,25 +1,15 @@
-import React, { useState } from "react";
 import {
   TextField,
   Button,
   Box,
   Typography,
   Modal,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
 } from "@mui/material";
 interface Prop {
   onclose: () => void;
 }
 
 export default function ResetPasswordModal({ onclose }: Prop) {
-  // const [open, setOpen] = useState(true);
-
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
 
   const style = {
     position: "absolute",

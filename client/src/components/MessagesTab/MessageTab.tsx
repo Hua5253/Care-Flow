@@ -3,7 +3,6 @@ import AppBanner from "../AppBanner/AppBanner";
 import MessagesContent from "./MessagesContent";
 import AdminSideBar from "../SideBar/AdminSideBar";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
 import ManagerSideBar from "../SideBar/ManagerSideBar";
 import CaregiverSideBar from "../SideBar/CaregiverSideBar";
 

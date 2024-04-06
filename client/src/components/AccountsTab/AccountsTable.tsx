@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   IconButton,
-  Pagination,
   Paper,
   Table,
   TableBody,
@@ -10,10 +9,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Toolbar,
-  Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ResetPasswordModal from "../CareGivers/Modals/ResetPasswordModal";
 import ConfirmationModal from "../Modals/ConfirmationModal";
@@ -104,64 +101,64 @@ export default function AccountsTable() {
 
   return (
     <Box>
-    <TableContainer
-      component={Paper}
-      sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
-    >
-      {resetPsModal && <ResetPasswordModal onclose={handleClose} />}
-      <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Username</TableCell>
-            <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Phone Number</TableCell>
-            <TableCell align="right">Role</TableCell>
-            <TableCell align="center">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {usersList.map((user, index) => (
-            <TableRow
-              key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {user.id}
-              </TableCell>
-              <TableCell align="right">{user.name}</TableCell>
-              <TableCell align="right">{user.username}</TableCell>
-              <TableCell align="right">{user.email}</TableCell>
-              <TableCell align="right">{user.phoneNumber}</TableCell>
-              <TableCell align="right">{user.role}</TableCell>
-              <TableCell align="right" size="medium">
-                <Button
-                  variant="outlined"
-                  sx={{ fontSize: "13px" }}
-                  onClick={() => setResetPsModal(true)}
-                >
-                  Change Password
-                </Button>
-                <IconButton 
-                  size="medium" sx={{ ml: 3 }}
-                  onClick={handleDeleteUser}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
+      <TableContainer
+        component={Paper}
+        sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
+      >
+        {resetPsModal && <ResetPasswordModal onclose={handleClose} />}
+        <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell align="right">Name</TableCell>
+              <TableCell align="right">Username</TableCell>
+              <TableCell align="right">Email</TableCell>
+              <TableCell align="right">Phone Number</TableCell>
+              <TableCell align="right">Role</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    
-    <ConfirmationModal
+          </TableHead>
+          <TableBody>
+            {usersList.map((user, index) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.id}
+                </TableCell>
+                <TableCell align="right">{user.name}</TableCell>
+                <TableCell align="right">{user.username}</TableCell>
+                <TableCell align="right">{user.email}</TableCell>
+                <TableCell align="right">{user.phoneNumber}</TableCell>
+                <TableCell align="right">{user.role}</TableCell>
+                <TableCell align="right" size="medium">
+                  <Button
+                    variant="outlined"
+                    sx={{ fontSize: "13px" }}
+                    onClick={() => setResetPsModal(true)}
+                  >
+                    Change Password
+                  </Button>
+                  <IconButton
+                    size="medium"
+                    sx={{ ml: 3 }}
+                    onClick={handleDeleteUser}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <ConfirmationModal
         open={openConfirmation}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
       />
-
     </Box>
   );
 }

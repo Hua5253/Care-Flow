@@ -1,4 +1,13 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -62,8 +71,10 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
               id="procedure-template-select"
               value={template}
               label="Procedure Template"
-              onChange={() => {handleChange}}
-              sx={{ mb: 2 }} 
+              onChange={() => {
+                handleChange;
+              }}
+              sx={{ mb: 2 }}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -73,7 +84,14 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
               <MenuItem value={"template3"}>Template 3</MenuItem>
             </Select>
           </FormControl>
-          <Button variant="contained" onClick={() => {navigate('/manager-procedure')}}>Create</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigate("/manager-procedure");
+            }}
+          >
+            Create
+          </Button>
         </Box>
       </Modal>
     </>

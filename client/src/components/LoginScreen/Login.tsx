@@ -5,13 +5,12 @@ import {
   Button,
   Container,
   Link,
-  Paper,
   SxProps,
   TextField,
   Theme,
   Typography,
 } from "@mui/material";
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {

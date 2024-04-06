@@ -1,5 +1,4 @@
 import { Container } from "@mui/material";
-import React from "react";
 import ContactBar from "./ContactBar";
 import ChatBox from "./ChatBox";
 

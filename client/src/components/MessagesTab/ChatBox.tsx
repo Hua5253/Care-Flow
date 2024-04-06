@@ -5,16 +5,12 @@ import {
   IconButton,
   InputBase,
   Paper,
-  Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
 import SendIcon from "@mui/icons-material/Send";
 
-import AttachFileIcon from "@mui/icons-material/AttachFile";
 import Message from "./Message";
-import ContactBar from "./ContactBar";
 interface Message {
   message: String;
   date: String;
@@ -50,7 +46,7 @@ export default function ChatBox() {
           height: "75vh",
           mb: 2,
         }}
-        variant="outlined"
+        variant="elevation"
       >
         {/* Chat Header */}
         <Box

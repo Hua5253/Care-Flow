@@ -34,9 +34,6 @@ export default function ConfirmationModal({ open, onClose, onConfirm }: Confirma
     let procedure_name = "MRI"
     let patient_name = "john doe"
     let start_procedure = "Click confirm to start the procedure"
-    let end_procedure = "Click confirm to end the procedure"
-    let cancel_procedure = "Click confirm to cancel the procedure"
-
 
     let title = (
         <h2 id="confirmation-modal-title">{start_procedure}</h2>

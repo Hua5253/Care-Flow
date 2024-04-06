@@ -1,18 +1,14 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Box,
   Button,
-  ButtonGroup,
   Container,
-  Link,
-  Paper,
   SxProps,
   TextField,
   Theme,
   Typography,
 } from "@mui/material";
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
 
 export default function ForgetPassword() {

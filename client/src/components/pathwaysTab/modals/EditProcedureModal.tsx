@@ -4,8 +4,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 export default function EditProcedureModal() {
   const [open, setOpen] = useState(true);
-
-  const handleOpen = () => setOpen(true);
+  
   const handleClose = () => setOpen(false);
 
   const style = {

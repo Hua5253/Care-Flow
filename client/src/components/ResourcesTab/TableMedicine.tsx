@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useState } from "react";
+import ModalMedicine from "./ModalMedicine";
 
 interface Medicine {
   id: string;
@@ -58,11 +60,18 @@ const dataSource: Medicine[] = [
 ];
 
 export default function TableMedicine() {
+  const [openId, setOpenId] = useState<string>("");
   return (
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
+      <ModalMedicine
+        open={!!openId}
+        onClose={() => setOpenId("")}
+        onOk={() => {}}
+        title="Edit Medicine"
+      />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -100,7 +109,7 @@ export default function TableMedicine() {
               <TableCell align="left">{data.packaging}</TableCell>
               <TableCell align="left">{data.stockQuantity}</TableCell>
               <TableCell align="left" size="medium">
-                <Button variant="outlined" sx={{ fontSize: "13px" }}>
+                <Button variant="outlined" sx={{ fontSize: "13px" }} onClick={() => setOpenId(data.name)}>
                   Edit
                 </Button>
                 <IconButton size="medium" sx={{ ml: 3 }}>

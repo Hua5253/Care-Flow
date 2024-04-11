@@ -10,8 +10,9 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material";
-
 import DeleteIcon from "@mui/icons-material/Delete";
+import ModalMedicalEquipment from "./ModalMedicalEquipment";
+import { useState } from "react";
 
 interface MedicalEquipment {
   name: string;
@@ -53,6 +54,7 @@ const dataSource: MedicalEquipment[] = [
 ];
 
 export default function TableMedicalEquipment() {
+  const [openId, setOpenId] = useState<string>("");
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       "In Stock": "#409832",
@@ -67,6 +69,12 @@ export default function TableMedicalEquipment() {
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
+      <ModalMedicalEquipment
+        open={!!openId}
+        onClose={() => setOpenId("")}
+        onOk={() => {}}
+        title="Edit Medical Equipment"
+      />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -85,7 +93,9 @@ export default function TableMedicalEquipment() {
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Status</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>Actions</TableCell>
+            <TableCell align="left" sx={{ fontWeight: 700 }}>
+              Actions
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -107,7 +117,11 @@ export default function TableMedicalEquipment() {
                 {data.status}
               </TableCell>
               <TableCell align="left" size="medium">
-                <Button variant="outlined" sx={{ fontSize: "13px" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ fontSize: "13px" }}
+                  onClick={() => setOpenId(data.id)}
+                >
                   Edit
                 </Button>
                 <IconButton size="medium" sx={{ ml: 3 }}>

@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
 import TemplatePathwayModal from "./TemplatePathwayModal";
 import IconButton from "@mui/material/IconButton";
@@ -22,7 +22,7 @@ interface closeModal {
   handleClose: () => void;
 }
 
-function createPathwayModal({handleClose}: closeModal) {
+function createPathwayModal({ handleClose }: closeModal) {
   const [showChildModal, setShowChildModal] = useState(false);
 
   return (
@@ -53,11 +53,20 @@ function createPathwayModal({handleClose}: closeModal) {
             <CloseIcon />
           </IconButton>
           <h2 id="parent-modal-title">Create Pathway</h2>
-          <Button variant="contained" onClick={() => {setShowChildModal(true)}}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setShowChildModal(true);
+            }}
+          >
             Template
           </Button>
           <Button variant="contained">Blank Pathway</Button>
-          {showChildModal && <TemplatePathwayModal handleClose={() => setShowChildModal(false)} />}
+          {showChildModal && (
+            <TemplatePathwayModal
+              handleClose={() => setShowChildModal(false)}
+            />
+          )}
         </Box>
       </Modal>
     </div>

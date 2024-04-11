@@ -3,68 +3,11 @@ import AccountsTable from "./AccountsTable";
 import AccountsSearchBar from "./AccountsSearchBar";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
-
-interface user {
-  id: String;
-  name: String;
-  username: String;
-  email: String;
-  phoneNumber: String;
-  role: String;
+interface showModal {
+  showModal: () => void;
 }
 
-const usersList: user[] = [
-  {
-    id: "LA-0233",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0234",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0235",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0236",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0237",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0238",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-];
-
-export default function Accounts() {
+export default function Accounts({ showModal }: showModal) {
   return (
     <Box
       sx={{
@@ -103,6 +46,7 @@ export default function Accounts() {
                 borderRadius: 1,
                 height: "45px",
               }}
+              onClick={showModal}
             >
               <AddIcon fontSize="small" />
               Create User

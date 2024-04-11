@@ -1,16 +1,48 @@
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import ProcedureBanner from "./ProcedureBanner";
 import ProcedureList from "./ProcedureList";
-import ProcedureFooterButtons from "./ProcedureFooterButtons";
+import InEditFooterButtons from "./InEditFooterButtons";
 import AppBanner from "../../AppBanner/AppBanner";
+import { useState } from "react";
+import FooterButtons from "./FooterButton";
+import DeleteProcedureModal from "../modals/DeleteProcedureModal";
+import EditProcedureModal from "../modals/EditProcedureModal";
+import ManagerSideBar from "../../SideBar/ManagerSideBar";
 
 function ProcedureScreen() {
-    return <Box sx={{ flexGrow: 1, mt: 8 }}>
-        <AppBanner />
+  const [inEdit, setInEdit] = useState(true);
+  const [showDeleteProcedureModal, setShowDeleteProcedureModal] =
+    useState(false);
+  const [showEditProcedureModal, setShowEditProcedureModal] = useState(false);
+
+  return (
+    <Container id="app">
+      <Box sx={{ flexGrow: 1, mt: 8 }}>
+        <AppBanner cred={true} />
+        <ManagerSideBar />
         <ProcedureBanner />
         <ProcedureList />
-        <ProcedureFooterButtons />
-    </Box>
+        {inEdit ? (
+          <InEditFooterButtons
+            handleSaveClick={() => setInEdit(false)}
+            handleAddProcedure={() => setShowEditProcedureModal(true)}
+          />
+        ) : (
+          <FooterButtons
+            handleEditClick={() => setInEdit(true)}
+            handleDelete={() => setShowDeleteProcedureModal(true)}
+          />
+        )}
+        {showDeleteProcedureModal && (
+          <DeleteProcedureModal
+            handleConfirm={() => setShowDeleteProcedureModal(false)}
+            handleCancel={() => setShowDeleteProcedureModal(false)}
+          />
+        )}
+        {showEditProcedureModal && <EditProcedureModal />}
+      </Box>
+    </Container>
+  );
 }
 
 export default ProcedureScreen;

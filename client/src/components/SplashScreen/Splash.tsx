@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { SxProps, Theme } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 export default function Splash() {
   // Should we put these stylings into css files separately?
@@ -33,6 +34,10 @@ export default function Splash() {
     maxWidth: { xs: 350, md: 250 },
     textAlign: "center",
   };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/login");
+  };
 
   return (
     <Box sx={boxStyle} id="splash-modal">
@@ -51,7 +56,9 @@ export default function Splash() {
           src="../assets/hospital.jpeg"
         />
         <div>
-          <Button sx={buttonStyle}>Login</Button>
+          <Button sx={buttonStyle} onClick={handleClick}>
+            Login
+          </Button>
         </div>
       </Container>
     </Box>

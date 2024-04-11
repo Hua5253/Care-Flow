@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import NavBar from "../AppBanner/NavBar";
 import ForgetPassword from "./ForgetPassword";
 
@@ -13,7 +13,7 @@ export default function ForgetPasswordScreen() {
         marginTop: "10%",
       }}
     >
-      <NavBar />
+      <NavBar cred={false} />
       <ForgetPassword />
     </Container>
   );

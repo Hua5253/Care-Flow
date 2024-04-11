@@ -1,11 +1,14 @@
 import * as React from 'react';
 import  { useState } from 'react';
-
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography, Button, Box, TextField, } from '@mui/material';
+
+import ConfirmationModal from '../Modals/ConfirmationModal';
 
 export default function ViewProcedure() {
 
   const [isEditing, setEditMode] = useState(false);
+  const [openConfirmation, setOpenConfirmation] = useState(false); // State to control the ConfirmationModal
+
   const [text, setText] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lacinia metus a malesuada tristique." +
     "Nunc non tortor a dolor vestibulum pulvinar." +
@@ -31,6 +34,21 @@ export default function ViewProcedure() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setText(event.target.value);
 
+  const handleStartProcedure = () => {
+    // Call this when you want to open the confirmation modal
+    setOpenConfirmation(true);
+  };
+
+  const handleCloseConfirmation = () => {
+    // Call this to close the modal
+    setOpenConfirmation(false);
+  };
+
+  const handleConfirmProcedure = () => {
+    // Handle the confirmation action here
+    console.log("Procedure started");
+    setOpenConfirmation(false); // Close modal after confirmation
+  };
 
   return (
     <Paper
@@ -38,6 +56,7 @@ export default function ViewProcedure() {
         width: '100%',
         padding: 2,
         margin: 'auto',
+        marginTop: 8,
         maxWidth: 'none',
         backgroundColor: '#9DB4C0',
         flexGrow: 1,
@@ -77,7 +96,7 @@ export default function ViewProcedure() {
               backgroundColor: '#FFFFFF',
               margin: '16px 0',
               minHeight: '500px',
-              minWidth: "1000px"
+              
             }}
           />
         ) : (
@@ -89,7 +108,7 @@ export default function ViewProcedure() {
               backgroundColor: '#E0FBFC',
               padding: 2,
               minHeight: '500px',
-              minWidth: "1000px"
+             
             }}
           >
             {text}
@@ -106,18 +125,23 @@ export default function ViewProcedure() {
           ) : (
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }} >
               <Box>
-                <Button variant="contained" sx={{ backgroundColor: '#5C6B73', marginRight: '8px' }}>Start procedure</Button>
-                <Button variant="contained" sx={{ backgroundColor: '#5C6B73', marginRight: '8px' }}>End procedure</Button>
+                <Button variant="contained" onClick={handleStartProcedure} sx={{ backgroundColor: '#5C6B73', marginRight: '8px' } }>Start procedure</Button>
+                <Button variant="contained" onClick={handleStartProcedure} sx={{ backgroundColor: '#5C6B73', marginRight: '8px' }}>End procedure</Button>
                 
               </Box>
               <Box>
                 <Button variant="contained" onClick={handleEditClick} sx={{  backgroundColor: '#5C6B73', marginRight: '8px' }}>Edit procedure</Button>
-                <Button variant="contained" color="error" sx={{ backgroundColor: '#5C6B73' }}>Cancel procedure</Button>
+                <Button variant="contained" onClick={handleStartProcedure} color="error" sx={{ backgroundColor: '#5C6B73' }}>Cancel procedure</Button>
               </Box>
 
             </Box>
           )}
       </Box>
+      <ConfirmationModal
+        open={openConfirmation}
+        onClose={handleCloseConfirmation}
+        onConfirm={handleConfirmProcedure}
+      />
     </Paper>
   );
 }

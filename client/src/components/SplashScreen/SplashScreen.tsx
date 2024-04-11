@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import Splash from "./Splash";
 import NavBar from "../AppBanner/NavBar";
 
@@ -13,7 +13,7 @@ export default function SplashScreen() {
         marginTop: "10%",
       }}
     >
-      <NavBar />
+      <NavBar cred={false} />
       <Splash />
     </Container>
   );

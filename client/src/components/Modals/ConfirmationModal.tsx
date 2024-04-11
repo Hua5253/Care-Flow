@@ -23,21 +23,17 @@ const buttonContainerStyle = {
     justifyContent: 'space-around',
 };
 
-export default function ConfirmationModal() {
+interface ConfirmationModalProps {
+    open: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+}
+
+export default function ConfirmationModal({ open, onClose, onConfirm }: ConfirmationModalProps) {
 
     let procedure_name = "MRI"
     let patient_name = "john doe"
     let start_procedure = "Click confirm to start the procedure"
-    let end_procedure = "Click confirm to end the procedure"
-    let cancel_procedure = "Click confirm to cancel the procedure"
-
-    function handleConfirm() {
-        console.log("confirm pressed");
-    }
-
-    function handleCancel() {
-        console.log("cancel pressed");
-    }
 
     let title = (
         <h2 id="confirmation-modal-title">{start_procedure}</h2>
@@ -51,10 +47,10 @@ export default function ConfirmationModal() {
         
     )
 
-
     return (
     <Modal
-        open={true}
+        open={open}
+        onClose={onClose}
         style={modalStyle}
         aria-labelledby="confirmation-modal-title"
         aria-describedby="confirmation-modal-description"
@@ -64,10 +60,10 @@ export default function ConfirmationModal() {
                 {title}
                 {body}
                 <div style={buttonContainerStyle}>
-                    <Button onClick={handleConfirm} variant="contained" color="primary" style={{ backgroundColor: '#253237', color: '#ffffff' }}>
+                    <Button onClick={onConfirm} variant="contained" color="primary" style={{ backgroundColor: '#253237', color: '#ffffff' }}>
                         Confirm
                     </Button>
-                    <Button onClick={handleCancel} variant="contained" color="primary" style={{ backgroundColor: '#253237', color: '#ffffff' }}>
+                    <Button onClick={onClose} variant="contained" color="primary" style={{ backgroundColor: '#253237', color: '#ffffff' }}>
                         Cancel
                     </Button>
                 </div>

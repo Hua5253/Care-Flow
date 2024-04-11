@@ -3,6 +3,8 @@ import PathwayList from "./PathwayList";
 import CreatePathwayModal from "../modals/CreatePathwayModal";
 import { useState } from "react";
 import AppBanner from "../../AppBanner/AppBanner";
+import { Container } from "@mui/material";
+import ManagerSideBar from "../../SideBar/ManagerSideBar";
 
 export default function PathwayScreen() {
   const [showAddPathwayModal, setShowAddPathwayModal] = useState(false);
@@ -12,10 +14,27 @@ export default function PathwayScreen() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBanner />
-      <PathwayList showModal={handleAddPathwayModalClick} /> 
-      {showAddPathwayModal && <CreatePathwayModal handleClose={() => setShowAddPathwayModal(false)}/>}
-    </Box>
+    <Container sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          marginLeft: "6em",
+          marginTop: 8,
+          width: "100%",
+          overflowX: "auto",
+          minWidth: 0,
+        }}
+      >
+        <AppBanner cred={true} />
+        <ManagerSideBar />
+        <PathwayList showModal={handleAddPathwayModalClick} />
+        {showAddPathwayModal && (
+          <CreatePathwayModal
+            handleClose={() => setShowAddPathwayModal(false)}
+          />
+        )}
+      </Box>
+    </Container>
   );
 }

@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import ModalRoom from "./ModalRoom";
+import { useState } from "react";
 
 interface Room {
   id: string;
@@ -53,11 +55,12 @@ const dataSource: Room[] = [
 ];
 
 export default function TableRoom() {
+  const [openId, setOpenId] = useState<string>("");
   const getCurrentStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       "10Full": "#409832",
       "1 bed available": "#409832",
-      "Available": "#409832",
+      Available: "#409832",
       "In use": "#B1190F",
     };
     return colors[status] || "#000";
@@ -68,6 +71,12 @@ export default function TableRoom() {
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
+      <ModalRoom
+        open={!!openId}
+        onClose={() => setOpenId("")}
+        onOk={() => {}}
+        title="Edit Room"
+      />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -106,7 +115,7 @@ export default function TableRoom() {
                 {data.currentStatus}
               </TableCell>
               <TableCell align="left" size="medium">
-                <Button variant="outlined" sx={{ fontSize: "13px" }}>
+                <Button variant="outlined" sx={{ fontSize: "13px" }} onClick={() => setOpenId(data.roomName)}>
                   Edit
                 </Button>
                 <IconButton size="medium" sx={{ ml: 3 }}>

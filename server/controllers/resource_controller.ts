@@ -1,144 +1,10 @@
-import { RequestHandler, response } from "express";
-import PathwayModel from '../models/pathway_schema';
-import ProcedureModel from '../models/procedure_schema';
+import { RequestHandler } from "express";
 import MedicineModel from '../models/medicine_schema';
 import RoomModel from '../models/room_schema';
 import EquipmentModel from '../models/equipment_schema';
 
 
-export const creatPathway: RequestHandler = async (request, response, next) => {
-    const name = request.body.name;
-    const patient = request.body.patient;
-    const status = request.body.status;
-    const is_template = request.body.is_template;
-
-    if (!name) {
-        return response.status(400).json({ error: 'name is required in the request body.' });
-    }
-    if (!patient) {
-        return response.status(400).json({ error: 'patient is required in the request body.' });
-    }
-    if (!status) {
-        return response.status(400).json({ error: 'status is required in the request body.' });
-    }
-    if (!is_template) {
-        return response.status(400).json({ error: 'is_template is required in the request body.' });
-    }
-    try {
-        const newPathway = await PathwayModel.create({
-            name: name,
-            patient: patient,
-            status: status,
-            is_template: is_template,
-        });
-
-        response.status(201).json(newPathway);
-    } catch (error) {
-        next(error);
-    }
-};
-
-export const updatePathway: RequestHandler = async (request, response, next) => {
-    const pathwayId = request.params.pathwayId; 
-
-    const { name, patient, status, is_template, procedures } = request.body;
-
-    if (name && patient && status && is_template && procedures === undefined) {
-        return response.status(400).json({ error: 'all fields must be provided' });
-    }
-
-    try {
-        const updates = { name, patient, status, is_template, procedures};
-
-
-        const updatedPathway = await PathwayModel.findByIdAndUpdate(
-            pathwayId,
-            { $set: updates },
-            { new: true, runValidators: true }
-        );
-
-        if (!updatedPathway) {
-            return response.status(404).json({ error: 'Pathway not found' });
-        }
-
-        response.status(200).json(updatedPathway);
-    } catch (error) {
-        next(error);
-    }
-};
-
-export const deletePathway: RequestHandler = async (request, response, next) => {
-    const pathwayId = request.params.pathwayId; 
-    try {
-        const deletedPathway = await PathwayModel.findByIdAndDelete(
-            pathwayId
-        );
-
-        if (!deletedPathway) {
-            return response.status(404).json({ error: 'Pathway not found' });
-        }
-
-        response.status(200).json(deletedPathway);
-    } catch (error) {
-        next(error);
-    }
-};
-
-export const creatProcedure: RequestHandler = async (request, response, next) => {
-    const name = request.body.name;
-    const caregiver = request.body.caregiver;
-    const patient = request.body.patient;
-    const location = request.body.location;
-    const status = request.body.status;
-    const details = request.body.details;
-    const start = request.body.start;
-    const end = request.body.end;
-
-
-    if (!name) {
-        return response.status(400).json({ error: 'name is required in the request body.' });
-    }
-    if (!patient) {
-        return response.status(400).json({ error: 'patient is required in the request body.' });
-    }
-    if (!status) {
-        return response.status(400).json({ error: 'status is required in the request body.' });
-    }
-    if (!caregiver) {
-        return response.status(400).json({ error: 'caregiver is required in the request body.' });
-    }
-    if (!location) {
-        return response.status(400).json({ error: 'location is required in the request body.' });
-    }
-    if (!details) {
-        return response.status(400).json({ error: 'details is required in the request body.' });
-    }
-    if (!start) {
-        return response.status(400).json({ error: 'start is required in the request body.' });
-    }
-    if (!end) {
-        return response.status(400).json({ error: 'end is required in the request body.' });
-    }
-
-    try {
-        const newProcedure = await ProcedureModel.create({
-            name: name,
-            caregiver: caregiver,
-            patient: patient,
-            location: location,
-            status: status,
-            details: details,
-            start: start,
-            end: end,
-        });
-
-        response.status(201).json(newProcedure);
-    } catch (error) {
-        next(error);
-    }
-};
-
-export const createRoom: RequestHandler = async (request, response, next) => {
+const createRoom: RequestHandler = async (request, response, next) => {
     const name = request.body.name;
     const location = request.body.location;
     const capacity = request.body.capacity;
@@ -176,7 +42,7 @@ export const createRoom: RequestHandler = async (request, response, next) => {
     }
 };
 
-export const updateRoom: RequestHandler = async (request, response, next) => {
+const updateRoom: RequestHandler = async (request, response, next) => {
     const roomId = request.params.roomId; 
 
     const { name, location, capacity, status, schedule } = request.body;
@@ -204,7 +70,7 @@ export const updateRoom: RequestHandler = async (request, response, next) => {
     }
 };
 
-export const deleteRoom: RequestHandler = async (request, response, next) => {
+const deleteRoom: RequestHandler = async (request, response, next) => {
     const roomId = request.params.roomId; 
     try {
         const deletedRoom = await RoomModel.findByIdAndDelete(
@@ -221,7 +87,7 @@ export const deleteRoom: RequestHandler = async (request, response, next) => {
     }
 };
 
-export const createEquipment: RequestHandler = async (request, response, next) => {
+const createEquipment: RequestHandler = async (request, response, next) => {
     const name = request.body.name;
     const catagory = request.body.category;
     const quantity = request.body.quantity;
@@ -249,7 +115,7 @@ export const createEquipment: RequestHandler = async (request, response, next) =
     }
 };
 
-export const updateEquipment: RequestHandler = async (request, response, next) => {
+const updateEquipment: RequestHandler = async (request, response, next) => {
     const equipmentId = request.params.equipmentId; 
 
     const { name, category, quantity} = request.body;
@@ -277,7 +143,7 @@ export const updateEquipment: RequestHandler = async (request, response, next) =
     }
 };
 
-export const deleteEquipment: RequestHandler = async (request, response, next) => {
+const deleteEquipment: RequestHandler = async (request, response, next) => {
     const equipmentId = request.params.equipmentId; 
     try {
         const deletedEquipment = await RoomModel.findByIdAndDelete(
@@ -295,7 +161,7 @@ export const deleteEquipment: RequestHandler = async (request, response, next) =
 };
 
 
-export const createMedicine: RequestHandler = async (request, response, next) => {
+const createMedicine: RequestHandler = async (request, response, next) => {
     const name = request.body.name;
     const catagory = request.body.category;
     const usage = request.body.usage;
@@ -333,7 +199,7 @@ export const createMedicine: RequestHandler = async (request, response, next) =>
     }
 };
 
-export const updateMedicine: RequestHandler = async (request, response, next) => {
+const updateMedicine: RequestHandler = async (request, response, next) => {
     const medicineId = request.params.medicineId; 
 
     const { name, category, usage, packaging, quantity} = request.body;
@@ -361,7 +227,7 @@ export const updateMedicine: RequestHandler = async (request, response, next) =>
     }
 };
 
-export const deleteMedicine: RequestHandler = async (request, response, next) => {
+const deleteMedicine: RequestHandler = async (request, response, next) => {
     const medicineId = request.params.medicineId; 
     try {
         const deletedMedicine = await MedicineModel.findByIdAndDelete(
@@ -377,3 +243,16 @@ export const deleteMedicine: RequestHandler = async (request, response, next) =>
         next(error);
     }
 };
+
+
+export default {
+    createRoom,
+    updateRoom,
+    deleteRoom,
+    createEquipment,
+    updateEquipment,
+    deleteEquipment,
+    createMedicine,
+    updateMedicine,
+    deleteMedicine
+}

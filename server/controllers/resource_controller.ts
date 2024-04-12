@@ -38,6 +38,52 @@ export const creatPathway: RequestHandler = async (request, response, next) => {
     }
 };
 
+export const updatePathway: RequestHandler = async (request, response, next) => {
+    const pathwayId = request.params.pathwayId; 
+
+    const { name, patient, status, is_template, procedures } = request.body;
+
+    if (name && patient && status && is_template && procedures === undefined) {
+        return response.status(400).json({ error: 'all fields must be provided' });
+    }
+
+    try {
+        const updates = { name, patient, status, is_template, procedures};
+
+
+        const updatedPathway = await PathwayModel.findByIdAndUpdate(
+            pathwayId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedPathway) {
+            return response.status(404).json({ error: 'Pathway not found' });
+        }
+
+        response.status(200).json(updatedPathway);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const deletePathway: RequestHandler = async (request, response, next) => {
+    const pathwayId = request.params.pathwayId; 
+    try {
+        const deletedPathway = await PathwayModel.findByIdAndDelete(
+            pathwayId
+        );
+
+        if (!deletedPathway) {
+            return response.status(404).json({ error: 'Pathway not found' });
+        }
+
+        response.status(200).json(deletedPathway);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const creatProcedure: RequestHandler = async (request, response, next) => {
     const name = request.body.name;
     const caregiver = request.body.caregiver;
@@ -130,6 +176,51 @@ export const createRoom: RequestHandler = async (request, response, next) => {
     }
 };
 
+export const updateRoom: RequestHandler = async (request, response, next) => {
+    const roomId = request.params.roomId; 
+
+    const { name, location, capacity, status, schedule } = request.body;
+
+    if (name && location && capacity && status && schedule === undefined) {
+        return response.status(400).json({ error: 'all fields must be provided' });
+    }
+
+    try {
+        const updates = { name, location, capacity, status, schedule};
+
+        const updatedRoom = await RoomModel.findByIdAndUpdate(
+            roomId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedRoom) {
+            return response.status(404).json({ error: 'Room not found' });
+        }
+
+        response.status(200).json(updatedRoom);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const deleteRoom: RequestHandler = async (request, response, next) => {
+    const roomId = request.params.roomId; 
+    try {
+        const deletedRoom = await RoomModel.findByIdAndDelete(
+            roomId
+        );
+
+        if (!deletedRoom) {
+            return response.status(404).json({ error: 'Room not found' });
+        }
+
+        response.status(200).json(deletedRoom);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const createEquipment: RequestHandler = async (request, response, next) => {
     const name = request.body.name;
     const catagory = request.body.category;
@@ -157,6 +248,52 @@ export const createEquipment: RequestHandler = async (request, response, next) =
         next(error);
     }
 };
+
+export const updateEquipment: RequestHandler = async (request, response, next) => {
+    const equipmentId = request.params.equipmentId; 
+
+    const { name, category, quantity} = request.body;
+
+    if (name && category && quantity === undefined) {
+        return response.status(400).json({ error: 'all fields must be provided' });
+    }
+
+    try {
+        const updates = { name, category, quantity};
+
+        const updatedEquipment = await EquipmentModel.findByIdAndUpdate(
+            equipmentId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedEquipment) {
+            return response.status(404).json({ error: 'Equipment not found' });
+        }
+
+        response.status(200).json(updatedEquipment);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const deleteEquipment: RequestHandler = async (request, response, next) => {
+    const equipmentId = request.params.equipmentId; 
+    try {
+        const deletedEquipment = await RoomModel.findByIdAndDelete(
+            equipmentId
+        );
+
+        if (!deletedEquipment) {
+            return response.status(404).json({ error: 'Equipment not found' });
+        }
+
+        response.status(200).json(deletedEquipment);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export const createMedicine: RequestHandler = async (request, response, next) => {
     const name = request.body.name;
@@ -191,6 +328,51 @@ export const createMedicine: RequestHandler = async (request, response, next) =>
         });
 
         response.status(201).json(newMedicine);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const updateMedicine: RequestHandler = async (request, response, next) => {
+    const medicineId = request.params.medicineId; 
+
+    const { name, category, usage, packaging, quantity} = request.body;
+
+    if (name && category && usage && packaging && quantity === undefined) {
+        return response.status(400).json({ error: 'all fields must be provided' });
+    }
+
+    try {
+        const updates = { name, category, usage, packaging, quantity};
+
+        const updatedMedicine = await MedicineModel.findByIdAndUpdate(
+            medicineId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedMedicine) {
+            return response.status(404).json({ error: 'Equipment not found' });
+        }
+
+        response.status(200).json(updatedMedicine);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const deleteMedicine: RequestHandler = async (request, response, next) => {
+    const medicineId = request.params.medicineId; 
+    try {
+        const deletedMedicine = await MedicineModel.findByIdAndDelete(
+            medicineId
+        );
+
+        if (!deletedMedicine) {
+            return response.status(404).json({ error: 'Medicine not found' });
+        }
+
+        response.status(200).json(deletedMedicine);
     } catch (error) {
         next(error);
     }

@@ -62,3 +62,137 @@ export const getUsers: RequestHandler = async (request, response, next) => {
         next(error);
     }
 };
+
+export const getUserById: RequestHandler = async (request, response, next) => {
+    const userId = request.params.userId; 
+    try {
+        const user = await UserModel.findById(userId);
+
+        if (user) {
+            response.status(200).json(user);
+        } else {
+            response.status(404).json({ error: 'no user found' });
+        }
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const updateUser: RequestHandler = async (request, response, next) => {
+    const userId = request.params.userId; 
+
+    const { name, username, password, email, phone_number, role} = request.body;
+
+    if (name && username && password && email && phone_number && role === undefined) {
+        return response.status(400).json({ error: 'all fields must be provided' });
+    }
+
+    try {
+        const updates = { name, username, password, email, phone_number, role};
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            userId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) {
+            return response.status(404).json({ error: 'User not found' });
+        }
+
+        response.status(200).json(updatedUser);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const updateNotifications: RequestHandler = async (request, response, next) => {
+    const userId = request.params.userId; 
+
+    const { notification} = request.body;
+
+    if (notification === undefined) {
+        return response.status(400).json({ error: 'notificaiton must be defined' });
+    }
+
+    try {
+        const updates = {notification};
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            userId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) {
+            return response.status(404).json({ error: 'User not found' });
+        }
+
+        response.status(200).json(updatedUser);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const createChatroom: RequestHandler = async (request, response, next) => {
+    const users = request.body.users;
+
+    if (!users) {
+        return response.status(400).json({ error: 'users is required in the request body.' });
+    }
+
+    try {
+        const newChatroom = await ChatModel.create({
+            users: users,
+        });
+
+        response.status(201).json(newChatroom);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const updateChatroom: RequestHandler = async (request, response, next) => {
+    const chatroomId = request.params.chatroomId; 
+    const message = request.body.message;
+
+    if (chatroomId && message === undefined) {
+        return response.status(400).json({ error: 'all fields must be provided' });
+    }
+
+    try {
+        const updateChatroom = await ChatModel.findByIdAndUpdate(
+            chatroomId,
+            { 
+                $push: {history: message}
+            },
+        );
+
+        if (!updateChatroom) {
+            return response.status(404).json({ error: 'Chatroom not found' });
+        }
+
+        response.status(200).json(updateChatroom);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getMessages: RequestHandler = async (request, response, next) => {
+    const chatroomId = request.params.chatroomId; 
+    try {
+        const chatRoom = await ChatModel.findById(chatroomId).populate('history');
+
+        if (chatRoom) {
+            response.status(200).json(chatRoom.history);
+        } else {
+            response.status(404).json({ error: 'Chatroom not found' });
+        }
+
+    } catch (error) {
+        next(error);
+    }
+};

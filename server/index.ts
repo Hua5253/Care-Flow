@@ -1,6 +1,8 @@
-import express from 'express';
+import express, { Request, Response } from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
 import userRouter from './routes/users';
-import cors from 'cors';
 
 const app = express();
 
@@ -19,6 +21,15 @@ app.get('/', (req, res) => {
 })
 
 const port = process.env.PORT || 4000;
+
+// const MongoDBURI = process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI;
+
+const MongoDBURI = 'mongodb+srv://kangqichen:pyaKOyTUdz6JgKF0@cluster0.rromx.mongodb.net/CareFlow'
+
+mongoose.connect(MongoDBURI!).catch((e) => {
+    console.error("Connection error", e.message);
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 })

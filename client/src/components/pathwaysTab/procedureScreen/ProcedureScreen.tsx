@@ -39,7 +39,7 @@ function ProcedureScreen() {
             handleCancel={() => setShowDeleteProcedureModal(false)}
           />
         )}
-        {showEditProcedureModal && <EditProcedureModal />}
+        {showEditProcedureModal && <EditProcedureModal handleClose={() => setShowEditProcedureModal(false)}/>}
       </Box>
     </Container>
   );

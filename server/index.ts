@@ -5,6 +5,7 @@ import cors from "cors";
 import userRouter from "./routes/users";
 import pathwayRouter from "./routes/pathways";
 import resourceRouter from "./routes/resources";
+import authRouter from "./routes/auth";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use("/users", userRouter);
 app.use("/pathways", pathwayRouter);
 app.use("/resources", resourceRouter);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("Many Users");

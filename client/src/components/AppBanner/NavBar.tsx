@@ -4,12 +4,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Notifications from "./Notifications";
 import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 interface Prop {
   cred: Boolean;
 }
+
+import AuthContext from "../../auth";
 export default function NavBar({ cred }: Prop) {
+  const { auth } = useContext<any>(AuthContext);
   const login = cred;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -24,6 +27,7 @@ export default function NavBar({ cred }: Prop) {
     navigate("/login");
   };
   const handleLogout = () => {
+    auth.logoutUser();
     navigate("/");
   };
   return (
@@ -34,15 +38,19 @@ export default function NavBar({ cred }: Prop) {
       }}
       id="navbar"
       position="fixed"
-      // style={{
-      //   zIndex: 1100,
-      // }}
     >
       <Toolbar>
         <Typography
           variant="h5"
           noWrap
-          sx={{ flexGrow: 1, textAlign: "left", paddingLeft: "2em" }}
+          sx={{
+            flexGrow: 1,
+            textAlign: "left",
+            paddingLeft: "2em",
+            "&:hover": {
+              cursor: "pointer",
+            },
+          }}
         >
           CareFlow
         </Typography>

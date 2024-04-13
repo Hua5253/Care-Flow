@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import { maxWidth } from '@mui/system';
 
 const modalStyle = {
     display: 'flex',
@@ -26,20 +25,11 @@ const buttonContainerStyle = {
 
 export default function PopupModal() {
 
-    let procedure_name = "MRI"
-    let patient_name = "john doe"
-    let start_procedure = "Click confirm to start the procedure"
-    let end_procedure = "Click confirm to end the procedure"
-    let cancel_procedure = "Click confirm to cancel the procedure"
+
 
     function handleConfirm() {
         console.log("confirm pressed");
     }
-
-    function handleCancel() {
-        console.log("cancel pressed");
-    }
-
 
     let body = "Lorem ipsum dolor sit amet, consectetur"
 

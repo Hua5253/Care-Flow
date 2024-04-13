@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface Column {
   id: "name" | "patient" | "status" | "open";
@@ -43,6 +44,8 @@ interface showModal {
 }
 
 function Pathways({ showModal }: showModal) {
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ flexGrow: 1, p: 7 }}>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -74,7 +77,7 @@ function Pathways({ showModal }: showModal) {
                     <TableCell align={"center"}>{pathway.patient}</TableCell>
                     <TableCell align={"center"}>{pathway.status}</TableCell>
                     <TableCell align={"right"}>
-                      <Button variant="contained" sx={{ m: 1 }}>
+                      <Button variant="contained" sx={{ m: 1 }} onClick={() => navigate('/manager-procedure')}>
                         Open
                       </Button>
                     </TableCell>

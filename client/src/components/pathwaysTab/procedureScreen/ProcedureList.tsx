@@ -24,7 +24,12 @@ const procedures = [
   },
 ];
 
-const ProcedureList = () => {
+interface Props {
+  inEdit: boolean;
+  handleDeleteProcedure: () => void;
+}
+
+function ProcedureList({ inEdit, handleDeleteProcedure }: Props) {
   return (
     <Table>
       <TableHead>
@@ -39,22 +44,33 @@ const ProcedureList = () => {
       </TableHead>
       <TableBody>
         {procedures.map((procedure, index) => (
-          <TableRow key={index}>
+          <TableRow key={index} hover sx={{ cursor: "pointer" }}>
             <TableCell>{procedure.date}</TableCell>
             <TableCell>{procedure.time}</TableCell>
             <TableCell>{procedure.procedure}</TableCell>
             <TableCell>{procedure.status}</TableCell>
             <TableCell>{procedure.location}</TableCell>
             <TableCell>
-              <Button variant="outlined" size="small">
-                Open
-              </Button>
+              {inEdit && (
+                <div>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{ marginRight: "8px" }}
+                  >
+                    Edit
+                  </Button>
+                  <Button variant="outlined" size="small" onClick={handleDeleteProcedure}>
+                    Delete
+                  </Button>
+                </div>
+              )}
             </TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
   );
-};
+}
 
 export default ProcedureList;

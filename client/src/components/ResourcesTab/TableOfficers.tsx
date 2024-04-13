@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useState } from "react";
+import ModalOffice from "./ModalOffice";
 
 interface Officer {
   id: string;
@@ -53,11 +55,18 @@ const dataSource: Officer[] = [
 ];
 
 export default function TableOfficers() {
+  const [openId, setOpenId] = useState<string>("");
   return (
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
+      <ModalOffice
+        open={!!openId}
+        onClose={() => setOpenId("")}
+        onOk={() => {}}
+        title="Edit Officer"
+      />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -91,7 +100,11 @@ export default function TableOfficers() {
               <TableCell align="left">{data.contactInformation}</TableCell>
               <TableCell align="left">{data.responsibilities}</TableCell>
               <TableCell align="left" size="medium">
-                <Button variant="outlined" sx={{ fontSize: "13px" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ fontSize: "13px" }}
+                  onClick={() => setOpenId(data.name)}
+                >
                   Edit
                 </Button>
                 <IconButton size="medium" sx={{ ml: 3 }}>

@@ -1,19 +1,53 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
+  Alert,
   Box,
   Button,
   Container,
+  IconButton,
+  InputAdornment,
   Link,
   SxProps,
   TextField,
   Theme,
   Typography,
 } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useForm } from "react-hook-form";
+import AuthContext from "../../auth";
 
-export default function Login() {
+type FormData = {
+  username: string;
+  password: string;
+};
+
+interface Prop {
+  closeAlert: () => void;
+}
+
+export default function Login({ closeAlert }: Prop) {
+  const { auth } = useContext<any>(AuthContext);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const role = auth?.user?.role;
+    console.log(role);
+    if (role === "admin") {
+      navigate("/accounts");
+    } else if (role === "manager") {
+      navigate("/resources");
+    } else if (role === "caregiver") {
+      navigate("/schedule");
+    } else {
+      navigate("/login");
+    }
+  }, [auth?.user]);
+  useEffect(() => {
+    setError(auth?.errorMsg);
+  }, [auth?.errorMsg]);
   // Should we put these stylings into css files separately?
   const boxStyle: SxProps<Theme> = {
     backgroundColor: "hsla(200,100%,50%,0.2);", // Replace with the actual color from the splash screen
@@ -38,60 +72,95 @@ export default function Login() {
   };
 
   const navigate = useNavigate();
-  const [usernameValue, setUsernameValue] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // Update the inputValue state with the current input
-    setUsernameValue(event.target.value);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
   };
+  const handleForgetPassword = () => navigate("/forgetPassword");
 
-  const handleLogin = () => {
-    if (usernameValue === "admin") {
-      navigate("/Accounts");
-    } else if (usernameValue === "manager") {
-      navigate("/resources");
-    } else if (usernameValue === "caregiver") {
-      navigate("/schedule");
-    } else {
-      navigate("/");
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const onSubmit = handleSubmit((data: FormData) => {
+    reset();
+    closeAlert();
+
+    //login to the user using auth.login
+    auth.loginUser(data.username, data.password);
+  });
+
   return (
     <Box sx={boxStyle} id="login-modal">
       <Container>
         <Typography variant="h3" gutterBottom component="h1" sx={{ mt: 4 }}>
           CareFlow
         </Typography>
-        <Box sx={{ mt: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
+        <Box sx={{ mt: 2 }} component="form" onSubmit={onSubmit}>
           <TextField
+            {...register("username", { required: "Username is required" })}
             margin="normal"
             fullWidth
-            required
+            // required
             placeholder="Username"
             id="username"
             name="username"
             InputProps={{
               startAdornment: <AccountCircle sx={{ mr: 1, my: 0.5 }} />,
             }}
-            onChange={handleInputChange}
+            error={Boolean(errors.username)}
+            helperText={errors.username?.message}
           />
           <TextField
+            {...register("password", { required: "Password is required" })}
             margin="normal"
-            required
+            // required
             fullWidth
             placeholder="Password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
             InputProps={{
               startAdornment: <LockOutlinedIcon sx={{ mr: 1, my: 0.5 }} />,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
+            error={Boolean(errors.password)}
+            helperText={errors.password?.message}
           />
           <Link
-            href="/forgetPassword"
+            onClick={handleForgetPassword}
             variant="body2"
-            sx={{ display: "block", textAlign: "center", mt: 2 }}
+            sx={{
+              display: "block",
+              textAlign: "center",
+              mt: 2,
+              "&:hover": {
+                cursor: "pointer",
+                color: "#0d47a1",
+                textDecoration: "underline",
+              },
+              textDecoration: "none",
+            }}
           >
             Forgot password?
           </Link>
@@ -100,7 +169,6 @@ export default function Login() {
             variant="contained"
             color="primary"
             sx={buttonStyle}
-            onClick={handleLogin}
           >
             Login
           </Button>

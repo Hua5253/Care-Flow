@@ -1,5 +1,6 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import {
+  Alert,
   Box,
   Button,
   Container,
@@ -10,6 +11,12 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+type FormData = {
+  username: string;
+};
 
 export default function ForgetPassword() {
   // Should we put these stylings into css files separately?
@@ -35,10 +42,37 @@ export default function ForgetPassword() {
     width: "fit-content",
   };
   const navigate = useNavigate();
+  const [noUserFoundError, setNoUserFoundError] = useState(false);
 
   const handleBack = () => {
     navigate("/login");
   };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const onSubmit = handleSubmit((data: FormData) => {
+    console.log(data);
+    reset();
+
+    //find the user
+    const foundUser = false;
+
+    if (foundUser) {
+      //sent request
+      //when request is sent successfully the following is done
+      navigate("/login", { state: { resetRequested: true } });
+    } else {
+      setNoUserFoundError(true);
+    }
+
+    //otherwise, display error if the username is not found
+  });
+
   return (
     <Box sx={boxStyle} id="login-modal">
       <Container>
@@ -48,17 +82,22 @@ export default function ForgetPassword() {
         <Typography variant="h5" gutterBottom>
           Request for password reset
         </Typography>
-        <Box sx={{ mt: 1 }}>
+        <Box sx={{ mt: 1 }} component="form" onSubmit={onSubmit}>
+          {noUserFoundError && (
+            <Alert severity="error">Username not found!</Alert>
+          )}
           <TextField
+            {...register("username", { required: "Username is required" })}
             margin="normal"
             fullWidth
-            required
             placeholder="Username"
             id="username"
             name="username"
             InputProps={{
               startAdornment: <AccountCircle sx={{ mr: 1, my: 0.5 }} />,
             }}
+            error={Boolean(errors.username)}
+            helperText={errors.username?.message}
           />
           <Box
             display="flex"

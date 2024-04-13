@@ -8,14 +8,14 @@ import LoginScreen from "./components/LoginScreen";
 import ForgetPasswordScreen from "./components/ForgetPasswordScreen";
 import CaregiverScreen from "./components/CareGivers/CaregiverScreen";
 import ViewProcedureScreen from "./components/CareGivers/ViewProcedureScreen";
-import ResourceScreen from "./components/ResourcesTab"
+import ResourceScreen from "./components/ResourcesTab";
 import TemplateScreen from "./components/pathwaysTab/templateScreen/TemplateScreen";
 
 const router = createBrowserRouter([
   { path: "/", element: <SplashScreen /> },
   { path: "/manager-pathway", element: <PathwayScreen /> },
   { path: "/manager-procedure", element: <ProcedureScreen /> },
-  {path: "/manager-template", element: <TemplateScreen />},
+  { path: "/manager-template", element: <TemplateScreen /> },
   { path: "/resources", element: <ResourceScreen /> },
   { path: "/accounts", element: <AccountsScreen /> },
   { path: "/messages/admin", element: <MessagesTab /> },

@@ -70,20 +70,20 @@ export default function EditProcedureModal({ handleClose }: Props) {
             required
             id="procedure-name"
             label="Procedure Name"
-            sx={textFieldStyles} // Added more vertical spacing
+            sx={textFieldStyles}
           />
           <Button
             variant="outlined"
             startIcon={<AddCircleOutlineIcon />}
             sx={{
-              ...textFieldStyles, // use the same vertical spacing as the text fields
-              color: "white", // text color white
-              borderColor: "white", // border color white
+              ...textFieldStyles,
+              color: "white",
+              borderColor: "white",
               "&:hover": {
-                borderColor: "white", // border color white on hover
-                backgroundColor: "rgba(255, 255, 255, 0.08)", // slight background color on hover
+                borderColor: "white",
+                backgroundColor: "rgba(255, 255, 255, 0.08)",
               },
-              my: 1, // vertical spacing
+              my: 1,
             }}
           >
             Add Caregiver
@@ -92,7 +92,7 @@ export default function EditProcedureModal({ handleClose }: Props) {
             required
             id="location"
             label="Location"
-            sx={textFieldStyles} // Added more vertical spacing
+            sx={textFieldStyles}
           />
           <TextField
             required
@@ -102,7 +102,7 @@ export default function EditProcedureModal({ handleClose }: Props) {
             InputLabelProps={{
               shrink: true,
             }}
-            sx={textFieldStyles} // Added more vertical spacing
+            sx={textFieldStyles}
           />
           <TextField
             required
@@ -112,14 +112,14 @@ export default function EditProcedureModal({ handleClose }: Props) {
             InputLabelProps={{
               shrink: true,
             }}
-            sx={textFieldStyles} // Added more vertical spacing
+            sx={textFieldStyles}
           />
           <TextField
             id="procedure-detail"
             label="Procedure Detail"
             multiline
             rows={4}
-            sx={textFieldStyles} // Added more vertical spacing
+            sx={textFieldStyles}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button

@@ -1,19 +1,20 @@
 import { Box, Container } from "@mui/material";
 import ProcedureBanner from "./ProcedureBanner";
 import ProcedureList from "./ProcedureList";
-import InEditFooterButtons from "./InEditFooterButtons";
 import AppBanner from "../../AppBanner/AppBanner";
 import { useState } from "react";
-import FooterButtons from "./FooterButton";
 import DeleteProcedureModal from "../modals/DeleteProcedureModal";
 import EditProcedureModal from "../modals/EditProcedureModal";
 import ManagerSideBar from "../../SideBar/ManagerSideBar";
+import ProcedureButtons from "./ProcedureButtons";
+import DeletePathwayModal from "../modals/DeletePathwayModal";
 
 function ProcedureScreen() {
-  const [inEdit, setInEdit] = useState(true);
+  const [inEdit, setInEdit] = useState(false);
   const [showDeleteProcedureModal, setShowDeleteProcedureModal] =
     useState(false);
   const [showEditProcedureModal, setShowEditProcedureModal] = useState(false);
+  const [showDeletePathwayModal, setShowDeletePathwayModal] = useState(false);
 
   return (
     <Container id="app">
@@ -21,25 +22,34 @@ function ProcedureScreen() {
         <AppBanner cred={true} />
         <ManagerSideBar />
         <ProcedureBanner />
-        <ProcedureList />
-        {inEdit ? (
-          <InEditFooterButtons
-            handleSaveClick={() => setInEdit(false)}
-            handleAddProcedure={() => setShowEditProcedureModal(true)}
-          />
-        ) : (
-          <FooterButtons
-            handleEditClick={() => setInEdit(true)}
-            handleDelete={() => setShowDeleteProcedureModal(true)}
-          />
-        )}
+        <ProcedureList
+          inEdit={inEdit}
+          handleDeleteProcedure={() => setShowDeleteProcedureModal(true)}
+        />
+        <ProcedureButtons
+          inEdit={inEdit}
+          handleEditClick={() => setInEdit(true)}
+          handleSaveClick={() => setInEdit(false)}
+          handleAddProcedure={() => setShowEditProcedureModal(true)}
+          handleDeletePathway={() => setShowDeletePathwayModal(true)}
+        />
         {showDeleteProcedureModal && (
           <DeleteProcedureModal
             handleConfirm={() => setShowDeleteProcedureModal(false)}
             handleCancel={() => setShowDeleteProcedureModal(false)}
           />
         )}
-        {showEditProcedureModal && <EditProcedureModal handleClose={() => setShowEditProcedureModal(false)}/>}
+        {showEditProcedureModal && (
+          <EditProcedureModal
+            handleClose={() => setShowEditProcedureModal(false)}
+          />
+        )}
+        {showDeletePathwayModal && (
+          <DeletePathwayModal
+            handleConfirm={() => setShowDeletePathwayModal(false)}
+            handleCancel={() => setShowDeletePathwayModal(false)}
+          />
+        )}
       </Box>
     </Container>
   );

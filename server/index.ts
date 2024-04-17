@@ -21,8 +21,8 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/users", userRouter);
-app.use("/pathways", pathwayRouter);
-app.use("/resources", resourceRouter);
+app.use("/pathway", pathwayRouter);
+app.use("/resource", resourceRouter);
 app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {

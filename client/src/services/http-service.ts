@@ -1,7 +1,7 @@
 import apiClient from "./api-client";
 
 class HttpService {
-  endpoint: string;
+  private endpoint: string;
 
   constructor(endpoint: string) {
     this.endpoint = endpoint;

@@ -3,9 +3,9 @@ import PathwayController from "../controllers/pathway_controller";
 
 const router = Router();
 
-router.post("/pathway", PathwayController.createPathway);
-router.put("/pathway/:id", PathwayController.updatePathway);
-router.delete("/pathway/:id", PathwayController.deletePathway);
-router.post("/pathway/equipment", PathwayController.createProcedure);
+router.get("/", PathwayController.getPathways);
+router.post("/", PathwayController.createPathway);
+router.put("/:id", PathwayController.updatePathway);
+router.delete("/:id", PathwayController.deletePathway);
 
 export default router;

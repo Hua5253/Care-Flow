@@ -3,6 +3,7 @@ import { useState } from "react";
 import TemplatePathwayModal from "./TemplatePathwayModal";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute" as "absolute",
@@ -24,6 +25,11 @@ interface closeModal {
 
 function createPathwayModal({ handleClose }: closeModal) {
   const [showChildModal, setShowChildModal] = useState(false);
+  const navigate = useNavigate();
+
+  const createBlankPathway = () => {
+    navigate("/manager-procedure");
+  }
 
   return (
     <div>
@@ -61,7 +67,7 @@ function createPathwayModal({ handleClose }: closeModal) {
           >
             Template
           </Button>
-          <Button variant="contained">Blank Pathway</Button>
+          <Button variant="contained" onClick={createBlankPathway}>Blank Pathway</Button>
           {showChildModal && (
             <TemplatePathwayModal
               handleClose={() => setShowChildModal(false)}

@@ -3,7 +3,6 @@ import { useState } from "react";
 import TemplatePathwayModal from "./TemplatePathwayModal";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute" as "absolute",
@@ -11,7 +10,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
+  bgcolor: "#5C6B73",
   border: "2px solid #000",
   boxShadow: 24,
   pt: 2,
@@ -19,17 +18,13 @@ const style = {
   pb: 3,
 };
 
-interface closeModal {
+interface Props {
   handleClose: () => void;
+  createBlankPathway: () => void;
 }
 
-function createPathwayModal({ handleClose }: closeModal) {
+function createPathwayModal({ handleClose, createBlankPathway }: Props) {
   const [showChildModal, setShowChildModal] = useState(false);
-  const navigate = useNavigate();
-
-  const createBlankPathway = () => {
-    navigate("/manager-procedure");
-  }
 
   return (
     <div>

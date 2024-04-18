@@ -11,13 +11,13 @@ export default function EditProcedureModal({ handleClose }: Props) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 500, // Increased width for better spacing
-    bgcolor: "#5C6B73", // Updated background color
+    width: 500, 
+    bgcolor: "#5C6B73", 
     boxShadow: 24,
     p: 4,
     display: "flex",
     flexDirection: "column",
-    borderRadius: 2, // Optional: to have rounded corners for the modal
+    borderRadius: 2, 
   };
 
   const textFieldStyles = {
@@ -47,7 +47,7 @@ export default function EditProcedureModal({ handleClose }: Props) {
         color: "white",
       },
     },
-    my: 2, // Added more vertical spacing
+    my: 2, 
   };
 
   return (

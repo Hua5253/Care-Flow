@@ -6,30 +6,17 @@ import {
   TableRow,
   Button,
 } from "@mui/material";
-
-const procedures = [
-  {
-    date: "Aug 24",
-    time: "12:30 PM",
-    procedure: "MRI",
-    status: "N/A",
-    location: "Room 2021",
-  },
-  {
-    date: "Aug 25",
-    time: "1:45 PM",
-    procedure: "CT",
-    status: "N/A",
-    location: "Room 2076",
-  },
-];
+import { Pathway } from "../../../services/pathway-service";
 
 interface Props {
   inEdit: boolean;
+  pathway: Pathway | null;
   handleDeleteProcedure: () => void;
 }
 
-function ProcedureList({ inEdit, handleDeleteProcedure }: Props) {
+function ProcedureList({ inEdit, pathway, handleDeleteProcedure }: Props) {
+  const procedures = pathway?.procedures;
+
   return (
     <Table>
       <TableHead>
@@ -43,24 +30,28 @@ function ProcedureList({ inEdit, handleDeleteProcedure }: Props) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {procedures.map((procedure, index) => (
+        {procedures?.map((procedure, index) => (
           <TableRow key={index} hover sx={{ cursor: "pointer" }}>
-            <TableCell>{procedure.date}</TableCell>
-            <TableCell>{procedure.time}</TableCell>
-            <TableCell>{procedure.procedure}</TableCell>
+            <TableCell>{procedure.start.toLocaleDateString()}</TableCell>
+            <TableCell>{procedure.start.toLocaleTimeString()}</TableCell>
+            <TableCell>{procedure.details}</TableCell>
             <TableCell>{procedure.status}</TableCell>
             <TableCell>{procedure.location}</TableCell>
             <TableCell>
               {inEdit && (
                 <div>
                   <Button
-                    variant="outlined"
-                    size="small"
+                    variant='outlined'
+                    size='small'
                     sx={{ marginRight: "8px" }}
                   >
                     Edit
                   </Button>
-                  <Button variant="outlined" size="small" onClick={handleDeleteProcedure}>
+                  <Button
+                    variant='outlined'
+                    size='small'
+                    onClick={handleDeleteProcedure}
+                  >
                     Delete
                   </Button>
                 </div>

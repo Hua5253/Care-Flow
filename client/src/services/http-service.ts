@@ -11,6 +11,10 @@ class HttpService {
     return apiClient.get<T[]>(this.endpoint);
   }
 
+  getById<T>(id: string) {
+    return apiClient.get<T>(this.endpoint + "/" + id);
+  }
+
   create<T>(entity: T) {
     return apiClient.post<T>(this.endpoint, entity);
   }

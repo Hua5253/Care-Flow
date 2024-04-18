@@ -85,7 +85,7 @@ function Pathways({ showModal }: showModal) {
                                                 sx={{ m: 1 }}
                                                 onClick={() =>
                                                     navigate(
-                                                        "/manager-procedure"
+                                                        `/pathways/${pathway._id}`
                                                     )
                                                 }
                                             >

@@ -44,12 +44,12 @@ export const getNotTemplatePathways: RequestHandler = async (
     try {
         const allPathways = await PathwayModel.find();
 
-        const notTemplatePathway = allPathways.filter(
+        const notTemplatePathways = allPathways.filter(
             pathway => !pathway.is_template
         );
 
-        if (notTemplatePathway) {
-            response.status(200).json(notTemplatePathway);
+        if (allPathways) {
+            response.status(200).json(notTemplatePathways);
         } else {
             response.status(404).json({ error: "no pathways found" });
         }
@@ -63,7 +63,9 @@ export const getPathwayById: RequestHandler = async (
     response,
     next
 ) => {
-    const pathwayId = request.params.pathwayId;
+    console.log(request.params);
+    const pathwayId = request.params.id;
+
     try {
         const pathway = await PathwayModel.findById(pathwayId);
 

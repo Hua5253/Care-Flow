@@ -40,7 +40,6 @@ function Pathways({ showModal }: showModal) {
         pathwayService
             .getAll<Pathway>()
             .then(res => {
-                console.log(res.data);
                 setPathways(res.data);
             })
             .catch(err => console.log(err));

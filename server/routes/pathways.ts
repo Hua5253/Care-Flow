@@ -4,7 +4,7 @@ import PathwayController from "../controllers/pathway_controller";
 const router = Router();
 
 router.get("/", PathwayController.getPathways);
-router.post("/", PathwayController.createPathway);
+router.post("/", PathwayController.createBlankPathway);
 router.put("/:id", PathwayController.updatePathway);
 router.delete("/:id", PathwayController.deletePathway);
 

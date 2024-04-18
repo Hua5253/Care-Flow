@@ -9,8 +9,6 @@ const createBlankPathway: RequestHandler = async (request, response, next) => {
     const is_template = request.body.is_template;
     const procedures = request.body.Procedures;
 
-    console.log(request.body);
-
     if (!name) {
         return response
             .status(400)
@@ -38,12 +36,20 @@ const createBlankPathway: RequestHandler = async (request, response, next) => {
     }
 };
 
-export const getPathways: RequestHandler = async (request, response, next) => {
+export const getNotTemplatePathways: RequestHandler = async (
+    request,
+    response,
+    next
+) => {
     try {
-        const pathways = await PathwayModel.find();
+        const allPathways = await PathwayModel.find();
 
-        if (pathways) {
-            response.status(200).json(pathways);
+        const notTemplatePathway = allPathways.filter(
+            pathway => !pathway.is_template
+        );
+
+        if (notTemplatePathway) {
+            response.status(200).json(notTemplatePathway);
         } else {
             response.status(404).json({ error: "no pathways found" });
         }
@@ -284,7 +290,7 @@ const deleteProcedure: RequestHandler = async (request, response, next) => {
 
 export default {
     createBlankPathway,
-    getPathways,
+    getNotTemplatePathways,
     getPathwayById,
     updatePathway,
     deletePathway,

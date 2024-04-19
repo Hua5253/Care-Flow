@@ -1,5 +1,7 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
 import { useState } from "react";
+// import bcrypt from "bcrypt";
+
 interface Prop {
   onclose: () => void;
   handleResetPassword: (data: string) => void;
@@ -19,7 +21,7 @@ export default function ResetPasswordModal({
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (newPassword === "" || confirmPassword === "") {
       setError("Please fill in all fields");
       return;
@@ -33,7 +35,10 @@ export default function ResetPasswordModal({
         user.name
       );
       setError("");
-      handleResetPassword(newPassword);
+      // const saltRound = 10;
+      // const salt = await bcrypt.genSalt(saltRound);
+      // const hash = await bcrypt.hash(newPassword, salt);
+      // handleResetPassword(hash);
       onclose();
     }
   };

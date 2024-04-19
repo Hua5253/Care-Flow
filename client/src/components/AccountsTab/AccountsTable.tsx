@@ -56,6 +56,7 @@ export default function AccountsTable() {
   };
   const handleResetPassword = (pw: string) => {
     console.log(selectedUser);
+    
     //next call the user service to reset the password of this user
     userService
       .updateById(selectedUser.id, { password: pw })

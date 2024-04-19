@@ -10,7 +10,7 @@ import { Pathway } from "../../../services/pathway-service";
 
 interface Props {
   inEdit: boolean;
-  pathway: Pathway | null;
+  pathway: Pathway;
   handleDeleteProcedure: () => void;
 }
 

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import pathwayService, { Pathway } from "../../../services/pathway-service";
 import DeleteProcedureModal from "../modals/DeleteProcedureModal";
-import EditProcedureModal from "../modals/EditProcedureModal";
+import AddProcedureModal from "../modals/AddProcedureModal";
 import ManagerSideBar from "../../SideBar/ManagerSideBar";
 import ProcedureButtons from "./ProcedureButtons";
 import DeletePathwayModal from "../modals/DeletePathwayModal";
@@ -15,12 +15,12 @@ function ProcedureScreen() {
   const [inEdit, setInEdit] = useState(false);
   const [showDeleteProcedureModal, setShowDeleteProcedureModal] =
     useState(false);
-  const [showEditProcedureModal, setShowEditProcedureModal] = useState(false);
+  const [showAddProcedureModal, setShowAddProcedureModal] = useState(false);
   const [showDeletePathwayModal, setShowDeletePathwayModal] = useState(false);
 
   const { id } = useParams();
 
-  const [pathway, setPathway] = useState<Pathway | null>(null);
+  const [pathway, setPathway] = useState<Pathway>({} as Pathway);
 
   useEffect(() => {
     pathwayService
@@ -44,7 +44,7 @@ function ProcedureScreen() {
           inEdit={inEdit}
           handleEditClick={() => setInEdit(true)}
           handleSaveClick={() => setInEdit(false)}
-          handleAddProcedure={() => setShowEditProcedureModal(true)}
+          handleAddProcedure={() => setShowAddProcedureModal(true)}
           handleDeletePathway={() => setShowDeletePathwayModal(true)}
         />
         {showDeleteProcedureModal && (
@@ -53,9 +53,10 @@ function ProcedureScreen() {
             handleCancel={() => setShowDeleteProcedureModal(false)}
           />
         )}
-        {showEditProcedureModal && (
-          <EditProcedureModal
-            handleClose={() => setShowEditProcedureModal(false)}
+        {showAddProcedureModal && (
+          <AddProcedureModal
+            pathway={pathway}
+            handleClose={() => setShowAddProcedureModal(false)}
           />
         )}
         {showDeletePathwayModal && (

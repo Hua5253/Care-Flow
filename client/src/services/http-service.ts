@@ -1,7 +1,7 @@
 import apiClient from "./api-client";
 
-class HttpService {
-  private endpoint: string;
+export class HttpService {
+  endpoint: string;
 
   constructor(endpoint: string) {
     this.endpoint = endpoint;
@@ -17,6 +17,10 @@ class HttpService {
 
   create<T>(entity: T) {
     return apiClient.post<T>(this.endpoint, entity);
+  }
+
+  updateById<T>(id: string, entity: T) {
+    apiClient.put<T>(this.endpoint + "/" + id, entity);
   }
 }
 

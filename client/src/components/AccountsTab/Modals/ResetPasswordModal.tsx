@@ -2,7 +2,7 @@ import { TextField, Button, Box, Typography, Modal } from "@mui/material";
 import { useState } from "react";
 interface Prop {
   onclose: () => void;
-  handleResetPassword: () => void;
+  handleResetPassword: (data: string) => void;
   user: {
     name: string;
     username: string;
@@ -28,9 +28,13 @@ export default function ResetPasswordModal({
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match");
     } else {
-      console.log("Passwords match");
+      console.log(
+        "Passwords match -> Process to change password for user ",
+        user.name
+      );
       setError("");
-      handleResetPassword();
+      handleResetPassword(newPassword);
+      onclose();
     }
   };
 

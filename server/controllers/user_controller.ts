@@ -2,7 +2,7 @@ import { RequestHandler, response } from "express";
 import UserModel from "../models/user_schema";
 import ChatModel from "../models/chatroom_schema";
 
-export const createUser: RequestHandler = async (request, response, next) => {
+const createUser: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
   const username = request.body.username;
   const password = request.body.password;
@@ -57,7 +57,7 @@ export const createUser: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const getUsers: RequestHandler = async (request, response, next) => {
+const getUsers: RequestHandler = async (request, response, next) => {
   try {
     const users = await UserModel.find();
 
@@ -71,7 +71,7 @@ export const getUsers: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const getUserById: RequestHandler = async (request, response, next) => {
+const getUserById: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
   try {
     const user = await UserModel.findById(userId);
@@ -86,7 +86,7 @@ export const getUserById: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const updateUser: RequestHandler = async (request, response, next) => {
+const updateUser: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
 
   const { name, username, password, email, phone_number, role } = request.body;
@@ -121,11 +121,7 @@ export const updateUser: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const updateNotifications: RequestHandler = async (
-  request,
-  response,
-  next
-) => {
+const updateNotifications: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
 
   const { notification } = request.body;
@@ -153,11 +149,7 @@ export const updateNotifications: RequestHandler = async (
   }
 };
 
-export const createChatroom: RequestHandler = async (
-  request,
-  response,
-  next
-) => {
+const createChatroom: RequestHandler = async (request, response, next) => {
   const users = request.body.users;
 
   if (!users) {
@@ -176,7 +168,8 @@ export const createChatroom: RequestHandler = async (
     next(error);
   }
 };
-export const deleteUser: RequestHandler = async (request, response, next) => {
+
+const deleteUser: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
   try {
     const user = await UserModel.findOneAndDelete({ _id: userId });
@@ -186,11 +179,7 @@ export const deleteUser: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const updateChatroom: RequestHandler = async (
-  request,
-  response,
-  next
-) => {
+const updateChatroom: RequestHandler = async (request, response, next) => {
   const chatroomId = request.params.chatroomId;
   const message = request.body.message;
 
@@ -213,7 +202,7 @@ export const updateChatroom: RequestHandler = async (
   }
 };
 
-export const getMessages: RequestHandler = async (request, response, next) => {
+const getMessages: RequestHandler = async (request, response, next) => {
   const chatroomId = request.params.chatroomId;
   try {
     const chatRoom = await ChatModel.findById(chatroomId).populate("history");

@@ -7,15 +7,43 @@ import {
   Button,
 } from "@mui/material";
 import { Pathway } from "../../../services/pathway-service";
+import { useEffect, useState } from "react";
+import procedureService, {
+  Procedure,
+} from "../../../services/procedure-service";
 
 interface Props {
   inEdit: boolean;
-  pathway: Pathway | null;
+  pathway: Pathway;
   handleDeleteProcedure: () => void;
 }
 
 function ProcedureList({ inEdit, pathway, handleDeleteProcedure }: Props) {
-  const procedures = pathway?.procedures;
+  const [allProcedures, setAllProcedures] = useState<Procedure[]>([]);
+  // const [procedures, setProcedures] = useState<Procedure[]>([]);
+  useEffect(() => {
+    procedureService
+      .getAll<Procedure>()
+      .then(res => setAllProcedures(res.data))
+      .catch(err => console.log(err));
+  }, []);
+
+  // useEffect(() => {
+  //   procedureService.getAll<Procedure>().then(res => {
+  //     for (let procedure of res.data) {
+  //       if (pathway.procedures?.includes(procedure._id as string)) {
+  //         setProcedures([...procedures, procedure]);
+  //       }
+  //     }
+  //   });
+  // }, []);
+
+  const procedures: Procedure[] = [];
+
+  for (let procedure of allProcedures) {
+    if (pathway.procedures?.includes(procedure._id as string))
+      procedures.push(procedure);
+  }
 
   return (
     <Table>
@@ -32,8 +60,8 @@ function ProcedureList({ inEdit, pathway, handleDeleteProcedure }: Props) {
       <TableBody>
         {procedures?.map((procedure, index) => (
           <TableRow key={index} hover sx={{ cursor: "pointer" }}>
-            <TableCell>{procedure.start.toLocaleDateString()}</TableCell>
-            <TableCell>{procedure.start.toLocaleTimeString()}</TableCell>
+            <TableCell>{procedure.start.toString()}</TableCell>
+            <TableCell>{procedure.start.toString()}</TableCell>
             <TableCell>{procedure.details}</TableCell>
             <TableCell>{procedure.status}</TableCell>
             <TableCell>{procedure.location}</TableCell>

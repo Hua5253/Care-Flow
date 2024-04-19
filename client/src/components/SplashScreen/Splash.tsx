@@ -56,7 +56,7 @@ export default function Splash() {
           src="../assets/hospital.jpeg"
         />
         <div>
-          <Button sx={buttonStyle} onClick={handleClick}>
+          <Button sx={buttonStyle} onClick={handleClick} id="login">
             Login
           </Button>
         </div>

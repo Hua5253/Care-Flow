@@ -83,12 +83,23 @@ const updatePathwayById: RequestHandler = async (request, response, next) => {
 
   const { name, patient, status, is_template, procedures } = request.body;
 
-  if (name && patient && status && is_template && procedures === undefined) {
+  console.log(request.body);
+
+  if (!name)
     return response.status(400).json({ error: "all fields must be provided" });
-  }
+  if (!patient)
+    return response.status(400).json({ error: "all fields must be provided" });
+  if (!status)
+    return response.status(400).json({ error: "all fields must be provided" });
+  if (!is_template)
+    return response.status(400).json({ error: "all fields must be provided" });
+  if (!procedures)
+    return response.status(400).json({ error: "all fields must be provided" });
 
   try {
     const updates = { name, patient, status, is_template, procedures };
+
+    console.log(updates);
 
     const updatedPathway = await PathwayModel.findByIdAndUpdate(
       pathwayId,

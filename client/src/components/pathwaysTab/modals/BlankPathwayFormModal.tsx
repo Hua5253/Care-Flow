@@ -24,12 +24,9 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
       procedures: [],
     };
 
-    console.log(newPathway);
-
     pathwayService
       .create(newPathway)
       .then(res => {
-        // console.log(res.data._id);
         navigate("/pathways" + "/" + res.data._id);
       })
       .catch(err => console.log(err));

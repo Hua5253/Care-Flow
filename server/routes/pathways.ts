@@ -6,7 +6,7 @@ const router = Router();
 router.get("/", PathwayController.getNotTemplatePathways);
 router.get("/:id", PathwayController.getPathwayById);
 router.post("/", PathwayController.createBlankPathway);
-router.put("/:id", PathwayController.updatePathway);
+router.put("/:id", PathwayController.updatePathwayById);
 router.delete("/:id", PathwayController.deletePathway);
 
 export default router;

@@ -1,7 +1,7 @@
 import apiClient from "./api-client";
 
-class HttpService {
-  private endpoint: string;
+export class HttpService {
+  endpoint: string;
 
   constructor(endpoint: string) {
     this.endpoint = endpoint;
@@ -18,7 +18,10 @@ class HttpService {
   create<T>(entity: T) {
     return apiClient.post<T>(this.endpoint, entity);
   }
-  //missing update and delete methods
+
+  updateById<T>(id: string, entity: T) {
+    return apiClient.put<T>(this.endpoint + "/" + id, entity);
+  }
 }
 
 const create = (endpoint: string) => new HttpService(endpoint);

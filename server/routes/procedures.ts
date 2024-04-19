@@ -1,6 +1,9 @@
 import { Router } from "express";
-import PathwayController from "../controllers/pathway_controller";
+import procedure_controller from "../controllers/procedure_controller";
 
 const router = Router();
 
-router.post("/procedure", PathwayController.createProcedure);
+router.post("/", procedure_controller.createProcedure);
+router.get("/", procedure_controller.getProcedures);
+
+export default router;

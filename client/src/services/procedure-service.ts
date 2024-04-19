@@ -8,7 +8,7 @@ export interface Procedure {
   patient: string;
   status: "ongoing" | "completed" | "waiting";
   location: string;
-  detail: string;
+  details: string;
   start: Date;
   end: Date;
 }

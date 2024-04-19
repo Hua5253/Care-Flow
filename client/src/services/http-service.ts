@@ -20,7 +20,7 @@ export class HttpService {
   }
 
   updateById<T>(id: string, entity: T) {
-    apiClient.put<T>(this.endpoint + "/" + id, entity);
+    return apiClient.put<T>(this.endpoint + "/" + id, entity);
   }
 }
 

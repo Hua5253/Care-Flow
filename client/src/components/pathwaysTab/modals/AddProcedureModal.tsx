@@ -2,7 +2,9 @@ import { TextField, Button, Box, Typography, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import pathwayService, { Pathway } from "../../../services/pathway-service";
 import userService, { User } from "../../../services/user-service";
-import { Procedure } from "../../../services/procedure-service";
+import procedureService, {
+  Procedure,
+} from "../../../services/procedure-service";
 
 const style = {
   position: "absolute",
@@ -58,7 +60,7 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
   const [location, setLocation] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [detail, setDetail] = useState("");
+  const [details, setDetails] = useState("");
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -98,21 +100,24 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
       location: location,
       start: new Date(startTime),
       end: new Date(startTime),
-      detail: detail,
+      details: details,
       patient: pathway.patient,
       status: "waiting",
     };
 
-    console.log(newProcedure);
-
-    const updatedPathway: Pathway = {
-      ...pathway,
-      procedures: [...pathway.procedures, newProcedure],
-    };
-
-    pathwayService
-      .updateById<Pathway>(pathway._id as string, updatedPathway)
-      .then(res => console.log(res.data));
+    procedureService
+      .create(newProcedure)
+      .then(res => {
+        const updatedPathway: Pathway = {
+          ...pathway,
+          procedures: [...pathway.procedures, res.data._id as string],
+        };
+        pathwayService
+          .updateById<Pathway>(pathway._id as string, updatedPathway)
+          .then(res => console.log(res.data))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
 
     handleClose();
   };
@@ -197,8 +202,8 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
           <TextField
             id='procedure-detail'
             label='Procedure Detail'
-            value={detail}
-            onChange={event => setDetail(event.target.value)}
+            value={details}
+            onChange={event => setDetails(event.target.value)}
             multiline
             rows={4}
             sx={textFieldStyles}

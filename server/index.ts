@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import userRouter from "./routes/users";
 import pathwayRouter from "./routes/pathways";
+import procedureRouter from "./routes/procedures";
 import resourceRouter from "./routes/resources";
 import authRouter from "./routes/auth";
 
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/users", userRouter);
 app.use("/pathway", pathwayRouter);
+app.use("/procedure", procedureRouter);
 app.use("/resource", resourceRouter);
 app.use("/auth", authRouter);
 
@@ -36,7 +38,7 @@ const port = process.env.PORT || 4000;
 const MongoDBURI =
   "mongodb+srv://kangqichen:pyaKOyTUdz6JgKF0@cluster0.rromx.mongodb.net/CareFlow";
 
-mongoose.connect(MongoDBURI!).catch((e) => {
+mongoose.connect(MongoDBURI!).catch(e => {
   console.error("Connection error", e.message);
 });
 

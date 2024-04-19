@@ -1,6 +1,7 @@
 import { RequestHandler, response } from "express";
 import UserModel from "../models/user_schema";
 import ChatModel from "../models/chatroom_schema";
+import bcrypt from "bcrypt";
 
 const createUser: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
@@ -41,11 +42,15 @@ const createUser: RequestHandler = async (request, response, next) => {
       .json({ error: "role is required in the request body." });
   }
 
+  const saltRound = 10;
+  const salt = await bcrypt.genSalt(saltRound);
+  const hash = await bcrypt.hash(password, salt);
+
   try {
     const newPathway = await UserModel.create({
       name: name,
       username: username,
-      password: password,
+      password: hash,
       email: email,
       phone_number: phone_number,
       role: role,

@@ -38,16 +38,33 @@ export default function AccountsTable() {
 
   const handleConfirmDelete = () => {
     // Handle the confirmation action here
-    setOpenConfirmation(false); // Close modal after confirmation
+    userService
+      .deleteById(selectedUser.id)
+      .then((res) => {
+        const userData = res.data as User; // Type assertion
+        console.log(`delete user ${userData.name} success`);
+        setOpenConfirmation(false); // Close modal after confirmation
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDeleteUser = () => {
     // Call this when you want to open the confirmation modal
     setOpenConfirmation(true);
   };
-  const handleResetPassword = () => {
+  const handleResetPassword = (pw: string) => {
     console.log(selectedUser);
     //next call the user service to reset the password of this user
+    userService
+      .updateById(selectedUser.id, { password: pw })
+      .then(() => {
+        console.log("Password reset success!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     userService
@@ -148,7 +165,7 @@ export default function AccountsTable() {
       {resetPsModal && (
         <ResetPasswordModal
           onclose={handleClose}
-          handleResetPassword={handleResetPassword}
+          handleResetPassword={(data: string) => handleResetPassword(data)}
           user={{ name: selectedUser.name, username: selectedUser.username }}
         />
       )}

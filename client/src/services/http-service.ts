@@ -18,6 +18,7 @@ class HttpService {
   create<T>(entity: T) {
     return apiClient.post<T>(this.endpoint, entity);
   }
+  //missing update and delete methods
 }
 
 const create = (endpoint: string) => new HttpService(endpoint);

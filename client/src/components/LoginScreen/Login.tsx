@@ -78,7 +78,7 @@ export default function Login({ closeAlert }: Prop) {
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevents the form from resetting
   };
   const handleForgetPassword = () => navigate("/forgetPassword");
 
@@ -109,7 +109,6 @@ export default function Login({ closeAlert }: Prop) {
             {...register("username", { required: "Username is required" })}
             margin="normal"
             fullWidth
-            // required
             placeholder="Username"
             id="username"
             name="username"
@@ -122,7 +121,6 @@ export default function Login({ closeAlert }: Prop) {
           <TextField
             {...register("password", { required: "Password is required" })}
             margin="normal"
-            // required
             fullWidth
             placeholder="Password"
             name="password"

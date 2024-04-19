@@ -72,7 +72,7 @@ export const getUsers: RequestHandler = async (request, response, next) => {
 };
 
 export const getUserById: RequestHandler = async (request, response, next) => {
-  const userId = request.params.userId;
+  const userId = request.params.id;
   try {
     const user = await UserModel.findById(userId);
 
@@ -87,7 +87,7 @@ export const getUserById: RequestHandler = async (request, response, next) => {
 };
 
 export const updateUser: RequestHandler = async (request, response, next) => {
-  const userId = request.params.userId;
+  const userId = request.params.id;
 
   const { name, username, password, email, phone_number, role } = request.body;
 
@@ -126,7 +126,7 @@ export const updateNotifications: RequestHandler = async (
   response,
   next
 ) => {
-  const userId = request.params.userId;
+  const userId = request.params.id;
 
   const { notification } = request.body;
 
@@ -177,7 +177,7 @@ export const createChatroom: RequestHandler = async (
   }
 };
 export const deleteUser: RequestHandler = async (request, response, next) => {
-  const userId = request.params.userId;
+  const userId = request.params.id;
   try {
     const user = await UserModel.findOneAndDelete({ _id: userId });
     response.status(200).json(user);

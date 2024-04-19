@@ -10,74 +10,22 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ResetPasswordModal from "../CareGivers/Modals/ResetPasswordModal";
-import ConfirmationModal from "../Modals/ConfirmationModal";
-
-interface user {
-  id: String;
-  name: String;
-  username: String;
-  email: String;
-  phoneNumber: String;
-  role: String;
-}
-
-const usersList: user[] = [
-  {
-    id: "LA-0233",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0234",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0235",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0236",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0237",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-  {
-    id: "LA-0238",
-    name: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    role: "...",
-  },
-];
+import ResetPasswordModal from "./Modals/ResetPasswordModal";
+import userService, { User } from "../../services/user-service";
+import DeleteUserConfirmationModal from "./Modals/DeleteUserConfirmationModal";
 
 export default function AccountsTable() {
   const [resetPsModal, setResetPsModal] = useState(false);
-  const [openConfirmation, setOpenConfirmation] = useState(false); // State to control the ConfirmationModal
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [usersList, setUsersList] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState({
+    id: "",
+    name: "",
+    role: "",
+    username: "",
+  });
 
   const handleClose = () => {
     setResetPsModal(false);
@@ -90,7 +38,6 @@ export default function AccountsTable() {
 
   const handleConfirmDelete = () => {
     // Handle the confirmation action here
-    console.log("Procedure started");
     setOpenConfirmation(false); // Close modal after confirmation
   };
 
@@ -98,6 +45,18 @@ export default function AccountsTable() {
     // Call this when you want to open the confirmation modal
     setOpenConfirmation(true);
   };
+  const handleResetPassword = () => {
+    console.log(selectedUser);
+    //next call the user service to reset the password of this user
+  };
+  useEffect(() => {
+    userService
+      .getAll<User>()
+      .then((res) => {
+        setUsersList(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [usersList]);
 
   return (
     <Box>
@@ -105,45 +64,71 @@ export default function AccountsTable() {
         component={Paper}
         sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
       >
-        {resetPsModal && <ResetPasswordModal onclose={handleClose} />}
         <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
-          <TableHead>
+          <TableHead
+            sx={{
+              cursor: "default",
+            }}
+          >
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Username</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Phone Number</TableCell>
-              <TableCell align="right">Role</TableCell>
+              <TableCell align="left">ID</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Username</TableCell>
+              <TableCell align="center">Email</TableCell>
+              <TableCell align="left">Phone Number</TableCell>
+              <TableCell align="left">Role</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody
+            sx={{
+              cursor: "default",
+            }}
+          >
             {usersList.map((user, index) => (
               <TableRow
                 key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { backgroundColor: "#f5f5f5" },
+                }}
               >
                 <TableCell component="th" scope="row">
-                  {user.id}
+                  {user._id?.substring(0, 10) + "..."}
                 </TableCell>
-                <TableCell align="right">{user.name}</TableCell>
-                <TableCell align="right">{user.username}</TableCell>
-                <TableCell align="right">{user.email}</TableCell>
-                <TableCell align="right">{user.phoneNumber}</TableCell>
-                <TableCell align="right">{user.role}</TableCell>
+                <TableCell align="left">{user.name}</TableCell>
+                <TableCell align="left">{user.username}</TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="left">{user.phone_number}</TableCell>
+                <TableCell align="left">{user.role}</TableCell>
                 <TableCell align="right" size="medium">
                   <Button
                     variant="outlined"
                     sx={{ fontSize: "13px" }}
-                    onClick={() => setResetPsModal(true)}
+                    onClick={() => {
+                      setSelectedUser({
+                        id: user._id?.toString() || "",
+                        name: user.name,
+                        username: user.username,
+                        role: user.role,
+                      });
+                      setResetPsModal(true);
+                    }}
                   >
                     Change Password
                   </Button>
                   <IconButton
                     size="medium"
                     sx={{ ml: 3 }}
-                    onClick={handleDeleteUser}
+                    onClick={() => {
+                      setSelectedUser({
+                        id: user._id?.toString() || "",
+                        name: user.name,
+                        username: user.username,
+                        role: user.role,
+                      });
+                      handleDeleteUser();
+                    }}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -154,11 +139,19 @@ export default function AccountsTable() {
         </Table>
       </TableContainer>
 
-      <ConfirmationModal
+      <DeleteUserConfirmationModal
         open={openConfirmation}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
+        user={{ name: selectedUser.name, role: selectedUser.role }}
       />
+      {resetPsModal && (
+        <ResetPasswordModal
+          onclose={handleClose}
+          handleResetPassword={handleResetPassword}
+          user={{ name: selectedUser.name, username: selectedUser.username }}
+        />
+      )}
     </Box>
   );
 }

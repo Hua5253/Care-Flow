@@ -1,15 +1,38 @@
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Modal,
-} from "@mui/material";
+import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import { useState } from "react";
 interface Prop {
   onclose: () => void;
+  handleResetPassword: () => void;
+  user: {
+    name: string;
+    username: string;
+  };
 }
 
-export default function ResetPasswordModal({ onclose }: Prop) {
+export default function ResetPasswordModal({
+  onclose,
+  handleResetPassword,
+  user,
+}: Prop) {
+  //const [userData, setUserData] = useState({ username: "", name: "" });
+  const [error, setError] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = () => {
+    if (newPassword === "" || confirmPassword === "") {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+    } else {
+      console.log("Passwords match");
+      setError("");
+      handleResetPassword();
+    }
+  };
 
   const style = {
     position: "absolute",
@@ -55,47 +78,61 @@ export default function ResetPasswordModal({ onclose }: Prop) {
     my: 2, // Added more vertical spacing
   };
 
-  let username = "VPreze";
-
   return (
     <div>
-      <Modal
-        open={true}
-        onClose={onclose}
-        aria-labelledby="create-user-modal-title"
-      >
+      <Modal open={true} aria-labelledby="create-user-modal-title">
         <Box sx={style}>
           <Typography
-            id="create-user-modal-title"
-            variant="h6"
-            component="h2"
+            id="reset-password-modal-title"
+            variant="h4"
+            component="h2" // Change the component prop to match the correct heading level
             color="common.white"
+            gutterBottom
           >
-            <h2 id="confirmation-modal-description">Reset Passowrd</h2>
-            <h4 id="confirmation-modal-description">
-              For Username: {username}
-            </h4>
+            Reset Password
           </Typography>
 
+          <Typography
+            id="confirmation-modal-description"
+            variant="subtitle1"
+            component="h4" // Change the component prop to h4 for a subtitle or smaller heading
+            color="common.white"
+            gutterBottom
+          >
+            Username: {user.username}
+            <br />
+            Name: {user.name}
+          </Typography>
           <TextField
             required
             id="new-password"
-            label="New Passowrd"
+            label="New Password"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setNewPassword(e.target.value)}
+            {...(error && { error: true })}
           />
           <TextField
             required
             id="confirm-password"
             label="Confirm Password"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            {...(error && { error: true })}
           />
+          {error && (
+            <Box textAlign={"center"}>
+              <Typography variant="subtitle1" component="h4" color="error">
+                {error}
+              </Typography>
+            </Box>
+          )}
 
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={onclose}
+              onClick={handleSubmit}
             >
               Confirm
             </Button>

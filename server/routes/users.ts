@@ -3,11 +3,11 @@ import UserController from "../controllers/user_controller";
 
 const router = Router();
 
-router.get("/users", UserController.getUsers);
-router.post("/users", UserController.createUser);
-router.put("/users/:id", UserController.updateUser);
+router.get("/", UserController.getUsers);
+router.post("/", UserController.createUser);
+router.put("/:id", UserController.updateUser);
 router.delete("/users/:id", UserController.deleteUser);
-router.get("/users/:id", UserController.getUserById);
+router.get("/:id", UserController.getUserById);
 router.put("/users/chatroom/:id", UserController.updateChatroom);
 router.get("/users/chatroom/:id", UserController.getMessages);
 router.post("/users/chatroom", UserController.createChatroom);

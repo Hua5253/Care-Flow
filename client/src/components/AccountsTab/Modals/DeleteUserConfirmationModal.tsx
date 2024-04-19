@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 
 const modalStyle = {
   display: "flex",
@@ -11,7 +12,7 @@ const modalStyle = {
 const paperStyle = {
   backgroundColor: "#5C6B73",
   boxShadow: "0 3px 5px 2px rgba(0, 0, 0, .3)",
-  padding: "20px",
+  padding: 5,
   color: "#ffffff",
   textAlign: "center",
   fontSize: "1.5rem",
@@ -27,23 +28,31 @@ interface ConfirmationModalProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  user: { name: string; role: string };
 }
 
-export default function ConfirmationModal({
+export default function DeleteUserConfirmationModal({
   open,
   onClose,
   onConfirm,
+  user,
 }: ConfirmationModalProps) {
-  let procedure_name = "MRI";
-  let patient_name = "john doe";
-  let start_procedure = "Click confirm to start the procedure";
+  let delete_user = "Click confirm to Delete the user";
 
-  let title = <h2 id="confirmation-modal-title">{start_procedure}</h2>;
+  let title = (
+    <Typography variant="h4" component="h2" id="confirmation-modal-title">
+      {delete_user}
+    </Typography>
+  );
 
   let body = (
-    <Box>
-      <h3 id="confirmation-modal-description">Patient: {patient_name}</h3>
-      <h3 id="confirmation-modal-description">Procedure: {procedure_name}</h3>
+    <Box id="confirmation-modal-description" sx={{ p: 2 }}>
+      <Typography variant="h6" component="h4">
+        Name: {user.name}
+      </Typography>
+      <Typography variant="h6" component="h4">
+        Role: {user.role}
+      </Typography>
     </Box>
   );
 

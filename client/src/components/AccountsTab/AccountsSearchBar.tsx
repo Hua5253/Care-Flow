@@ -42,7 +42,7 @@ export default function AccountsSearchBar() {
           <SearchIcon />
         </Box>
         <InputBase
-          sx={{ ml: 1, flex: 1 }}
+          sx={{ ml: 1, flex: 1, fontSize: "15px" }}
           placeholder="Search"
           inputProps={{ "aria-label": "Search" }}
         />
@@ -70,6 +70,7 @@ export default function AccountsSearchBar() {
         >
           <MenuItem>Caregiver</MenuItem>
           <MenuItem>Manager</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

@@ -39,6 +39,7 @@ export default function ResetPasswordModal({
       // const salt = await bcrypt.genSalt(saltRound);
       // const hash = await bcrypt.hash(newPassword, salt);
       // handleResetPassword(hash);
+      handleResetPassword(newPassword);
       onclose();
     }
   };

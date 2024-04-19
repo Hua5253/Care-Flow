@@ -2,6 +2,7 @@ import { RequestHandler, response } from "express";
 import UserModel from "../models/user_schema";
 import ChatModel from "../models/chatroom_schema";
 import bcrypt from "bcrypt";
+const saltRound = 10;
 
 const createUser: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
@@ -41,8 +42,6 @@ const createUser: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "role is required in the request body." });
   }
-
-  const saltRound = 10;
   const salt = await bcrypt.genSalt(saltRound);
   const hash = await bcrypt.hash(password, salt);
 
@@ -109,6 +108,12 @@ const updateUser: RequestHandler = async (request, response, next) => {
 
   try {
     const updates = { name, username, password, email, phone_number, role };
+
+    if (password) {
+      const salt = await bcrypt.genSalt(saltRound);
+      const hash = await bcrypt.hash(password, salt);
+      updates.password = hash;
+    }
 
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,

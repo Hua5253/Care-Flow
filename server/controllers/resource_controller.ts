@@ -182,7 +182,7 @@ export const getEquipmentById: RequestHandler = async (
 ) => {
   const equipmentId = request.params.id;
   try {
-    const equipment = await RoomModel.findById(equipmentId);
+    const equipment = await EquipmentModel.findById(equipmentId);
 
     if (equipment) {
       response.status(200).json(equipment);
@@ -225,7 +225,9 @@ const updateEquipment: RequestHandler = async (request, response, next) => {
 const deleteEquipment: RequestHandler = async (request, response, next) => {
   const equipmentId = request.params.id;
   try {
-    const deletedEquipment = await RoomModel.findByIdAndDelete(equipmentId);
+    const deletedEquipment = await EquipmentModel.findByIdAndDelete(
+      equipmentId
+    );
 
     if (!deletedEquipment) {
       return response.status(404).json({ error: "Equipment not found" });

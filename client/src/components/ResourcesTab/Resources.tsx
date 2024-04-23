@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Fab, Tab, Tabs, TabsOwnProps, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
@@ -15,14 +15,12 @@ import ModalMedicalEquipment from "./ModalMedicalEquipment";
 import ModalMedicine from "./ModalMedicine";
 import ModalRoom from "./ModalRoom";
 import ModalOffice from "./ModalOffice";
+import equipmentService from "../../services/equipment-service";
+import medicineService from "../../services/medicine-service";
+import roomService from "../../services/room-service";
 
 const tabs: string[] = ["Medical Equipment", "Medicine", "Officers", "Room"];
-const tables: React.ReactElement[] = [
-  <TableMedicalEquipment />,
-  <TableMedicine />,
-  <TableOfficers />,
-  <TableRoom />,
-];
+
 const searchbars: React.ReactElement[] = [
   <SearchBarMedicalEquipment />,
   <SearchBarMedicine />,
@@ -33,6 +31,42 @@ const searchbars: React.ReactElement[] = [
 export default function Resources() {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [open, setOpen] = useState<string>("");
+  const [equipmentData, setEquipmentData] = useState<any>([]);
+  const [medicineData, setMedicineData] = useState<any>([]);
+  const [roomData, setRoomData] = useState<any>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        switch (tabIndex) {
+          case 0:
+            await equipmentService.getAll().then((res) => {
+              setEquipmentData(res.data);
+            });
+            break;
+          case 1:
+            await medicineService.getAll().then((res) => {
+              setMedicineData(res.data);
+            });
+            break;
+          case 2:
+            // const officersData = await officersService.getAll();
+            // setData(officersData);
+            break;
+          case 3:
+            await roomService.getAll().then((res) => {
+              setRoomData(res.data);
+            });
+            break;
+          default:
+            break;
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  }, [tabIndex]);
 
   const handleTabChange: TabsOwnProps["onChange"] = (_, index) => {
     setTabIndex(index);
@@ -47,26 +81,33 @@ export default function Resources() {
       open={open === "Medical Equipment"}
       onClose={() => setOpen("")}
       onOk={() => {}}
-      title='Create New Equipment'
+      title="Create New Equipment"
     />,
     <ModalMedicine
       open={open === "Medicine"}
       onClose={() => setOpen("")}
       onOk={() => {}}
-      title='Create New Medicine'
+      title="Create New Medicine"
     />,
     <ModalOffice
       open={open === "Officers"}
       onClose={() => setOpen("")}
       onOk={() => {}}
-      title='Create New Officer'
+      title="Create New Officer"
     />,
     <ModalRoom
       open={open === "Room"}
       onClose={() => setOpen("")}
       onOk={() => {}}
-      title='Create New Room'
+      title="Create New Room"
     />,
+  ];
+
+  const tables: React.ReactElement[] = [
+    <TableMedicalEquipment dataSource={equipmentData} />,
+    <TableMedicine dataSource={medicineData} />,
+    <TableOfficers />,
+    <TableRoom dataSource={roomData} />,
   ];
 
   return (

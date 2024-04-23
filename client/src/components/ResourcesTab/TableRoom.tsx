@@ -14,47 +14,52 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalRoom from "./ModalRoom";
 import { useState } from "react";
+import { Room } from "../../services/room-service";
 
-interface Room {
-  id: string;
-  roomName: string;
-  roomNumber: string;
-  capacity: string;
-  currentStatus: string;
+// interface Room {
+//   id: string;
+//   roomName: string;
+//   roomNumber: string;
+//   capacity: string;
+//   currentStatus: string;
+// }
+
+// const dataSource: Room[] = [
+//   {
+//     id: "1",
+//     roomName: "General Ward",
+//     roomNumber: "101A",
+//     capacity: "4 beds",
+//     currentStatus: "10Full",
+//   },
+//   {
+//     id: "2",
+//     roomName: "ICU",
+//     roomNumber: "201",
+//     capacity: "2 beds",
+//     currentStatus: "1 bed available",
+//   },
+//   {
+//     id: "3",
+//     roomName: "Operating Room",
+//     roomNumber: "OR-3",
+//     capacity: "1 operating table",
+//     currentStatus: "Available",
+//   },
+//   {
+//     id: "4",
+//     roomName: "Examination Room",
+//     roomNumber: "102B",
+//     capacity: "1 examination table",
+//     currentStatus: "In use",
+//   },
+// ];
+
+interface Props {
+  dataSource: Room[];
 }
 
-const dataSource: Room[] = [
-  {
-    id: "1",
-    roomName: "General Ward",
-    roomNumber: "101A",
-    capacity: "4 beds",
-    currentStatus: "10Full",
-  },
-  {
-    id: "2",
-    roomName: "ICU",
-    roomNumber: "201",
-    capacity: "2 beds",
-    currentStatus: "1 bed available",
-  },
-  {
-    id: "3",
-    roomName: "Operating Room",
-    roomNumber: "OR-3",
-    capacity: "1 operating table",
-    currentStatus: "Available",
-  },
-  {
-    id: "4",
-    roomName: "Examination Room",
-    roomNumber: "102B",
-    capacity: "1 examination table",
-    currentStatus: "In use",
-  },
-];
-
-export default function TableRoom() {
+export default function TableRoom({ dataSource }: Props) {
   const [openId, setOpenId] = useState<string>("");
   const getCurrentStatusColor = (status: string) => {
     const colors: Record<string, string> = {
@@ -104,18 +109,22 @@ export default function TableRoom() {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left" component="th" scope="row">
-                {data.roomName}
+                {data.name}
               </TableCell>
-              <TableCell align="left">{data.roomNumber}</TableCell>
+              <TableCell align="left">{data.location}</TableCell>
               <TableCell align="left">{data.capacity}</TableCell>
               <TableCell
                 align="left"
-                style={{ color: getCurrentStatusColor(data.currentStatus) }}
+                style={{ color: getCurrentStatusColor(data.status) }}
               >
-                {data.currentStatus}
+                {data.status}
               </TableCell>
               <TableCell align="left" size="medium">
-                <Button variant="outlined" sx={{ fontSize: "13px" }} onClick={() => setOpenId(data.roomName)}>
+                <Button
+                  variant="outlined"
+                  sx={{ fontSize: "13px" }}
+                  onClick={() => setOpenId(data._id || "")}
+                >
                   Edit
                 </Button>
                 <IconButton size="medium" sx={{ ml: 3 }}>

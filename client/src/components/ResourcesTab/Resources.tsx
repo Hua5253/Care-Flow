@@ -76,11 +76,38 @@ export default function Resources() {
     setOpen(tabs[tabIndex]);
   };
 
+  const handleSubmit = (data: any) => {
+    switch (tabIndex) {
+      case 0:
+        equipmentService.create(data).then((res) => {
+          setEquipmentData([...equipmentData, res.data]);
+        });
+        setOpen("");
+        break;
+      case 1:
+        medicineService.create(data).then((res) => {
+          setMedicineData([...medicineData, res.data]);
+        });
+        break;
+      case 2:
+        // const officersData = await officersService.getAll();
+        // setData(officersData);
+        break;
+      case 3:
+        roomService.create(data).then((res) => {
+          setRoomData([...roomData, res.data]);
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
   const modals: React.ReactElement[] = [
     <ModalMedicalEquipment
       open={open === "Medical Equipment"}
       onClose={() => setOpen("")}
-      onOk={() => {}}
+      onOk={(data) => handleSubmit(data)}
       title="Create New Equipment"
     />,
     <ModalMedicine

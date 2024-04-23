@@ -1,9 +1,10 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import { useState } from "react";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  onOk: () => void;
+  onOk: (data: any) => void;
   title: string;
 }
 
@@ -56,6 +57,10 @@ export default function ModalMedicalEquipment({
     },
     my: 2, // Added more vertical spacing
   };
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [status, setStatus] = useState("");
 
   return (
     <div>
@@ -78,37 +83,43 @@ export default function ModalMedicalEquipment({
             id="name"
             label="Name"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setName(e.target.value)}
           />
-          <TextField
+          {/* <TextField
             required
             id="classification"
             label="Classification"
             sx={textFieldStyles} // Added more vertical spacing
-          />
+            onChange={(e) => setName(e.target.value)}
+          /> */}
+          {/* Not sure what classification is for? */}
           <TextField
             required
             id="catagory"
             label="Catagory"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setCategory(e.target.value)}
           />
           <TextField
             required
             id="quantity"
             label="Quantity Available"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setQuantity(e.target.value)}
           />
           <TextField
             required
             id="status"
             label="Status"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setStatus(e.target.value)}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={onOk}
+              onClick={() => onOk({ name, category, quantity, status })}
             >
               Confirm
             </Button>

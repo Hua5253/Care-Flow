@@ -9,7 +9,7 @@ router.put("/resource/room/:id", ResourceController.updateRoom);
 router.delete("/resource/room/:id", ResourceController.deleteRoom);
 
 router.get("/equipment", ResourceController.getEquipments);
-router.post("/resource/equipment", ResourceController.createEquipment);
+router.post("/equipment", ResourceController.createEquipment);
 router.put("/resource/equipment/:id", ResourceController.updateEquipment);
 router.delete("/resource/equipment/:id", ResourceController.deleteEquipment);
 

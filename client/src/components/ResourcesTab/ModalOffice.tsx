@@ -60,7 +60,7 @@ export default function ModalOffice({
     <div>
       <Modal
         open={open}
-        onClose={onClose}
+        //onClose={onClose}
         aria-labelledby="procedure-modal-title"
       >
         <Box sx={style}>

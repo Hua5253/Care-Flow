@@ -13,47 +13,50 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalMedicalEquipment from "./ModalMedicalEquipment";
 import { useState } from "react";
+import { Equipment } from "../../services/equipment-service";
 
-interface MedicalEquipment {
-  name: string;
-  id: string;
-  category: string;
-  quantity: string;
-  status: string;
+// interface MedicalEquipment {
+//   name: string;
+//   id: string;
+//   category: string;
+//   quantity: string;
+//   status: string;
+// }
+
+// const dataSource: MedicalEquipment[] = [
+//   {
+//     name: "Surgical Masks",
+//     id: "LAB-0238",
+//     category: "Surgical Masks",
+//     quantity: "1200 units",
+//     status: "In Stock",
+//   },
+//   {
+//     name: "Surgical Masks",
+//     id: "LAB-0237",
+//     category: "Stethoscope",
+//     quantity: "35 units ",
+//     status: "Low Stock",
+//   },
+//   {
+//     name: "Surgical Masks",
+//     id: "LAB-0236",
+//     category: "IV Drip Bags",
+//     quantity: "500 units",
+//     status: "Out of Stock",
+//   },
+//   {
+//     name: "Surgical Masks",
+//     id: "LAB-0235",
+//     category: "Hand Sanitizer",
+//     quantity: "150 units",
+//     status: "On Order",
+//   },
+// ];
+interface Prop {
+  dataSource: Equipment[];
 }
-
-const dataSource: MedicalEquipment[] = [
-  {
-    name: "Surgical Masks",
-    id: "LAB-0238",
-    category: "Surgical Masks",
-    quantity: "1200 units",
-    status: "In Stock",
-  },
-  {
-    name: "Surgical Masks",
-    id: "LAB-0237",
-    category: "Stethoscope",
-    quantity: "35 units ",
-    status: "Low Stock",
-  },
-  {
-    name: "Surgical Masks",
-    id: "LAB-0236",
-    category: "IV Drip Bags",
-    quantity: "500 units",
-    status: "Out of Stock",
-  },
-  {
-    name: "Surgical Masks",
-    id: "LAB-0235",
-    category: "Hand Sanitizer",
-    quantity: "150 units",
-    status: "On Order",
-  },
-];
-
-export default function TableMedicalEquipment() {
+export default function TableMedicalEquipment({ dataSource }: Prop) {
   const [openId, setOpenId] = useState<string>("");
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
@@ -107,7 +110,7 @@ export default function TableMedicalEquipment() {
               <TableCell align="left" component="th" scope="row">
                 {data.name}
               </TableCell>
-              <TableCell align="left">{data.id}</TableCell>
+              <TableCell align="left">{data._id}</TableCell>
               <TableCell align="left">{data.category}</TableCell>
               <TableCell align="left">{data.quantity}</TableCell>
               <TableCell
@@ -120,7 +123,7 @@ export default function TableMedicalEquipment() {
                 <Button
                   variant="outlined"
                   sx={{ fontSize: "13px" }}
-                  onClick={() => setOpenId(data.id)}
+                  onClick={() => setOpenId(data._id || "")}
                 >
                   Edit
                 </Button>

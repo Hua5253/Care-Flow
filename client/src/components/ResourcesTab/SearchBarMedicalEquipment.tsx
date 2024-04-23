@@ -27,6 +27,8 @@ export default function SearchBarMedicalEquipment() {
         alignItems: "left",
         border: "1px solid",
         borderRadius: 1,
+        marginTop: "1em",
+        marginBottom: "1em",
       }}
     >
       <Paper

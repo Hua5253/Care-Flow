@@ -61,7 +61,7 @@ export default function ModalMedicine({
     <div>
       <Modal
         open={open}
-        onClose={onClose}
+        //onClose={onClose}
         aria-labelledby="procedure-modal-title"
       >
         <Box sx={style}>

@@ -105,7 +105,10 @@ export default function TableMedicalEquipment({ dataSource }: Prop) {
           {dataSource.map((data, index) => (
             <TableRow
               key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                "&:hover": { backgroundColor: "#f5f5f5" },
+              }}
             >
               <TableCell align="left" component="th" scope="row">
                 {data.name}

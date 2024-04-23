@@ -125,15 +125,16 @@ const deleteRoom: RequestHandler = async (request, response, next) => {
 
 const createEquipment: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
-  const catagory = request.body.category;
+  const category = request.body.category;
   const quantity = request.body.quantity;
+  const status = request.body.status;
 
   if (!name) {
     return response
       .status(400)
       .json({ error: "name is required in the request body." });
   }
-  if (!catagory) {
+  if (!category) {
     return response
       .status(400)
       .json({ error: "catagory is required in the request body." });
@@ -143,12 +144,18 @@ const createEquipment: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "quantity is required in the request body." });
   }
+  if (!status) {
+    return response
+      .status(400)
+      .json({ error: "status is required in the request body." });
+  }
 
   try {
     const newEquipment = await EquipmentModel.create({
       name: name,
-      catagory: catagory,
+      category: category,
       quantity: quantity,
+      status: status,
     });
 
     response.status(201).json(newEquipment);

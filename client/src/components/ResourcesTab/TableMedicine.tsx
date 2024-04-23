@@ -65,7 +65,6 @@ interface Prop {
 }
 
 export default function TableMedicine({ dataSource }: Prop) {
-  console.log(dataSource);
   const [openId, setOpenId] = useState<string>("");
   return (
     <TableContainer

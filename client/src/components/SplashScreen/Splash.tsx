@@ -53,7 +53,7 @@ export default function Splash() {
           component="img"
           sx={iconStyle}
           alt="Hospital illustration"
-          src="../assets/hospital.jpeg"
+          src="https://i.imgur.com/KoIVCtj.png"
         />
         <div>
           <Button sx={buttonStyle} onClick={handleClick}>

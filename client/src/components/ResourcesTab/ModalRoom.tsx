@@ -1,13 +1,20 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import { useState } from "react";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  onOk: () => void;
+  onOk: (data: any) => void;
   title: string;
 }
 
 export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [status, setStatus] = useState("");
+  const schedule = [];
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -73,37 +80,43 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
             id="name"
             label="Name"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setName(e.target.value)}
           />
           <TextField
             required
             id="room-number"
             label="Room Number"
             sx={textFieldStyles} // Added more vertical spacing
-          />
-          <TextField
-            required
-            id="usage"
-            label="Usage"
-            sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setLocation(e.target.value)}
           />
           <TextField
             required
             id="capacity"
             label="Capacity"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setCapacity(e.target.value)}
           />
           <TextField
             required
             id="current-status"
             label="Current Status"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setStatus(e.target.value)}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={onOk}
+              onClick={() =>
+                onOk({
+                  name,
+                  location,
+                  capacity,
+                  status,
+                  schedule: [] as any[],
+                })
+              }
             >
               Confirm
             </Button>

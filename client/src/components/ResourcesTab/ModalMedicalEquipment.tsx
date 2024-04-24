@@ -1,11 +1,19 @@
-import { TextField, Button, Box, Typography, Modal } from "@mui/material";
-import { useState } from "react";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Modal,
+  CircularProgress,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
   onOk: (data: any) => void;
   title: string;
+  item?: any;
 }
 
 export default function ModalMedicalEquipment({
@@ -13,6 +21,7 @@ export default function ModalMedicalEquipment({
   onClose,
   onOk,
   title,
+  item,
 }: ModalProps) {
   const style = {
     position: "absolute",
@@ -57,10 +66,17 @@ export default function ModalMedicalEquipment({
     },
     my: 2, // Added more vertical spacing
   };
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [status, setStatus] = useState("");
+  const [name, setName] = useState(item?.name || "");
+  const [category, setCategory] = useState(item?.category || "");
+  const [quantity, setQuantity] = useState(item?.quantity ?? "");
+  const [status, setStatus] = useState(item?.status || "");
+
+  useEffect(() => {
+    setName(item?.name || "");
+    setCategory(item?.category || "");
+    setQuantity(item?.quantity ?? "");
+    setStatus(item?.status || "");
+  }, [item]);
 
   return (
     <div>
@@ -84,6 +100,7 @@ export default function ModalMedicalEquipment({
             label="Name"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setName(e.target.value)}
+            value={name}
           />
           {/* <TextField
             required
@@ -99,6 +116,7 @@ export default function ModalMedicalEquipment({
             label="Category"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setCategory(e.target.value)}
+            value={category}
           />
           <TextField
             required
@@ -106,6 +124,7 @@ export default function ModalMedicalEquipment({
             label="Quantity Available"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setQuantity(e.target.value)}
+            value={quantity}
           />
           <TextField
             required
@@ -113,6 +132,7 @@ export default function ModalMedicalEquipment({
             label="Status"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setStatus(e.target.value)}
+            value={status}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button

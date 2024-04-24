@@ -10,7 +10,8 @@ router.delete("/resource/room/:id", ResourceController.deleteRoom);
 
 router.get("/equipment", ResourceController.getEquipments);
 router.post("/equipment", ResourceController.createEquipment);
-router.put("/resource/equipment/:id", ResourceController.updateEquipment);
+router.get("/equipment/:id", ResourceController.getEquipmentById);
+router.put("/equipment/:id", ResourceController.updateEquipment);
 router.delete("/resource/equipment/:id", ResourceController.deleteEquipment);
 
 router.get("/medicine", ResourceController.getMedicines);

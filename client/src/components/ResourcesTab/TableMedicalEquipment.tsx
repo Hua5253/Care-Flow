@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalMedicalEquipment from "./ModalMedicalEquipment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Equipment } from "../../services/equipment-service";
-
+import equipmentService from "../../services/equipment-service";
 // interface MedicalEquipment {
 //   name: string;
 //   id: string;
@@ -58,6 +58,11 @@ interface Prop {
 }
 export default function TableMedicalEquipment({ dataSource }: Prop) {
   const [openId, setOpenId] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedEqDetail, setSelectedEqDetail] = useState<Equipment>(
+    {} as Equipment
+  );
+  const [equipmentData, setEquipmentData] = useState<Equipment[]>(dataSource);
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       "In Stock": "#409832",
@@ -67,16 +72,50 @@ export default function TableMedicalEquipment({ dataSource }: Prop) {
     };
     return colors[status] || "#000";
   };
+  useEffect(() => {
+    if (openId) {
+      equipmentService.getById(openId).then((res) => {
+        setSelectedEqDetail(res.data as Equipment);
+        setShowModal(true);
+      });
+    }
+  }, [openId]);
+
+  useEffect(() => {
+    if (!showModal) {
+      equipmentService.getAll().then((res) => {
+        setEquipmentData(res.data as Equipment[]);
+      });
+    }
+  }, [showModal]);
+
+  //updates the date
+  const onSubmit = (data: any) => {
+    equipmentService
+      .updateById(openId, data)
+      .then((res) => {
+        console.log("successfully updated ", res.data);
+        setShowModal(false);
+        setOpenId("");
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
   return (
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
       <ModalMedicalEquipment
-        open={!!openId}
-        onClose={() => setOpenId("")}
-        onOk={() => {}}
+        open={showModal}
+        onClose={() => {
+          setOpenId("");
+          setShowModal(false);
+        }}
+        onOk={onSubmit}
         title="Edit Medical Equipment"
+        item={selectedEqDetail}
       />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
@@ -102,7 +141,7 @@ export default function TableMedicalEquipment({ dataSource }: Prop) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataSource.map((data, index) => (
+          {equipmentData.map((data, index) => (
             <TableRow
               key={index}
               sx={{

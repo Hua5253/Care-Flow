@@ -3,13 +3,14 @@ import ProcedureBanner from "./ProcedureBanner";
 import ProcedureList from "./ProcedureList";
 import AppBanner from "../../AppBanner/AppBanner";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import pathwayService, { Pathway } from "../../../services/pathway-service";
 import DeleteProcedureModal from "../modals/DeleteProcedureModal";
 import AddProcedureModal from "../modals/AddProcedureModal";
 import ManagerSideBar from "../../SideBar/ManagerSideBar";
 import ProcedureButtons from "./ProcedureButtons";
 import DeletePathwayModal from "../modals/DeletePathwayModal";
+import procedureService from "../../../services/procedure-service";
 
 function ProcedureScreen() {
   const [inEdit, setInEdit] = useState(false);
@@ -21,16 +22,33 @@ function ProcedureScreen() {
   const { id } = useParams();
 
   const [pathway, setPathway] = useState<Pathway>({} as Pathway);
+  const navigate = useNavigate();
 
   useEffect(() => {
     pathwayService
       .getById<Pathway>(id as string)
-      .then(res => setPathway(res.data))
-      .catch(err => console.log(err));
+      .then((res) => setPathway(res.data))
+      .catch((err) => console.log(err));
   }, []);
 
+  const handleDeletePathway = (id: string) => {
+    pathwayService
+      .deleteById(id)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+
+    for (let procedureId of pathway.procedures) {
+      procedureService
+        .deleteById(procedureId)
+        .then(res => console.log(res.data))
+        .catch((err) => console.log(err));
+    }
+
+    navigate("/manager-pathway");
+  };
+
   return (
-    <Container id='app'>
+    <Container id="app">
       <Box sx={{ flexGrow: 1, mt: 8 }}>
         <AppBanner cred={true} />
         <ManagerSideBar />
@@ -61,8 +79,9 @@ function ProcedureScreen() {
         )}
         {showDeletePathwayModal && (
           <DeletePathwayModal
-            handleConfirm={() => setShowDeletePathwayModal(false)}
+            handleConfirm={handleDeletePathway}
             handleCancel={() => setShowDeletePathwayModal(false)}
+            pathwayId={id as string}
           />
         )}
       </Box>

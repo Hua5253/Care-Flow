@@ -13,7 +13,6 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
   const [location, setLocation] = useState("");
   const [capacity, setCapacity] = useState("");
   const [status, setStatus] = useState("");
-  const schedule = [];
 
   const style = {
     position: "absolute",

@@ -62,7 +62,7 @@ function ProcedureList({ inEdit, pathway, handleDeleteProcedure }: Props) {
           <TableRow key={index} hover sx={{ cursor: "pointer" }}>
             <TableCell>{procedure.start.toString()}</TableCell>
             <TableCell>{procedure.start.toString()}</TableCell>
-            <TableCell>{procedure.details}</TableCell>
+            <TableCell>{procedure.name}</TableCell>
             <TableCell>{procedure.status}</TableCell>
             <TableCell>{procedure.location}</TableCell>
             <TableCell>

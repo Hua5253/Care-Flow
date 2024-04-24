@@ -5,5 +5,6 @@ const router = Router();
 
 router.post("/", procedure_controller.createProcedure);
 router.get("/", procedure_controller.getProcedures);
+router.delete("/:id", procedure_controller.deleteProcedure);
 
 export default router;

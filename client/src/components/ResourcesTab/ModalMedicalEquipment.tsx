@@ -95,8 +95,8 @@ export default function ModalMedicalEquipment({
           {/* Not sure what classification is for? */}
           <TextField
             required
-            id="catagory"
-            label="Catagory"
+            id="category"
+            label="Category"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setCategory(e.target.value)}
           />

@@ -88,6 +88,7 @@ export default function Resources() {
         medicineService.create(data).then((res) => {
           setMedicineData([...medicineData, res.data]);
         });
+        setOpen("");
         break;
       case 2:
         // const officersData = await officersService.getAll();
@@ -97,6 +98,7 @@ export default function Resources() {
         roomService.create(data).then((res) => {
           setRoomData([...roomData, res.data]);
         });
+        setOpen("");
         break;
       default:
         break;
@@ -113,7 +115,9 @@ export default function Resources() {
     <ModalMedicine
       open={open === "Medicine"}
       onClose={() => setOpen("")}
-      onOk={() => {}}
+      onOk={(data) => {
+        handleSubmit(data);
+      }}
       title="Create New Medicine"
     />,
     <ModalOffice
@@ -125,7 +129,9 @@ export default function Resources() {
     <ModalRoom
       open={open === "Room"}
       onClose={() => setOpen("")}
-      onOk={() => {}}
+      onOk={(data) => {
+        handleSubmit(data);
+      }}
       title="Create New Room"
     />,
   ];

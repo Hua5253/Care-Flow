@@ -56,8 +56,13 @@ import equipmentService from "../../services/equipment-service";
 interface Prop {
   dataSource: Equipment[];
   onEdit: () => void;
+  onDelete: () => void;
 }
-export default function TableMedicalEquipment({ dataSource, onEdit }: Prop) {
+export default function TableMedicalEquipment({
+  dataSource,
+  onEdit,
+  onDelete,
+}: Prop) {
   const [openId, setOpenId] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedEqDetail, setSelectedEqDetail] = useState<Equipment>(
@@ -97,6 +102,21 @@ export default function TableMedicalEquipment({ dataSource, onEdit }: Prop) {
         console.log(err);
       });
   };
+
+  const handleDelete = (id: string) => {
+    equipmentService
+      .deleteById(id)
+      .then((res) => {
+        console.log("successfully deleted ", res.data);
+        setShowModal(false);
+        setOpenId("");
+        onDelete();
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
+
   return (
     <TableContainer
       component={Paper}
@@ -164,7 +184,11 @@ export default function TableMedicalEquipment({ dataSource, onEdit }: Prop) {
                 >
                   Edit
                 </Button>
-                <IconButton size="medium" sx={{ ml: 3 }}>
+                <IconButton
+                  size="medium"
+                  sx={{ ml: 3 }}
+                  onClick={() => handleDelete(data._id || "")}
+                >
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

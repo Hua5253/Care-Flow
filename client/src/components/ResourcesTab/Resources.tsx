@@ -18,6 +18,7 @@ import ModalOffice from "./ModalOffice";
 import equipmentService, { Equipment } from "../../services/equipment-service";
 import medicineService from "../../services/medicine-service";
 import roomService from "../../services/room-service";
+import { set } from "react-hook-form";
 
 const tabs: string[] = ["Medical Equipment", "Medicine", "Officers", "Room"];
 
@@ -110,6 +111,11 @@ export default function Resources() {
     setOpen("");
   };
 
+  const handleDelete = () => {
+    fetchData();
+    setOpen("");
+  };
+
   const modals: React.ReactElement[] = [
     <ModalMedicalEquipment
       open={open === "Medical Equipment"}
@@ -142,10 +148,22 @@ export default function Resources() {
   ];
 
   const tables: React.ReactElement[] = [
-    <TableMedicalEquipment dataSource={equipmentData} onEdit={handleEdit} />,
-    <TableMedicine dataSource={medicineData} onEdit={handleEdit} />,
+    <TableMedicalEquipment
+      dataSource={equipmentData}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+    />,
+    <TableMedicine
+      dataSource={medicineData}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+    />,
     <TableOfficers />,
-    <TableRoom dataSource={roomData} onEdit={handleEdit} />,
+    <TableRoom
+      dataSource={roomData}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+    />,
   ];
 
   return (

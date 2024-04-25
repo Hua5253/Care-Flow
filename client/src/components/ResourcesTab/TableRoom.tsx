@@ -58,9 +58,10 @@ import roomService, { Room } from "../../services/room-service";
 interface Props {
   dataSource: Room[];
   onEdit: () => void;
+  onDelete: () => void;
 }
 
-export default function TableRoom({ dataSource, onEdit }: Props) {
+export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
   const [openId, setOpenId] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedRoomDetail, setSelectedRoomDetail] = useState<Room>(
@@ -95,6 +96,20 @@ export default function TableRoom({ dataSource, onEdit }: Props) {
         setShowModal(false);
         setOpenId("");
         onEdit();
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
+
+  const handleDelete = (id: string) => {
+    roomService
+      .deleteById(id)
+      .then((res) => {
+        console.log("successfully deleted ", res.data);
+        setShowModal(false);
+        setOpenId("");
+        onDelete();
       })
       .catch((err): void => {
         console.log(err);
@@ -164,7 +179,11 @@ export default function TableRoom({ dataSource, onEdit }: Props) {
                 >
                   Edit
                 </Button>
-                <IconButton size="medium" sx={{ ml: 3 }}>
+                <IconButton
+                  size="medium"
+                  sx={{ ml: 3 }}
+                  onClick={() => handleDelete(data._id || "")}
+                >
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

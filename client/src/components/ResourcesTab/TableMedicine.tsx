@@ -63,9 +63,10 @@ import medicineService, { Medicine } from "../../services/medicine-service";
 interface Prop {
   dataSource: Medicine[];
   onEdit: () => void;
+  onDelete: () => void;
 }
 
-export default function TableMedicine({ dataSource, onEdit }: Prop) {
+export default function TableMedicine({ dataSource, onEdit, onDelete }: Prop) {
   const [openId, setOpenId] = useState<string>("");
   const [selectedMedicineDetail, setSelectedMedicineDetail] =
     useState<Medicine>({} as Medicine);
@@ -90,6 +91,20 @@ export default function TableMedicine({ dataSource, onEdit }: Prop) {
         setShowModal(false);
         setOpenId("");
         onEdit();
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
+
+  const handleDelete = (id: string) => {
+    medicineService
+      .deleteById(id)
+      .then((res) => {
+        console.log("successfully deleted ", res.data);
+        setShowModal(false);
+        setOpenId("");
+        onDelete();
       })
       .catch((err): void => {
         console.log(err);
@@ -158,7 +173,11 @@ export default function TableMedicine({ dataSource, onEdit }: Prop) {
                 >
                   Edit
                 </Button>
-                <IconButton size="medium" sx={{ ml: 3 }}>
+                <IconButton
+                  size="medium"
+                  sx={{ ml: 3 }}
+                  onClick={() => handleDelete(data._id || "")}
+                >
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

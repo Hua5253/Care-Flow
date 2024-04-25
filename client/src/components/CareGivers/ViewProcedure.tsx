@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Paper,
   Table,
@@ -27,22 +27,31 @@ export default function ViewProcedure() {
   const [showEndProcedureModal, setShowEndProcedureModal] = useState(false);
   const [showCancelProcedureModal, setShowCancelProcedureModal] = useState(false);
 
+  const [text, setText] = useState("");
+  const [procedure, setProcedure] = useState<Procedure>();
+  const [procedureStatus, setStatus] = useState("");
 
+  //fetches the procedure data based on id
+  useEffect(() => {
+    const fetchProcedure = async () => {
+      try {
+        procedureService.getById<Procedure>(id as string).then((res) => setProcedure(res.data))
+      } catch (error) {
+        console.error('Failed to fetch procedures:', error);
+      }
+    }
+    fetchProcedure();
+  }, []);
 
-  const [text, setText] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lacinia metus a malesuada tristique." +
-      "Nunc non tortor a dolor vestibulum pulvinar." +
-      "Morbi placerat felis nec diam dictum pellentesque." +
-      "Nunc non ex facilisis ex condimentum sagittis ut vitae nulla." +
-      "Vivamus ut turpis quis velit ullamcorper tincidunt." +
-      "Pellentesque et enim viverra, hendrerit risus eu, ornare sem." +
-      "Pellentesque porta metus nec egestas aliquet." +
-      "Aliquam vulputate tellus non nibh placerat posuere." +
-      "Donec sed dolor et nisi mattis tincidunt in varius leo." +
-      "Vestibulum eget tortor porttitor, laoreet sem sed, feugiat quam." +
-      "Nulla dictum ligula in dolor pharetra fermentum." +
-      "Integer sit amet nibh non leo gravida bibendum non sit amet turpis."
-  );
+  //changes the details based on procedure details
+  useEffect(() => {
+    if (procedure) {
+      setText(procedure.details);
+      setStatus(procedure.status);
+    }
+  }, [procedure]);
+
+  
 
   //handles editing mode 
   const handleEditClick = () => {
@@ -77,6 +86,36 @@ export default function ViewProcedure() {
     setShowCancelProcedureModal(false)
   };
 
+  function formatDate(dateInput: Date | string| undefined): string {
+    if (!dateInput) {
+      return "No time available";
+    }
+    let date: Date;
+    if (dateInput instanceof Date) {
+      date = dateInput;
+    } else {
+      // Attempt to create a Date object from the string input
+      date = new Date(dateInput);
+    }
+    // Formate to month, date, year format
+    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function formatTime(timeInput: Date | string | undefined): string {
+    if (!timeInput) {
+      return "No time available";
+    }
+    let time: Date;
+    if (timeInput instanceof Date) {
+      time = timeInput;
+    } else {
+      // Attempt to create a Date object from the string input
+      time = new Date(timeInput);
+    }
+    // Format time to 12-hour AM/PM format
+    return time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true });
+  }
+
   return (
     <Box
       sx={{
@@ -104,20 +143,20 @@ export default function ViewProcedure() {
           <Table sx={{ width: "100%" }} aria-label="simple table">
             <TableBody>
               <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell align="left">Time</TableCell>
-                <TableCell align="left">Patient</TableCell>
                 <TableCell align="left">Procedure</TableCell>
+                <TableCell align="left">Patient</TableCell>
+                <TableCell align="left">Date</TableCell>
+                <TableCell align="left">Time</TableCell>
                 <TableCell align="left">Location</TableCell>
+                <TableCell align="left">Status</TableCell>
               </TableRow>
               <TableRow sx={{ backgroundColor: "#C2DFE3" }}>
-                {" "}
-                {/* Color applied here */}
-                <TableCell>Aug 24</TableCell>
-                <TableCell align="left">12:30 PM</TableCell>
-                <TableCell align="left">Alice Johnson</TableCell>
-                <TableCell align="left">MRI</TableCell>
-                <TableCell align="left">Room 2020</TableCell>
+                <TableCell align="left">{procedure?.name}</TableCell>
+                <TableCell align="left">{procedure?.patient}</TableCell>
+                <TableCell align="left">{formatDate(procedure?.start)}</TableCell>
+                <TableCell align="left">{formatTime(procedure?.start)}</TableCell>
+                <TableCell align="left">{procedure?.location}</TableCell>
+                <TableCell align="left">{procedureStatus}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

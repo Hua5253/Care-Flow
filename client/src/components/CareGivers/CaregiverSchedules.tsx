@@ -15,11 +15,8 @@ import procedureService from "../../services/procedure-service";
 
 export default function ViewProcedure() {
   const [procedures, setProcedures] = useState<any>([]);
-
   const navigate = useNavigate();
-  const openProcedure = () => {
-    navigate("/procedure/123");
-  };
+
 
   useEffect(() => {
     async function fetchData() {
@@ -97,11 +94,12 @@ export default function ViewProcedure() {
           <Table sx={{ width: "100%" }} aria-label="simple table">
             <TableBody>
               <TableRow>
+                <TableCell align="left">Procedure</TableCell>
+                <TableCell align="left">Patient</TableCell>
                 <TableCell>Date</TableCell>
                 <TableCell align="left">Time</TableCell>
-                <TableCell align="left">Patient</TableCell>
-                <TableCell align="left">Procedure</TableCell>
                 <TableCell align="left">Location</TableCell>
+                <TableCell align="left">Status</TableCell>
               </TableRow>
               {procedures.map((procedure: any, index : any) => (
                 
@@ -109,13 +107,16 @@ export default function ViewProcedure() {
                   key={index}
                   sx={{ backgroundColor: index % 2 === 0 ? "#C2DFE3" : null }}
                 >
+                  <TableCell align="left">{procedure.name}</TableCell>
+                  <TableCell align="left">{procedure.patient}</TableCell>
                   <TableCell>{formatDate(procedure.start)}</TableCell>
                   <TableCell align="left">{formatTime(procedure.start)}</TableCell>
-                  <TableCell align="left">{procedure.patient}</TableCell>
-                  <TableCell align="left">{procedure.name}</TableCell>
                   <TableCell align="left">{procedure.location}</TableCell>
+                  <TableCell align="left">{procedure.status}</TableCell>
                   <TableCell align="left">
-                    <Button onClick={openProcedure}>Open</Button>
+                    <Button onClick={() => navigate(`/procedure/${procedure._id}`)}>
+                      Open
+                      </Button>
                   </TableCell>
                 </TableRow>
               ))}

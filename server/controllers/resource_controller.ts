@@ -248,7 +248,7 @@ const deleteEquipment: RequestHandler = async (request, response, next) => {
 
 const createMedicine: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
-  const catagory = request.body.category;
+  const category = request.body.category;
   const usage = request.body.usage;
   const packaging = request.body.packaging;
   const quantity = request.body.quantity;
@@ -258,7 +258,7 @@ const createMedicine: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "name is required in the request body." });
   }
-  if (!catagory) {
+  if (!category) {
     return response
       .status(400)
       .json({ error: "catagory is required in the request body." });
@@ -268,6 +268,7 @@ const createMedicine: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "usage is required in the request body." });
   }
+  //is packaging required? bc it is is not stated in the schema as required
   if (!packaging) {
     return response
       .status(400)
@@ -282,7 +283,7 @@ const createMedicine: RequestHandler = async (request, response, next) => {
   try {
     const newMedicine = await MedicineModel.create({
       name: name,
-      catagory: catagory,
+      category: category,
       usage: usage,
       packaging: packaging,
       quantity: quantity,

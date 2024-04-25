@@ -13,54 +13,21 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalRoom from "./ModalRoom";
-import { useState } from "react";
-import { Room } from "../../services/room-service";
-
-// interface Room {
-//   id: string;
-//   roomName: string;
-//   roomNumber: string;
-//   capacity: string;
-//   currentStatus: string;
-// }
-
-// const dataSource: Room[] = [
-//   {
-//     id: "1",
-//     roomName: "General Ward",
-//     roomNumber: "101A",
-//     capacity: "4 beds",
-//     currentStatus: "10Full",
-//   },
-//   {
-//     id: "2",
-//     roomName: "ICU",
-//     roomNumber: "201",
-//     capacity: "2 beds",
-//     currentStatus: "1 bed available",
-//   },
-//   {
-//     id: "3",
-//     roomName: "Operating Room",
-//     roomNumber: "OR-3",
-//     capacity: "1 operating table",
-//     currentStatus: "Available",
-//   },
-//   {
-//     id: "4",
-//     roomName: "Examination Room",
-//     roomNumber: "102B",
-//     capacity: "1 examination table",
-//     currentStatus: "In use",
-//   },
-// ];
+import { useEffect, useState } from "react";
+import roomService, { Room } from "../../services/room-service";
 
 interface Props {
   dataSource: Room[];
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-export default function TableRoom({ dataSource }: Props) {
+export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
   const [openId, setOpenId] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedRoomDetail, setSelectedRoomDetail] = useState<Room>(
+    {} as Room
+  );
   const getCurrentStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       "10Full": "#409832",
@@ -71,16 +38,59 @@ export default function TableRoom({ dataSource }: Props) {
     return colors[status] || "#000";
   };
 
+  useEffect(() => {
+    if (openId) {
+      roomService.getById(openId).then((res) => {
+        setSelectedRoomDetail(res.data as Room);
+        setShowModal(true);
+      });
+    }
+  }, [openId]);
+
+  //updates the data
+  const onSubmit = (data: any) => {
+    // console.log(data);
+    roomService
+      .updateById(openId, data)
+      .then((res) => {
+        console.log("successfully updated ", res.data);
+        setShowModal(false);
+        setOpenId("");
+        onEdit();
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
+
+  const handleDelete = (id: string) => {
+    roomService
+      .deleteById(id)
+      .then((res) => {
+        console.log("successfully deleted ", res.data);
+        setShowModal(false);
+        setOpenId("");
+        onDelete();
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
+
   return (
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
       <ModalRoom
-        open={!!openId}
-        onClose={() => setOpenId("")}
-        onOk={() => {}}
+        open={showModal}
+        onClose={() => {
+          setOpenId("");
+          setShowModal(false);
+        }}
+        onOk={onSubmit}
         title="Edit Room"
+        item={selectedRoomDetail}
       />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
@@ -130,7 +140,11 @@ export default function TableRoom({ dataSource }: Props) {
                 >
                   Edit
                 </Button>
-                <IconButton size="medium" sx={{ ml: 3 }}>
+                <IconButton
+                  size="medium"
+                  sx={{ ml: 3 }}
+                  onClick={() => handleDelete(data._id || "")}
+                >
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

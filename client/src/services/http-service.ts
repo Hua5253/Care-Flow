@@ -22,6 +22,7 @@ export class HttpService {
   updateById<T>(id: string, entity: T) {
     return apiClient.put<T>(this.endpoint + "/" + id, entity);
   }
+  
   deleteById<T>(id: string) {
     return apiClient.delete<T>(this.endpoint + "/" + id);
   }

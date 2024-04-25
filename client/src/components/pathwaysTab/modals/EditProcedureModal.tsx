@@ -1,6 +1,6 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
-import pathwayService, { Pathway } from "../../../services/pathway-service";
+import { Pathway } from "../../../services/pathway-service";
 import userService, { User } from "../../../services/user-service";
 import procedureService, {
   Procedure,
@@ -50,13 +50,20 @@ const textFieldStyles = {
   my: 2,
 };
 interface Props {
-  pathway: Pathway;
+  modalOpen: boolean;
   handleClose: () => void;
+  procedureToEditId: string;
+  pathway: Pathway;
 }
 
-export default function AddProcedureModal({ pathway, handleClose }: Props) {
+export default function EditProcedureModal({
+  modalOpen,
+  handleClose,
+  procedureToEditId,
+  pathway,
+}: Props) {
   const [procedureName, setProcedureName] = useState("");
-  const [caregiversNames, setCaregiversNames] = useState([""]);
+  const [caregiversNames, setCaregiversNames] = useState<string[]>([]);
   const [location, setLocation] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -66,6 +73,36 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
   useEffect(() => {
     userService.getAll<User>().then((res) => setAllUsers(res.data));
   }, []);
+
+  useEffect(() => {
+    procedureService
+      .getById<Procedure>(procedureToEditId)
+      .then(({ data: procedure }) => {
+        setProcedureName(procedure.name || "");
+        setLocation(procedure.location || "");
+        const caregiverIds = procedure.caregiver;
+        if (caregiverIds && caregiverIds.length > 0) {
+          setCaregiversNames([]);
+
+          caregiverIds.forEach((id) => {
+            userService
+              .getById<User>(id)
+              .then(({ data: user }) => {
+                setCaregiversNames((prevNames) => [...prevNames, user.name]);
+              })
+              .catch((err) => console.log(err));
+          });
+        } else {
+          setCaregiversNames([]);
+        }
+        setStartTime(toLocalDateTimeString(procedure.start.toString()) || "");
+        setEndTime(toLocalDateTimeString(procedure.end.toString()) || "");
+        setDetails(procedure.details || "");
+      })
+      .catch((err) => console.log(err));
+  }, [procedureToEditId]);
+
+  //   console.log(caregiversNames);
 
   const handleCaregiverChange = (
     index: number,
@@ -86,7 +123,7 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
     setCaregiversNames(newCaregiversNames);
   };
 
-  const confirmAddProcedure = () => {
+  const confirmEditProcedure = () => {
     const caregivers: string[] = [];
     for (let user of allUsers) {
       if (caregiversNames.includes(user.name))
@@ -95,7 +132,7 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
 
     console.log(caregivers);
 
-    const newProcedure: Procedure = {
+    const updatedProcedure: Procedure = {
       name: procedureName,
       caregiver: caregivers,
       location: location,
@@ -107,17 +144,8 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
     };
 
     procedureService
-      .create(newProcedure)
-      .then((res) => {
-        const updatedPathway: Pathway = {
-          ...pathway,
-          procedures: [...pathway.procedures, res.data._id as string],
-        };
-        pathwayService
-          .updateById<Pathway>(pathway._id as string, updatedPathway)
-          .then((res) => console.log(res.data))
-          .catch((err) => console.log(err));
-      })
+      .updateById(procedureToEditId, updatedProcedure)
+      .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
 
     handleClose();
@@ -126,7 +154,7 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
   return (
     <div>
       <Modal
-        open={true}
+        open={modalOpen}
         onClose={handleClose}
         aria-labelledby="procedure-modal-title"
       >
@@ -214,7 +242,7 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={confirmAddProcedure}
+              onClick={confirmEditProcedure}
             >
               Confirm
             </Button>
@@ -231,4 +259,18 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
       </Modal>
     </div>
   );
+}
+
+function toLocalDateTimeString(isoString: string) {
+  const date = new Date(isoString);
+  function pad(value: number): string {
+    return value.toString().padStart(2, "0");
+  }
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }

@@ -24,11 +24,12 @@ const buttonContainerStyle = {
 };
 
 interface Props {
-    handleConfirm: () => void;
+    handleConfirm: (id: string) => void;
     handleCancel: () => void;
+    pathwayId: string;
 }
 
-export default function DeletePathwayModal({handleConfirm, handleCancel}: Props) {
+export default function DeletePathwayModal({handleConfirm, handleCancel, pathwayId}: Props) {
 
   let title = (
     <h2 id="confirmation-modal-title">Do you want to Delete this Pathway?</h2>
@@ -46,7 +47,7 @@ export default function DeletePathwayModal({handleConfirm, handleCancel}: Props)
           {title}
           <div style={buttonContainerStyle}>
             <Button
-              onClick={handleConfirm}
+              onClick={() => handleConfirm(pathwayId)}
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}

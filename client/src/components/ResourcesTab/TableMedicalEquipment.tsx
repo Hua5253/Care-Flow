@@ -15,44 +15,7 @@ import ModalMedicalEquipment from "./ModalMedicalEquipment";
 import { useEffect, useState } from "react";
 import { Equipment } from "../../services/equipment-service";
 import equipmentService from "../../services/equipment-service";
-// interface MedicalEquipment {
-//   name: string;
-//   id: string;
-//   category: string;
-//   quantity: string;
-//   status: string;
-// }
 
-// const dataSource: MedicalEquipment[] = [
-//   {
-//     name: "Surgical Masks",
-//     id: "LAB-0238",
-//     category: "Surgical Masks",
-//     quantity: "1200 units",
-//     status: "In Stock",
-//   },
-//   {
-//     name: "Surgical Masks",
-//     id: "LAB-0237",
-//     category: "Stethoscope",
-//     quantity: "35 units ",
-//     status: "Low Stock",
-//   },
-//   {
-//     name: "Surgical Masks",
-//     id: "LAB-0236",
-//     category: "IV Drip Bags",
-//     quantity: "500 units",
-//     status: "Out of Stock",
-//   },
-//   {
-//     name: "Surgical Masks",
-//     id: "LAB-0235",
-//     category: "Hand Sanitizer",
-//     quantity: "150 units",
-//     status: "On Order",
-//   },
-// ];
 interface Prop {
   dataSource: Equipment[];
   onEdit: () => void;

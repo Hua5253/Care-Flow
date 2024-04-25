@@ -16,50 +16,6 @@ import { useEffect, useState } from "react";
 import ModalMedicine from "./ModalMedicine";
 import medicineService, { Medicine } from "../../services/medicine-service";
 
-// interface Medicine {
-//   id: string;
-//   name: string;
-//   category: string;
-//   usage: string;
-//   packaging: string;
-//   stockQuantity: string;
-// }
-
-// const dataSource: Medicine[] = [
-//   {
-//     id: "1",
-//     name: "Aspirin",
-//     category: "NSAID",
-//     usage: "reduce pain",
-//     packaging: "100mg/tablet, 100 tablets/bottle",
-//     stockQuantity: "500 bottles",
-//   },
-//   {
-//     id: "2",
-//     name: "Amoxicillin",
-//     category: "Antibiotic",
-//     usage: "treat various",
-//     packaging: "500mg/capsule, 30 capsules/box",
-//     stockQuantity: "300 boxes",
-//   },
-//   {
-//     id: "3",
-//     name: "Metoprolol",
-//     category: "Beta-Blocker",
-//     usage: "treat high blood",
-//     packaging: "50mg/tablet, 60 tablets/bottle.",
-//     stockQuantity: "200 bottles",
-//   },
-//   {
-//     id: "4",
-//     name: "Rivaroxaban",
-//     category: "Anticoagulant",
-//     usage: "Used to treat high",
-//     packaging: "20mg/tablet, 30 tablets/box",
-//     stockQuantity: "150 boxes",
-//   },
-// ];
-
 interface Prop {
   dataSource: Medicine[];
   onEdit: () => void;

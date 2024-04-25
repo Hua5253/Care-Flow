@@ -15,10 +15,9 @@ import ModalMedicalEquipment from "./ModalMedicalEquipment";
 import ModalMedicine from "./ModalMedicine";
 import ModalRoom from "./ModalRoom";
 import ModalOffice from "./ModalOffice";
-import equipmentService, { Equipment } from "../../services/equipment-service";
+import equipmentService from "../../services/equipment-service";
 import medicineService from "../../services/medicine-service";
 import roomService from "../../services/room-service";
-import { set } from "react-hook-form";
 
 const tabs: string[] = ["Medical Equipment", "Medicine", "Officers", "Room"];
 

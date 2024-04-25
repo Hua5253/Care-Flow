@@ -16,45 +16,6 @@ import ModalRoom from "./ModalRoom";
 import { useEffect, useState } from "react";
 import roomService, { Room } from "../../services/room-service";
 
-// interface Room {
-//   id: string;
-//   roomName: string;
-//   roomNumber: string;
-//   capacity: string;
-//   currentStatus: string;
-// }
-
-// const dataSource: Room[] = [
-//   {
-//     id: "1",
-//     roomName: "General Ward",
-//     roomNumber: "101A",
-//     capacity: "4 beds",
-//     currentStatus: "10Full",
-//   },
-//   {
-//     id: "2",
-//     roomName: "ICU",
-//     roomNumber: "201",
-//     capacity: "2 beds",
-//     currentStatus: "1 bed available",
-//   },
-//   {
-//     id: "3",
-//     roomName: "Operating Room",
-//     roomNumber: "OR-3",
-//     capacity: "1 operating table",
-//     currentStatus: "Available",
-//   },
-//   {
-//     id: "4",
-//     roomName: "Examination Room",
-//     roomNumber: "102B",
-//     capacity: "1 examination table",
-//     currentStatus: "In use",
-//   },
-// ];
-
 interface Props {
   dataSource: Room[];
   onEdit: () => void;

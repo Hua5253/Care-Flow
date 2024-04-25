@@ -1,13 +1,21 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  onOk: () => void;
+  onOk: (data: any) => void;
   title: string;
+  item?: any;
 }
 
-export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
+export default function ModalRoom({
+  open,
+  onClose,
+  onOk,
+  title,
+  item,
+}: ModalProps) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -51,6 +59,17 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
     },
     my: 2, // Added more vertical spacing
   };
+  const [name, setName] = useState(item?.name || "");
+  const [location, setLocation] = useState(item?.location || "");
+  const [capacity, setCapacity] = useState(item?.capacity ?? "");
+  const [status, setStatus] = useState(item?.status || "");
+
+  useEffect(() => {
+    setName(item?.name || "");
+    setLocation(item?.location || "");
+    setCapacity(item?.capacity ?? "");
+    setStatus(item?.status || "");
+  }, [item]);
 
   return (
     <div>
@@ -73,37 +92,47 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
             id="name"
             label="Name"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setName(e.target.value)}
+            value={name}
           />
           <TextField
             required
             id="room-number"
             label="Room Number"
             sx={textFieldStyles} // Added more vertical spacing
-          />
-          <TextField
-            required
-            id="usage"
-            label="Usage"
-            sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setLocation(e.target.value)}
+            value={location}
           />
           <TextField
             required
             id="capacity"
             label="Capacity"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setCapacity(e.target.value)}
+            value={capacity}
           />
           <TextField
             required
             id="current-status"
             label="Current Status"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setStatus(e.target.value)}
+            value={status}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={onOk}
+              onClick={() =>
+                onOk({
+                  name,
+                  location,
+                  capacity,
+                  status,
+                  schedule: [] as any[],
+                })
+              }
             >
               Confirm
             </Button>

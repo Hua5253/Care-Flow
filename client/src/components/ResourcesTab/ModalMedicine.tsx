@@ -1,10 +1,11 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
-
+import { useEffect, useState } from "react";
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  onOk: () => void;
+  onOk: (data: any) => void;
   title: string;
+  item?: any;
 }
 
 export default function ModalMedicine({
@@ -12,6 +13,7 @@ export default function ModalMedicine({
   onClose,
   onOk,
   title,
+  item,
 }: ModalProps) {
   const style = {
     position: "absolute",
@@ -56,6 +58,19 @@ export default function ModalMedicine({
     },
     my: 2, // Added more vertical spacing
   };
+  const [name, setName] = useState(item?.name || "");
+  const [category, setCategory] = useState(item?.category || "");
+  const [usage, setUsage] = useState(item?.usage || "");
+  const [packaging, setPackaging] = useState(item?.packaging || "");
+  const [quantity, setQuantity] = useState(item?.quantity ?? "");
+
+  useEffect(() => {
+    setName(item?.name || "");
+    setCategory(item?.category || "");
+    setUsage(item?.usage || "");
+    setPackaging(item?.packaging || "");
+    setQuantity(item?.quantity ?? "");
+  }, [item]);
 
   return (
     <div>
@@ -78,37 +93,49 @@ export default function ModalMedicine({
             id="name"
             label="Name"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setName(e.target.value)}
+            value={name}
           />
           <TextField
             required
-            id="catagory"
-            label="Catagory"
+            id="category"
+            label="Category"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setCategory(e.target.value)}
+            value={category}
           />
           <TextField
             required
             id="usage"
             label="Usage"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setUsage(e.target.value)}
+            value={usage}
           />
           <TextField
             required
             id="packaging"
             label="Packaging"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setPackaging(e.target.value)}
+            value={packaging}
           />
           <TextField
             required
             id="quantity"
             label="Stock Quantity"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setQuantity(e.target.value)}
+            value={quantity}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={onOk}
+              onClick={() =>
+                onOk({ name, category, usage, packaging, quantity })
+              }
             >
               Confirm
             </Button>

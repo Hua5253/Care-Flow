@@ -11,6 +11,7 @@ import ManagerSideBar from "../../SideBar/ManagerSideBar";
 import ProcedureButtons from "./ProcedureButtons";
 import DeletePathwayModal from "../modals/DeletePathwayModal";
 import procedureService from "../../../services/procedure-service";
+import EditProcedureModal from "../modals/EditProcedureModal";
 
 function ProcedureScreen() {
   const [inEdit, setInEdit] = useState(false);
@@ -18,6 +19,8 @@ function ProcedureScreen() {
     useState(false);
   const [showAddProcedureModal, setShowAddProcedureModal] = useState(false);
   const [showDeletePathwayModal, setShowDeletePathwayModal] = useState(false);
+  const [showEditProcedureModal, setShowEditProcedureModal] = useState(false);
+  const [procedureToEditId, setProcedureToEditId] = useState("");
 
   const { id } = useParams();
 
@@ -40,11 +43,17 @@ function ProcedureScreen() {
     for (let procedureId of pathway.procedures) {
       procedureService
         .deleteById(procedureId)
-        .then(res => console.log(res.data))
+        .then((res) => console.log(res.data))
         .catch((err) => console.log(err));
     }
 
     navigate("/manager-pathway");
+  };
+
+  const handleEditProcedure = (procedureId: string) => {
+    // console.log(procedureId);
+    setProcedureToEditId(procedureId);
+    setShowEditProcedureModal(true);
   };
 
   return (
@@ -57,6 +66,7 @@ function ProcedureScreen() {
           pathway={pathway}
           inEdit={inEdit}
           handleDeleteProcedure={() => setShowDeleteProcedureModal(true)}
+          handleEditProcedure={handleEditProcedure}
         />
         <ProcedureButtons
           inEdit={inEdit}
@@ -64,6 +74,12 @@ function ProcedureScreen() {
           handleSaveClick={() => setInEdit(false)}
           handleAddProcedure={() => setShowAddProcedureModal(true)}
           handleDeletePathway={() => setShowDeletePathwayModal(true)}
+        />
+        <EditProcedureModal
+          modalOpen={showEditProcedureModal}
+          procedureToEditId={procedureToEditId}
+          handleClose={() => setShowEditProcedureModal(false)}
+          pathway={pathway}
         />
         {showDeleteProcedureModal && (
           <DeleteProcedureModal

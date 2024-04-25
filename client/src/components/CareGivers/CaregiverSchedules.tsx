@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Paper,
   Table,
@@ -11,41 +11,53 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-interface Procedure {
-  date: string;
-  time: string;
-  patient: string;
-  procedureType: string;
-  location: string;
-}
+import procedureService from "../../services/procedure-service";
 
 export default function ViewProcedure() {
-  const [procedures, setProcedures] = useState<Procedure[]>([
-    {
-      date: "Aug 24",
-      time: "12:30 PM",
-      patient: "Alice Johnson",
-      procedureType: "MRI",
-      location: "Room 2020",
-    },
-    // Add more procedures as needed
-  ]);
+  const [procedures, setProcedures] = useState<any>([]);
 
-  const addProcedure = () => {
-    const newProcedure = {
-      date: "Aug 25",
-      time: "1:00 PM",
-      patient: "Bob Smith",
-      procedureType: "X-Ray",
-      location: "Room 2030",
-    };
-    setProcedures([...procedures, newProcedure]);
-  };
   const navigate = useNavigate();
   const openProcedure = () => {
     navigate("/procedure/123");
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        await procedureService.getAll().then((res) => {
+          setProcedures(res.data);
+        });
+      }
+      catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  function formatDate(dateInput: Date | string): string {
+    let date: Date;
+    if (dateInput instanceof Date) {
+      date = dateInput;
+    } else {
+      // Attempt to create a Date object from the string input
+      date = new Date(dateInput);
+    }
+    // Formate to month, date, year format
+    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function formatTime(timeInput: Date | string): string {
+    let time: Date;
+    if (timeInput instanceof Date) {
+      time = timeInput;
+    } else {
+      // Attempt to create a Date object from the string input
+      time = new Date(timeInput);
+    }
+    // Format time to 12-hour AM/PM format
+    return time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true });
+  }
 
   return (
     // <Box sx={{ width: '100%', margin: 'auto', padding: '20px' }}>
@@ -91,15 +103,16 @@ export default function ViewProcedure() {
                 <TableCell align="left">Procedure</TableCell>
                 <TableCell align="left">Location</TableCell>
               </TableRow>
-              {procedures.map((procedure, index) => (
+              {procedures.map((procedure: any, index : any) => (
+                
                 <TableRow
                   key={index}
                   sx={{ backgroundColor: index % 2 === 0 ? "#C2DFE3" : null }}
                 >
-                  <TableCell>{procedure.date}</TableCell>
-                  <TableCell align="left">{procedure.time}</TableCell>
+                  <TableCell>{formatDate(procedure.start)}</TableCell>
+                  <TableCell align="left">{formatTime(procedure.start)}</TableCell>
                   <TableCell align="left">{procedure.patient}</TableCell>
-                  <TableCell align="left">{procedure.procedureType}</TableCell>
+                  <TableCell align="left">{procedure.name}</TableCell>
                   <TableCell align="left">{procedure.location}</TableCell>
                   <TableCell align="left">
                     <Button onClick={openProcedure}>Open</Button>
@@ -109,10 +122,6 @@ export default function ViewProcedure() {
             </TableBody>
           </Table>
         </TableContainer>
-
-        <Button onClick={addProcedure} sx={{ marginY: 2 }}>
-          Add Procedure
-        </Button>
       </Paper>
     </Box>
   );

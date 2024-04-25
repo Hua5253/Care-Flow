@@ -12,12 +12,22 @@ import {
   Box,
   TextField,
 } from "@mui/material";
+import procedureService, {Procedure} from "../../services/procedure-service";
+import { useParams } from "react-router-dom";
 
-import ConfirmationModal from "../Modals/ConfirmationModal";
+import StartProcedureModal from "./Modals/StartProcedureModal";
+import CancelProcedureModal from "./Modals/CancelProcedureModal";
+import EndProcedureModal from "./Modals/EndProcedureModal";
 
 export default function ViewProcedure() {
   const [isEditing, setEditMode] = useState(false);
-  const [openConfirmation, setOpenConfirmation] = useState(false); // State to control the ConfirmationModal
+  const {id} = useParams();
+  
+  const [showStartProcedureModal, setShowStartProcedureModal] = useState(false);
+  const [showEndProcedureModal, setShowEndProcedureModal] = useState(false);
+  const [showCancelProcedureModal, setShowCancelProcedureModal] = useState(false);
+
+
 
   const [text, setText] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lacinia metus a malesuada tristique." +
@@ -34,31 +44,37 @@ export default function ViewProcedure() {
       "Integer sit amet nibh non leo gravida bibendum non sit amet turpis."
   );
 
+  //handles editing mode 
   const handleEditClick = () => {
     setEditMode(true);
   };
 
+  //saves edited chances
   const handleSaveClick = () => {
+    setEditMode(false);
+  };
+
+  //cancels edited changes 
+  const handleCancelSaveClick = () => {
     setEditMode(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setText(event.target.value);
 
+  //handles start procedure
   const handleStartProcedure = () => {
-    // Call this when you want to open the confirmation modal
-    setOpenConfirmation(true);
+    setShowStartProcedureModal(false)
   };
 
-  const handleCloseConfirmation = () => {
-    // Call this to close the modal
-    setOpenConfirmation(false);
+  //handles ending a procedure
+  const handleEndProcedure = () => {
+    setShowEndProcedureModal(false)
   };
 
-  const handleConfirmProcedure = () => {
-    // Handle the confirmation action here
-    console.log("Procedure started");
-    setOpenConfirmation(false); // Close modal after confirmation
+  //handles canceling a procedure
+  const handleCancelProcedure = () => {
+    setShowCancelProcedureModal(false)
   };
 
   return (
@@ -148,6 +164,7 @@ export default function ViewProcedure() {
                 variant="contained"
                 color="error"
                 sx={{ backgroundColor: "#5C6B73" }}
+                onClick={handleCancelSaveClick}
               >
                 Cancel edit
               </Button>
@@ -163,14 +180,14 @@ export default function ViewProcedure() {
               <Box>
                 <Button
                   variant="contained"
-                  onClick={handleStartProcedure}
+                  onClick={() => setShowStartProcedureModal(true)}
                   sx={{ backgroundColor: "#5C6B73", marginRight: "8px" }}
                 >
                   Start procedure
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={handleStartProcedure}
+                  onClick={() => setShowEndProcedureModal(true)}
                   sx={{ backgroundColor: "#5C6B73", marginRight: "8px" }}
                 >
                   End procedure
@@ -186,7 +203,7 @@ export default function ViewProcedure() {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={handleStartProcedure}
+                  onClick={() => setShowCancelProcedureModal(true)}
                   color="error"
                   sx={{ backgroundColor: "#5C6B73" }}
                 >
@@ -196,10 +213,20 @@ export default function ViewProcedure() {
             </Box>
           )}
         </Box>
-        <ConfirmationModal
-          open={openConfirmation}
-          onClose={handleCloseConfirmation}
-          onConfirm={handleConfirmProcedure}
+        <StartProcedureModal
+          open = {showStartProcedureModal}
+          handleConfirm={handleStartProcedure}
+          handleCancel={() => setShowStartProcedureModal(false)}
+        />
+        <EndProcedureModal
+          open = {showEndProcedureModal}
+          handleConfirm={handleEndProcedure}
+          handleCancel={() => setShowEndProcedureModal(false)}
+        />
+        <CancelProcedureModal
+          open = {showCancelProcedureModal}
+          handleConfirm={handleCancelProcedure}
+          handleCancel={() => setShowCancelProcedureModal(false)}
         />
       </Paper>
     </Box>

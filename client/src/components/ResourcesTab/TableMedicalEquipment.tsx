@@ -55,14 +55,14 @@ import equipmentService from "../../services/equipment-service";
 // ];
 interface Prop {
   dataSource: Equipment[];
+  onEdit: () => void;
 }
-export default function TableMedicalEquipment({ dataSource }: Prop) {
+export default function TableMedicalEquipment({ dataSource, onEdit }: Prop) {
   const [openId, setOpenId] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedEqDetail, setSelectedEqDetail] = useState<Equipment>(
     {} as Equipment
   );
-  const [equipmentData, setEquipmentData] = useState<Equipment[]>(dataSource);
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       "In Stock": "#409832",
@@ -72,6 +72,7 @@ export default function TableMedicalEquipment({ dataSource }: Prop) {
     };
     return colors[status] || "#000";
   };
+
   useEffect(() => {
     if (openId) {
       equipmentService.getById(openId).then((res) => {
@@ -81,22 +82,16 @@ export default function TableMedicalEquipment({ dataSource }: Prop) {
     }
   }, [openId]);
 
-  useEffect(() => {
-    if (!showModal) {
-      equipmentService.getAll().then((res) => {
-        setEquipmentData(res.data as Equipment[]);
-      });
-    }
-  }, [showModal]);
-
-  //updates the date
+  //updates the data
   const onSubmit = (data: any) => {
+    // console.log(data);
     equipmentService
       .updateById(openId, data)
       .then((res) => {
         console.log("successfully updated ", res.data);
         setShowModal(false);
         setOpenId("");
+        onEdit();
       })
       .catch((err): void => {
         console.log(err);
@@ -141,7 +136,7 @@ export default function TableMedicalEquipment({ dataSource }: Prop) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {equipmentData.map((data, index) => (
+          {dataSource.map((data, index) => (
             <TableRow
               key={index}
               sx={{

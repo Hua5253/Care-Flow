@@ -13,8 +13,8 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalRoom from "./ModalRoom";
-import { useState } from "react";
-import { Room } from "../../services/room-service";
+import { useEffect, useState } from "react";
+import roomService, { Room } from "../../services/room-service";
 
 // interface Room {
 //   id: string;
@@ -57,10 +57,15 @@ import { Room } from "../../services/room-service";
 
 interface Props {
   dataSource: Room[];
+  onEdit: () => void;
 }
 
-export default function TableRoom({ dataSource }: Props) {
+export default function TableRoom({ dataSource, onEdit }: Props) {
   const [openId, setOpenId] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedRoomDetail, setSelectedRoomDetail] = useState<Room>(
+    {} as Room
+  );
   const getCurrentStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       "10Full": "#409832",
@@ -71,16 +76,45 @@ export default function TableRoom({ dataSource }: Props) {
     return colors[status] || "#000";
   };
 
+  useEffect(() => {
+    if (openId) {
+      roomService.getById(openId).then((res) => {
+        setSelectedRoomDetail(res.data as Room);
+        setShowModal(true);
+      });
+    }
+  }, [openId]);
+
+  //updates the data
+  const onSubmit = (data: any) => {
+    // console.log(data);
+    roomService
+      .updateById(openId, data)
+      .then((res) => {
+        console.log("successfully updated ", res.data);
+        setShowModal(false);
+        setOpenId("");
+        onEdit();
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
+
   return (
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
       <ModalRoom
-        open={!!openId}
-        onClose={() => setOpenId("")}
-        onOk={() => {}}
+        open={showModal}
+        onClose={() => {
+          setOpenId("");
+          setShowModal(false);
+        }}
+        onOk={onSubmit}
         title="Edit Room"
+        item={selectedRoomDetail}
       />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>

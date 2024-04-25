@@ -1,11 +1,4 @@
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Modal,
-  CircularProgress,
-} from "@mui/material";
+import { TextField, Button, Box, Typography, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface ModalProps {

@@ -15,7 +15,7 @@ import ModalMedicalEquipment from "./ModalMedicalEquipment";
 import ModalMedicine from "./ModalMedicine";
 import ModalRoom from "./ModalRoom";
 import ModalOffice from "./ModalOffice";
-import equipmentService from "../../services/equipment-service";
+import equipmentService, { Equipment } from "../../services/equipment-service";
 import medicineService from "../../services/medicine-service";
 import roomService from "../../services/room-service";
 
@@ -34,37 +34,37 @@ export default function Resources() {
   const [equipmentData, setEquipmentData] = useState<any>([]);
   const [medicineData, setMedicineData] = useState<any>([]);
   const [roomData, setRoomData] = useState<any>([]);
+  async function fetchData() {
+    try {
+      switch (tabIndex) {
+        case 0:
+          await equipmentService.getAll().then((res) => {
+            setEquipmentData(res.data);
+          });
+          break;
+        case 1:
+          await medicineService.getAll().then((res) => {
+            setMedicineData(res.data);
+          });
+          break;
+        case 2:
+          // const officersData = await officersService.getAll();
+          // setData(officersData);
+          break;
+        case 3:
+          await roomService.getAll().then((res) => {
+            setRoomData(res.data);
+          });
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        switch (tabIndex) {
-          case 0:
-            await equipmentService.getAll().then((res) => {
-              setEquipmentData(res.data);
-            });
-            break;
-          case 1:
-            await medicineService.getAll().then((res) => {
-              setMedicineData(res.data);
-            });
-            break;
-          case 2:
-            // const officersData = await officersService.getAll();
-            // setData(officersData);
-            break;
-          case 3:
-            await roomService.getAll().then((res) => {
-              setRoomData(res.data);
-            });
-            break;
-          default:
-            break;
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
     fetchData();
   }, [tabIndex]);
 
@@ -81,14 +81,14 @@ export default function Resources() {
       case 0:
         equipmentService.create(data).then((res) => {
           setEquipmentData([...equipmentData, res.data]);
+          setOpen("");
         });
-        setOpen("");
         break;
       case 1:
         medicineService.create(data).then((res) => {
           setMedicineData([...medicineData, res.data]);
+          setOpen("");
         });
-        setOpen("");
         break;
       case 2:
         // const officersData = await officersService.getAll();
@@ -97,12 +97,17 @@ export default function Resources() {
       case 3:
         roomService.create(data).then((res) => {
           setRoomData([...roomData, res.data]);
+          setOpen("");
         });
-        setOpen("");
         break;
       default:
         break;
     }
+  };
+
+  const handleEdit = () => {
+    fetchData();
+    setOpen("");
   };
 
   const modals: React.ReactElement[] = [
@@ -137,10 +142,10 @@ export default function Resources() {
   ];
 
   const tables: React.ReactElement[] = [
-    <TableMedicalEquipment dataSource={equipmentData} />,
-    <TableMedicine dataSource={medicineData} />,
+    <TableMedicalEquipment dataSource={equipmentData} onEdit={handleEdit} />,
+    <TableMedicine dataSource={medicineData} onEdit={handleEdit} />,
     <TableOfficers />,
-    <TableRoom dataSource={roomData} />,
+    <TableRoom dataSource={roomData} onEdit={handleEdit} />,
   ];
 
   return (

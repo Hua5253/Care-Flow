@@ -1,19 +1,21 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
   onOk: (data: any) => void;
   title: string;
+  item?: any;
 }
 
-export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [status, setStatus] = useState("");
-
+export default function ModalRoom({
+  open,
+  onClose,
+  onOk,
+  title,
+  item,
+}: ModalProps) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -57,6 +59,17 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
     },
     my: 2, // Added more vertical spacing
   };
+  const [name, setName] = useState(item?.name || "");
+  const [location, setLocation] = useState(item?.location || "");
+  const [capacity, setCapacity] = useState(item?.capacity ?? "");
+  const [status, setStatus] = useState(item?.status || "");
+
+  useEffect(() => {
+    setName(item?.name || "");
+    setLocation(item?.location || "");
+    setCapacity(item?.capacity ?? "");
+    setStatus(item?.status || "");
+  }, [item]);
 
   return (
     <div>
@@ -80,6 +93,7 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
             label="Name"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setName(e.target.value)}
+            value={name}
           />
           <TextField
             required
@@ -87,6 +101,7 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
             label="Room Number"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setLocation(e.target.value)}
+            value={location}
           />
           <TextField
             required
@@ -94,6 +109,7 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
             label="Capacity"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setCapacity(e.target.value)}
+            value={capacity}
           />
           <TextField
             required
@@ -101,6 +117,7 @@ export default function ModalRoom({ open, onClose, onOk, title }: ModalProps) {
             label="Current Status"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setStatus(e.target.value)}
+            value={status}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button

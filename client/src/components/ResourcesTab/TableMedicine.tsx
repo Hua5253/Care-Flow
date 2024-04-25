@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalMedicine from "./ModalMedicine";
-import { Medicine } from "../../services/medicine-service";
+import medicineService, { Medicine } from "../../services/medicine-service";
 
 // interface Medicine {
 //   id: string;
@@ -62,20 +62,54 @@ import { Medicine } from "../../services/medicine-service";
 
 interface Prop {
   dataSource: Medicine[];
+  onEdit: () => void;
 }
 
-export default function TableMedicine({ dataSource }: Prop) {
+export default function TableMedicine({ dataSource, onEdit }: Prop) {
   const [openId, setOpenId] = useState<string>("");
+  const [selectedMedicineDetail, setSelectedMedicineDetail] =
+    useState<Medicine>({} as Medicine);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (openId) {
+      medicineService.getById(openId).then((res) => {
+        setSelectedMedicineDetail(res.data as Medicine);
+        setShowModal(true);
+      });
+    }
+  }, [openId]);
+
+  //updates the data
+  const onSubmit = (data: any) => {
+    console.log(data);
+    medicineService
+      .updateById(openId, data)
+      .then((res) => {
+        console.log("successfully updated ", res.data);
+        setShowModal(false);
+        setOpenId("");
+        onEdit();
+      })
+      .catch((err): void => {
+        console.log(err);
+      });
+  };
+
   return (
     <TableContainer
       component={Paper}
       sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
     >
       <ModalMedicine
-        open={!!openId}
-        onClose={() => setOpenId("")}
-        onOk={() => {}}
+        open={showModal}
+        onClose={() => {
+          setOpenId("");
+          setShowModal(false);
+        }}
+        onOk={onSubmit}
         title="Edit Medicine"
+        item={selectedMedicineDetail}
       />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>
@@ -120,7 +154,7 @@ export default function TableMedicine({ dataSource }: Prop) {
                 <Button
                   variant="outlined"
                   sx={{ fontSize: "13px" }}
-                  onClick={() => setOpenId(data.name)}
+                  onClick={() => setOpenId(data._id || "")}
                 >
                   Edit
                 </Button>

@@ -32,7 +32,7 @@ export default function ViewProcedure() {
   const [procedure, setProcedure] = useState<Procedure>();
   const [procedureStatus, setStatus] = useState("");
 
-  //fetches the procedure data based on id
+  //fetches the procedure data based on id on first load
   useEffect(() => {
     const fetchProcedure = async () => {
       try {
@@ -44,6 +44,19 @@ export default function ViewProcedure() {
     fetchProcedure();
   }, []);
 
+  //call to update procedure
+  const fetchProcedure = async () => {
+    try {
+      const res = await procedureService.getById<Procedure>(id as string);
+      setProcedure(res.data);
+      setOriginalText(res.data.details);
+      setText(res.data.details);
+      setStatus(res.data.status);
+    } catch (error) {
+      console.error('Failed to fetch procedures:', error);
+    }
+  };
+
   //changes the details based on procedure details
   useEffect(() => {
     if (procedure) {
@@ -52,6 +65,11 @@ export default function ViewProcedure() {
       setStatus(procedure.status);
     }
   }, [procedure]);
+
+  useEffect(() => {
+    fetchProcedure();
+  }, [procedure]);
+
 
   //handles editing mode 
   const handleEditClick = () => {
@@ -79,17 +97,25 @@ export default function ViewProcedure() {
   //handles start procedure
   const handleStartProcedure = () => {
     setShowStartProcedureModal(false)
-    
+    if(id){
+      procedureService.updateById(id,{status: "ongoing"});
+    }
   };
 
   //handles ending a procedure
   const handleEndProcedure = () => {
     setShowEndProcedureModal(false)
+    if(id){
+      procedureService.updateById(id,{status: "completed"});
+    }
   };
 
   //handles canceling a procedure
   const handleCancelProcedure = () => {
     setShowCancelProcedureModal(false)
+    if(id){
+      procedureService.updateById(id,{status: "canceled"});
+    }
   };
 
   function formatDate(dateInput: Date | string| undefined): string {
@@ -242,8 +268,10 @@ export default function ViewProcedure() {
                 </Button>
               )}
               </Box>
-              <Box>
-                <Button
+              
+              {(procedureStatus === "waiting" || procedureStatus === "ongoing") &&(
+                <Box>
+                  <Button
                   variant="contained"
                   onClick={handleEditClick}
                   sx={{ backgroundColor: "#5C6B73", marginRight: "8px" }}
@@ -258,7 +286,9 @@ export default function ViewProcedure() {
                 >
                   Cancel procedure
                 </Button>
-              </Box>
+                </Box>
+              )}
+              
             </Box>
           )}
         </Box>

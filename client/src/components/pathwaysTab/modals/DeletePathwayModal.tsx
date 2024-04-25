@@ -47,7 +47,7 @@ export default function DeletePathwayModal({handleConfirm, handleCancel, pathway
           {title}
           <div style={buttonContainerStyle}>
             <Button
-              onClick={(e) => handleConfirm(pathwayId)}
+              onClick={() => handleConfirm(pathwayId)}
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}

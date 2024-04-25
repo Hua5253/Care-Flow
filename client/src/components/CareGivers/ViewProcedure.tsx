@@ -27,7 +27,8 @@ export default function ViewProcedure() {
   const [showEndProcedureModal, setShowEndProcedureModal] = useState(false);
   const [showCancelProcedureModal, setShowCancelProcedureModal] = useState(false);
 
-  const [text, setText] = useState("");
+  const [originalText, setOriginalText] = useState(""); 
+  const [text, setText] = useState(""); 
   const [procedure, setProcedure] = useState<Procedure>();
   const [procedureStatus, setStatus] = useState("");
 
@@ -46,12 +47,11 @@ export default function ViewProcedure() {
   //changes the details based on procedure details
   useEffect(() => {
     if (procedure) {
+      setOriginalText(procedure.details);
       setText(procedure.details);
       setStatus(procedure.status);
     }
   }, [procedure]);
-
-  
 
   //handles editing mode 
   const handleEditClick = () => {
@@ -60,11 +60,16 @@ export default function ViewProcedure() {
 
   //saves edited chances
   const handleSaveClick = () => {
+    setOriginalText(text);
     setEditMode(false);
+    if(id){
+      procedureService.updateById(id,{details: text});
+    }
   };
 
   //cancels edited changes 
   const handleCancelSaveClick = () => {
+    setText(originalText); 
     setEditMode(false);
   };
 
@@ -74,6 +79,7 @@ export default function ViewProcedure() {
   //handles start procedure
   const handleStartProcedure = () => {
     setShowStartProcedureModal(false)
+    
   };
 
   //handles ending a procedure
@@ -186,7 +192,7 @@ export default function ViewProcedure() {
               minHeight: "500px",
             }}
           >
-            {text}
+            {originalText}
           </Typography>
         )}
         <Box>
@@ -217,6 +223,7 @@ export default function ViewProcedure() {
               }}
             >
               <Box>
+              {procedureStatus === "waiting" && (
                 <Button
                   variant="contained"
                   onClick={() => setShowStartProcedureModal(true)}
@@ -224,6 +231,8 @@ export default function ViewProcedure() {
                 >
                   Start procedure
                 </Button>
+              )}
+              {procedureStatus === "ongoing" && (
                 <Button
                   variant="contained"
                   onClick={() => setShowEndProcedureModal(true)}
@@ -231,6 +240,7 @@ export default function ViewProcedure() {
                 >
                   End procedure
                 </Button>
+              )}
               </Box>
               <Box>
                 <Button

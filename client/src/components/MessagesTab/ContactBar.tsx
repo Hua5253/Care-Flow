@@ -9,12 +9,11 @@ import {
   TextField,
   Paper,
 } from "@mui/material";
-import type { User } from "../../services/user-service";
 
 interface ContactBarProps {
   query: Record<string, string>;
   setQuery: (query: Record<string, string>) => void;
-  contacts?: User[];
+  contacts?: any[];
   current: string;
   setCurrent: (current: string) => void;
 }

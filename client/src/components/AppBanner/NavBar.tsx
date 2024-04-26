@@ -30,6 +30,11 @@ export default function NavBar({ cred }: Prop) {
     auth.logoutUser();
     navigate("/");
   };
+  if (auth.user) {
+    console.log(auth.user?.name, auth.user?.role);
+  } else {
+    console.log("no auth");
+  }
   return (
     <AppBar
       sx={{

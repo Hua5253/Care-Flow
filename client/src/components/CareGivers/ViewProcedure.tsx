@@ -59,6 +59,7 @@ export default function ViewProcedure() {
   useEffect(() => {
     if (procedure) {
       setOriginalText(procedure.details);
+      setText(procedure.details);
       setStatus(procedure.status);
     }
   }, [procedure]);

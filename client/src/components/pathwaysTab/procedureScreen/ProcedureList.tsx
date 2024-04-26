@@ -15,7 +15,7 @@ import procedureService, {
 interface Props {
   inEdit: boolean;
   pathway: Pathway;
-  handleDeleteProcedure: () => void;
+  handleDeleteProcedure: (id: string) => void;
   handleEditProcedure: (id: string) => void;
 }
 
@@ -89,7 +89,7 @@ function ProcedureList({
                   <Button
                     variant="outlined"
                     size="small"
-                    onClick={handleDeleteProcedure}
+                    onClick={() => handleDeleteProcedure(procedure._id as string)}
                   >
                     Delete
                   </Button>

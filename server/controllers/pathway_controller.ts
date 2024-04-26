@@ -2,11 +2,7 @@ import { RequestHandler } from "express";
 import PathwayModel from "../models/pathway_schema";
 
 const createBlankPathway: RequestHandler = async (request, response, next) => {
-  const name = request.body.name;
-  const patient = request.body.patient;
-  const status = request.body.status;
-  const is_template = request.body.is_template;
-  const procedures = request.body.Procedures;
+  const { name, patient, status, is_template, procedures } = request.body;
 
   if (!name) {
     return response
@@ -35,6 +31,31 @@ const createBlankPathway: RequestHandler = async (request, response, next) => {
   }
 };
 
+const createTemplatePathway: RequestHandler = async (req, res, next) => {
+  const { name, patient, status, is_template, procedures } = req.body;
+
+  if (!name) {
+    return res
+      .status(400)
+      .json({ error: "name is required in the request body." });
+  }
+
+  try {
+    const newPathway = await PathwayModel.create({
+      name: name,
+      patient: patient,
+      status: status,
+      is_template: is_template,
+      procedures: procedures,
+    });
+
+    res.status(201).json(newPathway);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const getNotTemplatePathways: RequestHandler = async (
   request,
   response,
@@ -54,6 +75,22 @@ export const getNotTemplatePathways: RequestHandler = async (
     }
   } catch (error) {
     next(error);
+  }
+};
+
+const getTemplatePathways: RequestHandler = async (req, res, next) => {
+  try {
+    const allPathways = await PathwayModel.find();
+
+    const templatePathways = allPathways.filter(pathway => pathway.is_template);
+
+    if (allPathways) {
+      res.status(200).json(templatePathways);
+    } else {
+      res.status(404).json({ error: "no pathways found" });
+    }
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -145,4 +182,6 @@ export default {
   getPathwayById,
   updatePathwayById,
   deletePathway,
+  createTemplatePathway,
+  getTemplatePathways,
 };

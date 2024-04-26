@@ -1,4 +1,4 @@
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Fab, Tab, Tabs, TabsOwnProps, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
@@ -29,6 +29,9 @@ export default function Resources() {
     []
   );
   const [medicineData, setMedicineData] = useState<any>([]);
+  const [medicineDataAfterFilter, setMedicineDataAfterFilter] = useState<any>(
+    []
+  );
   const [roomData, setRoomData] = useState<any>([]);
   const [search, setSearch] = useState<string>("");
 
@@ -120,24 +123,51 @@ export default function Resources() {
     }
   }, [equipmentData]);
 
+  useEffect(() => {
+    setMedicineDataAfterFilter(medicineData);
+    if (search) {
+      handleSearch("Medicine", search);
+    }
+  }, [medicineData]);
+
   const handleSearch = (from: string, data: string) => {
     setSearch(data);
     console.log("Search from", from, "for: ", data);
     let result = {};
-    if (from === "Medical Equipment") {
-      if (data) {
-        result = equipmentData.filter((item: any) => {
-          return (
-            item.name.toLowerCase().includes(data.toLowerCase()) ||
-            item.category.toLowerCase().includes(data.toLowerCase()) ||
-            item.status.toLowerCase().includes(data.toLowerCase()) ||
-            item._id.toString().includes(data.toLowerCase())
-          );
-        });
-        setEquipmentDataAfterFilter(result);
-      } else {
-        setEquipmentDataAfterFilter(equipmentData);
-      }
+
+    switch (from) {
+      case "Medical Equipment":
+        if (data) {
+          result = equipmentData.filter((item: any) => {
+            return (
+              item.name.toLowerCase().includes(data.toLowerCase()) ||
+              item.category.toLowerCase().includes(data.toLowerCase()) ||
+              item.status.toLowerCase().includes(data.toLowerCase()) ||
+              item.quantity.toString().includes(data.toLowerCase()) ||
+              item._id.toString().includes(data.toLowerCase())
+            );
+          });
+          setEquipmentDataAfterFilter(result);
+        } else {
+          setEquipmentDataAfterFilter(equipmentData);
+        }
+        break;
+      case "Medicine":
+        if (data) {
+          result = medicineData.filter((item: any) => {
+            return (
+              item.name.toLowerCase().includes(data.toLowerCase()) ||
+              item.category.toLowerCase().includes(data.toLowerCase()) ||
+              item.usage.toLowerCase().includes(data.toLowerCase()) ||
+              item.packaging.toLowerCase().includes(data.toLowerCase()) ||
+              item.quantity.toString().includes(data.toLowerCase())
+            );
+          });
+          setMedicineDataAfterFilter(result);
+        } else {
+          setMedicineDataAfterFilter(medicineData);
+        }
+        break;
     }
   };
 
@@ -179,7 +209,7 @@ export default function Resources() {
       onDelete={handleDelete}
     />,
     <TableMedicine
-      dataSource={medicineData}
+      dataSource={medicineDataAfterFilter}
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
@@ -195,7 +225,7 @@ export default function Resources() {
     <SearchBarMedicalEquipment
       onSearch={(data) => handleSearch("Medical Equipment", data)}
     />,
-    <SearchBarMedicine />,
+    <SearchBarMedicine onSearch={(data) => handleSearch("Medicine", data)} />,
     <SearchBarOfficers />,
     <SearchBarRoom />,
   ];

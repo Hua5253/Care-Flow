@@ -71,6 +71,13 @@ export default function ModalMedicalEquipment({
     setStatus(item?.status || "");
   }, [item]);
 
+  const resetForm = () => {
+    setName("");
+    setCategory("");
+    setQuantity("");
+    setStatus("");
+  };
+
   return (
     <div>
       <Modal
@@ -132,7 +139,10 @@ export default function ModalMedicalEquipment({
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={() => onOk({ name, category, quantity, status })}
+              onClick={() => {
+                onOk({ name, category, quantity, status });
+                resetForm();
+              }}
             >
               Confirm
             </Button>

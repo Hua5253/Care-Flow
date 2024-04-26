@@ -72,6 +72,14 @@ export default function ModalMedicine({
     setQuantity(item?.quantity ?? "");
   }, [item]);
 
+  const resetForm = () => {
+    setName("");
+    setCategory("");
+    setUsage("");
+    setPackaging("");
+    setQuantity("");
+  };
+
   return (
     <div>
       <Modal
@@ -133,9 +141,10 @@ export default function ModalMedicine({
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={() =>
-                onOk({ name, category, usage, packaging, quantity })
-              }
+              onClick={() => {
+                onOk({ name, category, usage, packaging, quantity });
+                resetForm();
+              }}
             >
               Confirm
             </Button>

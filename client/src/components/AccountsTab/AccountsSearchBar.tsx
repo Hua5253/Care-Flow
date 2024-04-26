@@ -7,12 +7,17 @@ import {
   MenuItem,
   Paper,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 
-export default function AccountsSearchBar() {
+interface Props {
+  onSearch: (searchInput: string) => void;
+}
+
+export default function AccountsSearchBar({ onSearch }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [searchInput, setSearchInput] = React.useState<string>("");
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +25,13 @@ export default function AccountsSearchBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSearch(searchInput);
+  };
+  useEffect(() => {
+    onSearch(searchInput);
+  }, [searchInput]);
   return (
     <Box
       sx={{
@@ -37,6 +49,7 @@ export default function AccountsSearchBar() {
           alignItems: "center",
           width: "100%",
         }}
+        onSubmit={handleSearch}
       >
         <Box sx={{ p: 1 }}>
           <SearchIcon />
@@ -45,6 +58,9 @@ export default function AccountsSearchBar() {
           sx={{ ml: 1, flex: 1, fontSize: "15px" }}
           placeholder="Search"
           inputProps={{ "aria-label": "Search" }}
+          onChange={(e) => {
+            setSearchInput(e.target.value);
+          }}
         />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Button

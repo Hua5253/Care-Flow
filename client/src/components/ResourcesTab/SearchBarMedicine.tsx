@@ -7,19 +7,31 @@ import {
   MenuItem,
   Paper,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
+interface Props {
+  onSearch: (searchInput: string) => void;
+}
 
-export default function SearchBarMedicine() {
+export default function SearchBarMedicine({ onSearch }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [searchInput, setSearchInput] = React.useState<string>("");
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSearch(searchInput);
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    onSearch(searchInput);
+  }, [searchInput]);
+
   return (
     <Box
       sx={{
@@ -39,6 +51,7 @@ export default function SearchBarMedicine() {
           alignItems: "center",
           width: "100%",
         }}
+        onSubmit={handleSearch}
       >
         <Box sx={{ p: 1 }}>
           <SearchIcon />
@@ -47,6 +60,9 @@ export default function SearchBarMedicine() {
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search"
           inputProps={{ "aria-label": "Search" }}
+          onChange={(e) => {
+            setSearchInput(e.target.value);
+          }}
         />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Button
@@ -73,7 +89,8 @@ export default function SearchBarMedicine() {
           <MenuItem>Name</MenuItem>
           <MenuItem>Category</MenuItem>
           <MenuItem>Usage</MenuItem>
-          <MenuItem>Stock</MenuItem>
+          <MenuItem>Packaging</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

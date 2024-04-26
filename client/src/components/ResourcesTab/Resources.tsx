@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import { Box, Fab, Tab, Tabs, TabsOwnProps, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
@@ -21,19 +21,17 @@ import roomService from "../../services/room-service";
 
 const tabs: string[] = ["Medical Equipment", "Medicine", "Officers", "Room"];
 
-const searchbars: React.ReactElement[] = [
-  <SearchBarMedicalEquipment />,
-  <SearchBarMedicine />,
-  <SearchBarOfficers />,
-  <SearchBarRoom />,
-];
-
 export default function Resources() {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [open, setOpen] = useState<string>("");
   const [equipmentData, setEquipmentData] = useState<any>([]);
+  const [equipmentDataAfterFilter, setEquipmentDataAfterFilter] = useState<any>(
+    []
+  );
   const [medicineData, setMedicineData] = useState<any>([]);
   const [roomData, setRoomData] = useState<any>([]);
+  const [search, setSearch] = useState<string>("");
+
   async function fetchData() {
     try {
       switch (tabIndex) {
@@ -115,6 +113,34 @@ export default function Resources() {
     setOpen("");
   };
 
+  useEffect(() => {
+    setEquipmentDataAfterFilter(equipmentData);
+    if (search) {
+      handleSearch("Medical Equipment", search);
+    }
+  }, [equipmentData]);
+
+  const handleSearch = (from: string, data: string) => {
+    setSearch(data);
+    console.log("Search from", from, "for: ", data);
+    let result = {};
+    if (from === "Medical Equipment") {
+      if (data) {
+        result = equipmentData.filter((item: any) => {
+          return (
+            item.name.toLowerCase().includes(data.toLowerCase()) ||
+            item.category.toLowerCase().includes(data.toLowerCase()) ||
+            item.status.toLowerCase().includes(data.toLowerCase()) ||
+            item._id.toString().includes(data.toLowerCase())
+          );
+        });
+        setEquipmentDataAfterFilter(result);
+      } else {
+        setEquipmentDataAfterFilter(equipmentData);
+      }
+    }
+  };
+
   const modals: React.ReactElement[] = [
     <ModalMedicalEquipment
       open={open === "Medical Equipment"}
@@ -148,7 +174,7 @@ export default function Resources() {
 
   const tables: React.ReactElement[] = [
     <TableMedicalEquipment
-      dataSource={equipmentData}
+      dataSource={equipmentDataAfterFilter}
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
@@ -163,6 +189,15 @@ export default function Resources() {
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
+  ];
+
+  const searchbars: React.ReactElement[] = [
+    <SearchBarMedicalEquipment
+      onSearch={(data) => handleSearch("Medical Equipment", data)}
+    />,
+    <SearchBarMedicine />,
+    <SearchBarOfficers />,
+    <SearchBarRoom />,
   ];
 
   return (
@@ -214,9 +249,12 @@ export default function Resources() {
         sx={{
           border: "lightgrey solid",
           mt: 3,
-          pl: "1em",
-          pr: "1em",
-          pb: "1em",
+          pl: "2em",
+          pr: "2em",
+          pb: "2em",
+          backgroundColor: "#e5e5e5",
+          borderRadius: 1,
+          width: "100%",
         }}
       >
         <Tabs
@@ -225,7 +263,12 @@ export default function Resources() {
           onChange={handleTabChange}
         >
           {tabs.map((tab, index) => (
-            <Tab key={tab} label={tab} value={index} />
+            <Tab
+              key={tab}
+              label={tab}
+              value={index}
+              sx={{ color: "dark grey" }}
+            />
           ))}
         </Tabs>
         {modals[tabIndex]}

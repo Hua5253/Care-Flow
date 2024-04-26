@@ -30,4 +30,4 @@ interface Message {
   time: Date;
 }
 
-export default create("/users");
+export default create("/users/chatroom");

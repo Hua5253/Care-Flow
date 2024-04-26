@@ -51,7 +51,10 @@ function AuthContextProvider({ children }: Props) {
             errorMsg: null,
           },
         });
-        console.log("login success");
+        if (response.data.user) {
+          localStorage.setItem('profile', JSON.stringify(response.data.user))
+        }
+
         // navigate(`/`);
       }
       if (response.status === 401) {

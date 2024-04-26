@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import userRouter from "./routes/users";
 import pathwayRouter from "./routes/pathways";
+import templatePathwayRouter from "./routes/templatePathways";
 import procedureRouter from "./routes/procedures";
 import resourceRouter from "./routes/resources";
 import authRouter from "./routes/auth";
@@ -26,6 +27,7 @@ app.use("/pathway", pathwayRouter);
 app.use("/procedure", procedureRouter);
 app.use("/resource", resourceRouter);
 app.use("/auth", authRouter);
+app.use("/templatePathway", templatePathwayRouter);
 
 app.get("/", (req, res) => {
   res.send("Many Users");

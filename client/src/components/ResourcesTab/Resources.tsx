@@ -3,7 +3,6 @@ import { Box, Fab, Tab, Tabs, TabsOwnProps, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
 import TableMedicalEquipment from "./TableMedicalEquipment";
-import SearchBar from "./SearchBar";
 import TableMedicine from "./TableMedicine";
 import TableOfficers from "./TableOfficers";
 import TableRoom from "./TableRoom";

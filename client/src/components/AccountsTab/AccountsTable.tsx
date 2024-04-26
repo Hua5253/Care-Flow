@@ -56,7 +56,7 @@ export default function AccountsTable() {
   };
   const handleResetPassword = (pw: string) => {
     console.log(selectedUser);
-    
+
     //next call the user service to reset the password of this user
     userService
       .updateById(selectedUser.id, { password: pw })
@@ -112,12 +112,25 @@ export default function AccountsTable() {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user._id?.substring(0, 10) + "..."}
+                  {user._id?.substring(0, 10)}
+                  {user._id?.length ? (user._id.length > 10 ? "..." : "") : ""}
                 </TableCell>
-                <TableCell align="left">{user.name}</TableCell>
-                <TableCell align="left">{user.username}</TableCell>
-                <TableCell align="center">{user.email}</TableCell>
-                <TableCell align="left">{user.phone_number}</TableCell>
+                <TableCell align="left">
+                  {user.name.substring(0, 10)}
+                  {user.name.length > 10 ? "..." : ""}
+                </TableCell>
+                <TableCell align="left">
+                  {user.username.substring(0, 15)}
+                  {user.username.length > 15 ? "..." : ""}
+                </TableCell>
+                <TableCell align="center">
+                  {user.email.substring(0, 20)}
+                  {user.email.length > 20 ? "..." : ""}
+                </TableCell>
+                <TableCell align="left">
+                  {user.phone_number.substring(0, 10)}
+                  {user.phone_number.length > 10 ? "..." : ""}
+                </TableCell>
                 <TableCell align="left">{user.role}</TableCell>
                 <TableCell align="right" size="medium">
                   <Button

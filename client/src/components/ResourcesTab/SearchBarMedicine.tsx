@@ -74,6 +74,7 @@ export default function SearchBarMedicine() {
           <MenuItem>Category</MenuItem>
           <MenuItem>Usage</MenuItem>
           <MenuItem>Stock</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

@@ -73,6 +73,7 @@ export default function SearchBarOfficers() {
           <MenuItem>Position</MenuItem>
           <MenuItem>Category</MenuItem>
           <MenuItem>Department</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

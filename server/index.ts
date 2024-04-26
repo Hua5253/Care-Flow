@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    // origin: "https://care-flow.vercel.app",
+    //origin: "https://care-flow.vercel.app",
     origin: "http://localhost:5173",
     credentials: true,
   })
@@ -38,7 +38,7 @@ const port = process.env.PORT || 4000;
 const MongoDBURI =
   "mongodb+srv://kangqichen:pyaKOyTUdz6JgKF0@cluster0.rromx.mongodb.net/CareFlow";
 
-mongoose.connect(MongoDBURI!).catch(e => {
+mongoose.connect(MongoDBURI!).catch((e) => {
   console.error("Connection error", e.message);
 });
 

@@ -73,6 +73,7 @@ export default function SearchBarRoom() {
           <MenuItem>Name</MenuItem>
           <MenuItem>Number</MenuItem>
           <MenuItem>Capacity</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

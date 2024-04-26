@@ -2,32 +2,31 @@ import { useState } from "react";
 import { Modal, Box, TextField, Button, Typography } from "@mui/material";
 import { Pathway } from "../../../services/pathway-service";
 import { useNavigate } from "react-router-dom";
-import pathwayService from "../../../services/pathway-service";
+import templatePathwayService from "../../../services/template-pathway-service";
 
 interface Prop {
   open: boolean;
   handleClose: () => void;
 }
 
-function BlankPathwayFormModal({ open, handleClose }: Prop) {
+function TemplatePathwayFormModal({ open, handleClose }: Prop) {
   const [pathwayName, setName] = useState("");
-  const [patient, setPatient] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    let newPathway: Pathway = {
+    let newTemplatePathway: Pathway = {
       name: pathwayName,
-      patient: patient,
+      patient: "unknown",
       status: "unpublished",
-      is_template: false,
+      is_template: true,
       procedures: [],
     };
 
-    pathwayService
-      .create(newPathway)
+    templatePathwayService
+      .create(newTemplatePathway)
       .then(res => {
-        navigate("/pathways" + "/" + res.data._id);
+        navigate("/template-pathways" + "/" + res.data._id);
       })
       .catch(err => console.log(err));
 
@@ -63,14 +62,6 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
           value={pathwayName}
           onChange={e => setName(e.target.value)}
         />
-        <TextField
-          fullWidth
-          margin='normal'
-          required
-          label='Patient'
-          value={patient}
-          onChange={e => setPatient(e.target.value)}
-        />
         <Box
           sx={{
             mt: 2,
@@ -90,4 +81,4 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
   );
 }
 
-export default BlankPathwayFormModal;
+export default TemplatePathwayFormModal;

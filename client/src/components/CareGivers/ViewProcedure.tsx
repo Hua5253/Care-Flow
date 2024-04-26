@@ -49,8 +49,6 @@ export default function ViewProcedure() {
     try {
       const res = await procedureService.getById<Procedure>(id as string);
       setProcedure(res.data);
-      setOriginalText(res.data.details);
-      setText(res.data.details);
       setStatus(res.data.status);
     } catch (error) {
       console.error('Failed to fetch procedures:', error);
@@ -61,14 +59,13 @@ export default function ViewProcedure() {
   useEffect(() => {
     if (procedure) {
       setOriginalText(procedure.details);
-      setText(procedure.details);
       setStatus(procedure.status);
     }
   }, [procedure]);
 
   useEffect(() => {
     fetchProcedure();
-  }, [procedure]);
+  }, [procedureStatus]);
 
 
   //handles editing mode 
@@ -97,6 +94,7 @@ export default function ViewProcedure() {
   //handles start procedure
   const handleStartProcedure = () => {
     setShowStartProcedureModal(false)
+    setStatus("ongoing");
     if(id){
       procedureService.updateById(id,{status: "ongoing"});
     }
@@ -104,6 +102,7 @@ export default function ViewProcedure() {
 
   //handles ending a procedure
   const handleEndProcedure = () => {
+    setStatus("completed");
     setShowEndProcedureModal(false)
     if(id){
       procedureService.updateById(id,{status: "completed"});
@@ -112,6 +111,7 @@ export default function ViewProcedure() {
 
   //handles canceling a procedure
   const handleCancelProcedure = () => {
+    setStatus("canceled");
     setShowCancelProcedureModal(false)
     if(id){
       procedureService.updateById(id,{status: "canceled"});

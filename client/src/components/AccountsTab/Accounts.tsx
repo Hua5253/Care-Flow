@@ -4,12 +4,14 @@ import AccountsSearchBar from "./AccountsSearchBar";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
+
 interface showModal {
   showModal: () => void;
 }
 
 export default function Accounts({ showModal }: showModal) {
   const [searchInput, setSearchInpt] = useState<string>("");
+
   const handleSearch = (data: string) => {
     console.log("Search Accounts:", data);
     setSearchInpt(data);

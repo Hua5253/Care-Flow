@@ -166,6 +166,7 @@ export default function AccountsTable({ searchInput }: Props) {
                         username: user.username,
                         role: user.role,
                       });
+
                       setResetPsModal(true);
                     }}
                   >

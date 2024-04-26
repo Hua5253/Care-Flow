@@ -74,6 +74,7 @@ export default function SearchBarMedicalEquipment() {
           <MenuItem>Category</MenuItem>
           <MenuItem>Status</MenuItem>
           <MenuItem>ID</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

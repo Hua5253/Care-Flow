@@ -179,7 +179,7 @@ export default function Resources() {
       <Typography variant="h5" gutterBottom>
         Resource
       </Typography>
-      <Box display="flex" sx={{ mb: 3, mt: 3 }}>
+      {/* <Box display="flex" sx={{ mb: 3, mt: 3 }}>
         <Grid
           container
           spacing={2}
@@ -206,15 +206,64 @@ export default function Resources() {
             </Fab>
           </Grid>
         </Grid>
+      </Box> */}
+      {/* <Box sx={{ mt: 2 }}>
+        <SearchBar />
+      </Box> */}
+      <Box
+        sx={{
+          border: "lightgrey solid",
+          mt: 3,
+          pl: "1em",
+          pr: "1em",
+          pb: "1em",
+        }}
+      >
+        <Tabs
+          sx={{ width: "100%" }}
+          value={tabIndex}
+          onChange={handleTabChange}
+        >
+          {tabs.map((tab, index) => (
+            <Tab key={tab} label={tab} value={index} />
+          ))}
+        </Tabs>
+        {modals[tabIndex]}
+        {/* {searchbars[tabIndex]} */}
+        <Box display="flex" sx={{ mb: 3, mt: 3 }}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Grid item style={{ flexGrow: 1 }}>
+              {/* <SearchBar /> */}
+              {searchbars[tabIndex]}
+            </Grid>
+            <Grid item>
+              <Fab
+                variant="extended"
+                size="small"
+                color="primary"
+                sx={{
+                  fontSize: "12px",
+                  alignItems: "center",
+                  borderRadius: 1,
+                  height: "45px",
+                }}
+                onClick={handleAdd}
+              >
+                <AddIcon fontSize="small" />
+                Create Item
+              </Fab>
+            </Grid>
+          </Grid>
+        </Box>
+        {tables[tabIndex]}
       </Box>
-      <Tabs sx={{ width: "100%" }} value={tabIndex} onChange={handleTabChange}>
-        {tabs.map((tab, index) => (
-          <Tab key={tab} label={tab} value={index} />
-        ))}
-      </Tabs>
-      {modals[tabIndex]}
-      {searchbars[tabIndex]}
-      {tables[tabIndex]}
     </Box>
   );
 }

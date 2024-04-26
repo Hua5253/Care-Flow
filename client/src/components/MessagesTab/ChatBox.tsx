@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -9,36 +10,64 @@ import {
   Typography,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-
 import Message from "./Message";
-interface Message {
-  message: String;
-  date: String;
-  self: Boolean;
+import userService, { User } from "../../services/user-service";
+
+interface ChatBoxProps {
+  current: string;
+  message: string;
+  setMessage: (message: string) => void;
+  onMessageSend: () => void;
+  messages: any[];
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
-const msglist: Message[] = [
-  {
-    message: "Morning John. I have a question about my assignment",
-    date: "Today 11:52",
-    self: true,
-  },
-  {
-    message: "Yes, how can I help you?",
-    date: "Today 11:53",
-    self: false,
-  },
-  {
-    message: "Is this answer suppose to be 2/3?",
-    date: "Today 11:58",
-    self: true,
-  },
-];
-export default function ChatBox() {
-  return (
+const profile = JSON.parse(localStorage.getItem('profile') || '{}');
+
+
+function formatTime(timestamp: string) {
+  const now = new Date();
+  const date = new Date(timestamp);
+  const timeDiff = Math.floor((Number(now) - Number(date)) / (1000 * 60 * 60 * 24));
+
+  if (timeDiff === 0) {
+    return `Today ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  } else if (timeDiff === 1) {
+    return `Yesterday ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  } else {
+    return date.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+  }
+}
+
+export default function ChatBox(props: ChatBoxProps) {
+  const { current, message, setMessage, onMessageSend, messages, scrollRef } = props;
+  const [user, setUser] = useState<User>();
+
+  const msglist = messages.map(i => ({ ...i, self: profile._id === i.poster }))
+  const fetchUser = async () => {
+    const { data } = await userService.getById<User>(current);
+    if (data.id) {
+      setUser(data)
+    }
+  }
+
+  useEffect(() => {
+    if (current) {
+      fetchUser()
+    }
+  }, [current])
+
+  useEffect(() => {
+    if (scrollRef && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [JSON.stringify(messages)])
+
+  return current && (
     <Box sx={{ width: "100%", mt: 2, overflow: "auto" }}>
       <Toolbar />
       <Paper
+        ref={scrollRef}
         elevation={3}
         sx={{
           overflowY: "scroll",
@@ -48,7 +77,6 @@ export default function ChatBox() {
         }}
         variant="elevation"
       >
-        {/* Chat Header */}
         <Box
           sx={{
             display: "flex",
@@ -59,12 +87,10 @@ export default function ChatBox() {
         >
           <Box display="flex" alignItems="center">
             <Avatar sx={{ mr: 3 }} />
-            <Typography variant="h5">John Doe</Typography>
+            <Typography variant="h5">{user?.name}</Typography>
           </Box>
         </Box>
         <Divider />
-
-        {/* Messages */}
         <Box
           sx={{
             display: "flex",
@@ -74,19 +100,17 @@ export default function ChatBox() {
             overflow: "auto",
           }}
         >
-          {msglist.map((item, index) => {
+          {msglist.map(item => {
             return (
-              <Message key={index}
-                message={item.message}
-                date={item.date}
+              <Message key={item._id}
+                message={item.content}
+                date={formatTime(item.time)}
                 self={item.self}
               />
             );
           })}
         </Box>
       </Paper>
-
-      {/* Input Field */}
       <Box
         component="form"
         sx={{
@@ -102,11 +126,13 @@ export default function ChatBox() {
         }}
       >
         <InputBase
+          onChange={e => setMessage(e.target.value)}
+          value={message}
           sx={{ ml: 1, flex: 1 }}
           placeholder="Type your message"
           inputProps={{ "aria-label": "type your message" }}
         />
-        <IconButton type="submit" sx={{ p: "10px" }} aria-label="send">
+        <IconButton sx={{ p: "10px" }} aria-label="send" onClick={onMessageSend}>
           <SendIcon />
         </IconButton>
       </Box>

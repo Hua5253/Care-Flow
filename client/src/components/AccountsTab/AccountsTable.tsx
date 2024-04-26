@@ -20,6 +20,8 @@ export default function AccountsTable() {
   const [resetPsModal, setResetPsModal] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [usersList, setUsersList] = useState<User[]>([]);
+  const [update, setUpdate] = useState<number>(1);
+  const forceUpdate = () => setUpdate(update => update + 1);
   const [selectedUser, setSelectedUser] = useState({
     id: "",
     name: "",
@@ -27,54 +29,35 @@ export default function AccountsTable() {
     username: "",
   });
 
+  const fetchData = async () => {
+    const { data = [] } = await userService.getAll<User>();
+    setUsersList(data);
+  }
+
   const handleClose = () => {
     setResetPsModal(false);
   };
 
-  const handleCloseDelete = () => {
-    // Call this to close the modal
-    setOpenConfirmation(false);
-  };
-
-  const handleConfirmDelete = () => {
-    // Handle the confirmation action here
-    userService
-      .deleteById(selectedUser.id)
-      .then((res) => {
-        const userData = res.data as User; // Type assertion
-        console.log(`delete user ${userData.name} success`);
-        setOpenConfirmation(false); // Close modal after confirmation
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleConfirmDelete = async () => {
+    const { data } = await userService.deleteById<User>(selectedUser.id);
+    if (data.name) {
+      setOpenConfirmation(false);
+      forceUpdate();
+    }
   };
 
   const handleDeleteUser = () => {
     // Call this when you want to open the confirmation modal
     setOpenConfirmation(true);
   };
-  const handleResetPassword = (pw: string) => {
-    console.log(selectedUser);
-    
-    //next call the user service to reset the password of this user
-    userService
-      .updateById(selectedUser.id, { password: pw })
-      .then(() => {
-        console.log("Password reset success!");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleResetPassword = async (pw: string) => {
+    const { } = await userService.updateById(selectedUser.id, { password: pw });
+
   };
+
   useEffect(() => {
-    userService
-      .getAll<User>()
-      .then((res) => {
-        setUsersList(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, [usersList]);
+    fetchData()
+  }, [update]);
 
   return (
     <Box>
@@ -159,7 +142,7 @@ export default function AccountsTable() {
 
       <DeleteUserConfirmationModal
         open={openConfirmation}
-        onClose={handleCloseDelete}
+        onClose={() => setOpenConfirmation(!openConfirmation)}
         onConfirm={handleConfirmDelete}
         user={{ name: selectedUser.name, role: selectedUser.role }}
       />

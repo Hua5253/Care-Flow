@@ -3,7 +3,6 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import pathwayService, { Pathway } from "../../../services/pathway-service";
 import procedureService from "../../../services/procedure-service";
-import { useNavigate } from "react-router-dom";
 
 const modalStyle = {
   display: "flex",

@@ -16,24 +16,38 @@ import ResetPasswordModal from "./Modals/ResetPasswordModal";
 import userService, { User } from "../../services/user-service";
 import DeleteUserConfirmationModal from "./Modals/DeleteUserConfirmationModal";
 
-export default function AccountsTable() {
+interface Props {
+  searchInput: any;
+}
+
+export default function AccountsTable({ searchInput }: Props) {
   const [resetPsModal, setResetPsModal] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [usersList, setUsersList] = useState<User[]>([]);
+  const [filteredUsersList, setfilteredUsersList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState({
     id: "",
     name: "",
     role: "",
     username: "",
   });
+  const fetchData = () => {
+    const result = userList.filter((user) => {
+      return (
+        user.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+        user.username.toLowerCase().includes(searchInput.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchInput.toLowerCase()) ||
+        user.phone_number.includes(searchInput) ||
+        user.role.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    });
+    if (result) {
+      setfilteredUsersList(result);
+    }
+  };
 
   const handleClose = () => {
     setResetPsModal(false);
-  };
-
-  const handleCloseDelete = () => {
-    // Call this to close the modal
-    setOpenConfirmation(false);
   };
 
   const handleConfirmDelete = () => {
@@ -44,6 +58,7 @@ export default function AccountsTable() {
         const userData = res.data as User; // Type assertion
         console.log(`delete user ${userData.name} success`);
         setOpenConfirmation(false); // Close modal after confirmation
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
@@ -56,25 +71,28 @@ export default function AccountsTable() {
   };
   const handleResetPassword = (pw: string) => {
     console.log(selectedUser);
-    
+
     //next call the user service to reset the password of this user
     userService
       .updateById(selectedUser.id, { password: pw })
       .then(() => {
         console.log("Password reset success!");
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     userService
       .getAll<User>()
       .then((res) => {
-        setUsersList(res.data);
+        setUserList(res.data);
+        fetchData();
       })
       .catch((err) => console.log(err));
-  }, [usersList]);
+  }, [userList]);
 
   return (
     <Box>
@@ -103,7 +121,7 @@ export default function AccountsTable() {
               cursor: "default",
             }}
           >
-            {usersList.map((user, index) => (
+            {filteredUsersList.map((user, index) => (
               <TableRow
                 key={index}
                 sx={{
@@ -112,12 +130,25 @@ export default function AccountsTable() {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user._id?.substring(0, 10) + "..."}
+                  {user._id?.substring(0, 10)}
+                  {user._id?.length ? (user._id.length > 10 ? "..." : "") : ""}
                 </TableCell>
-                <TableCell align="left">{user.name}</TableCell>
-                <TableCell align="left">{user.username}</TableCell>
-                <TableCell align="center">{user.email}</TableCell>
-                <TableCell align="left">{user.phone_number}</TableCell>
+                <TableCell align="left">
+                  {user.name.substring(0, 10)}
+                  {user.name.length > 10 ? "..." : ""}
+                </TableCell>
+                <TableCell align="left">
+                  {user.username.substring(0, 15)}
+                  {user.username.length > 15 ? "..." : ""}
+                </TableCell>
+                <TableCell align="center">
+                  {user.email.substring(0, 20)}
+                  {user.email.length > 20 ? "..." : ""}
+                </TableCell>
+                <TableCell align="left">
+                  {user.phone_number.substring(0, 10)}
+                  {user.phone_number.length > 10 ? "..." : ""}
+                </TableCell>
                 <TableCell align="left">{user.role}</TableCell>
                 <TableCell align="right" size="medium">
                   <Button
@@ -130,6 +161,7 @@ export default function AccountsTable() {
                         username: user.username,
                         role: user.role,
                       });
+
                       setResetPsModal(true);
                     }}
                   >
@@ -159,7 +191,7 @@ export default function AccountsTable() {
 
       <DeleteUserConfirmationModal
         open={openConfirmation}
-        onClose={handleCloseDelete}
+        onClose={() => setOpenConfirmation(!openConfirmation)}
         onConfirm={handleConfirmDelete}
         user={{ name: selectedUser.name, role: selectedUser.role }}
       />

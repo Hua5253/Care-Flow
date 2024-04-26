@@ -204,14 +204,14 @@ export const getEquipmentById: RequestHandler = async (
 const updateEquipment: RequestHandler = async (request, response, next) => {
   const equipmentId = request.params.id;
 
-  const { name, category, quantity } = request.body;
+  const { name, category, quantity, status } = request.body;
 
-  if (name && category && quantity === undefined) {
+  if (name && category && quantity && status === undefined) {
     return response.status(400).json({ error: "all fields must be provided" });
   }
 
   try {
-    const updates = { name, category, quantity };
+    const updates = { name, category, quantity, status };
 
     const updatedEquipment = await EquipmentModel.findByIdAndUpdate(
       equipmentId,

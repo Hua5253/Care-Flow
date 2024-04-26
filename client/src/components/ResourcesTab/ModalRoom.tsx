@@ -71,6 +71,13 @@ export default function ModalRoom({
     setStatus(item?.status || "");
   }, [item]);
 
+  const resetForm = () => {
+    setName("");
+    setLocation("");
+    setCapacity("");
+    setStatus("");
+  };
+
   return (
     <div>
       <Modal
@@ -124,15 +131,16 @@ export default function ModalRoom({
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={() =>
+              onClick={() => {
                 onOk({
                   name,
                   location,
                   capacity,
                   status,
                   schedule: [] as any[],
-                })
-              }
+                });
+                resetForm();
+              }}
             >
               Confirm
             </Button>

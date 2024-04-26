@@ -12,5 +12,6 @@ router.put("/chatroom/:id", UserController.updateChatroom);
 router.get("/chatroom/:id", UserController.getMessages);
 router.post("/chatroom", UserController.createChatroom);
 router.put("/notifications/:id", UserController.updateNotifications);
+router.post("/message", UserController.createMessage);
 
 export default router;

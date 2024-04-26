@@ -120,7 +120,10 @@ export default function Login({ closeAlert }: Prop) {
             }}
             error={Boolean(errors.username)}
             helperText={errors.username?.message}
-            onChange={() => clearErrors("username")}
+            onChange={() => {
+              clearErrors("username");
+              clearErrors("password");
+            }}
           />
           <TextField
             {...register("password", { required: "Password is required" })}
@@ -148,7 +151,10 @@ export default function Login({ closeAlert }: Prop) {
             }}
             error={Boolean(errors.password)}
             helperText={errors.password?.message}
-            onChange={() => clearErrors("password")}
+            onChange={() => {
+              clearErrors("password");
+              clearErrors("username");
+            }}
           />
           <Link
             onClick={handleForgetPassword}

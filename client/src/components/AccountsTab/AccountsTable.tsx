@@ -16,16 +16,35 @@ import ResetPasswordModal from "./Modals/ResetPasswordModal";
 import userService, { User } from "../../services/user-service";
 import DeleteUserConfirmationModal from "./Modals/DeleteUserConfirmationModal";
 
-export default function AccountsTable() {
+interface Props {
+  searchInput: any;
+}
+
+export default function AccountsTable({ searchInput }: Props) {
   const [resetPsModal, setResetPsModal] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [usersList, setUsersList] = useState<User[]>([]);
+  const [filteredUsersList, setfilteredUsersList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState({
     id: "",
     name: "",
     role: "",
     username: "",
   });
+  const fetchData = () => {
+    const result = userList.filter((user) => {
+      return (
+        user.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+        user.username.toLowerCase().includes(searchInput.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchInput.toLowerCase()) ||
+        user.phone_number.includes(searchInput) ||
+        user.role.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    });
+    if (result) {
+      setfilteredUsersList(result);
+    }
+  };
 
   const handleClose = () => {
     setResetPsModal(false);
@@ -44,6 +63,7 @@ export default function AccountsTable() {
         const userData = res.data as User; // Type assertion
         console.log(`delete user ${userData.name} success`);
         setOpenConfirmation(false); // Close modal after confirmation
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
@@ -62,19 +82,22 @@ export default function AccountsTable() {
       .updateById(selectedUser.id, { password: pw })
       .then(() => {
         console.log("Password reset success!");
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     userService
       .getAll<User>()
       .then((res) => {
-        setUsersList(res.data);
+        setUserList(res.data);
+        fetchData();
       })
       .catch((err) => console.log(err));
-  }, [usersList]);
+  }, [userList]);
 
   return (
     <Box>
@@ -103,7 +126,7 @@ export default function AccountsTable() {
               cursor: "default",
             }}
           >
-            {usersList.map((user, index) => (
+            {filteredUsersList.map((user, index) => (
               <TableRow
                 key={index}
                 sx={{

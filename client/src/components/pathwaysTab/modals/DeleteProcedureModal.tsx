@@ -38,7 +38,6 @@ export default function DeleteProcedureModal({
 }: Props) {
 
   const confirmDeleteProcedure = () => {
-    console.log(procedureToDeleteId);
     procedureService
       .deleteById(procedureToDeleteId)
       .catch(err => console.log(err));

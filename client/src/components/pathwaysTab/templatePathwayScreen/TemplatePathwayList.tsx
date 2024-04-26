@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@mui/material";
 import procedureService from "../../../services/procedure-service";
+import { useNavigate } from "react-router-dom";
 interface Column {
   id: "name" | "open";
   label: string;
@@ -31,6 +32,8 @@ interface Props {
 
 function TemplatePathwayList({ handleAddPathwayClick }: Props) {
   const [templatePathways, setTemplatePathways] = useState<Pathway[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     templatePathwayService
@@ -92,7 +95,15 @@ function TemplatePathwayList({ handleAddPathwayClick }: Props) {
                   >
                     <TableCell>{templatePathway.name}</TableCell>
                     <TableCell align={"right"}>
-                      <Button variant='contained' sx={{ m: 1 }}>
+                      <Button
+                        variant='contained'
+                        sx={{ m: 1 }}
+                        onClick={() =>
+                          navigate(
+                            "/template-pathways" + "/" + templatePathway._id
+                          )
+                        }
+                      >
                         Open
                       </Button>
                       <Button

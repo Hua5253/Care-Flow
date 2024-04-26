@@ -33,6 +33,7 @@ export default function Resources() {
     []
   );
   const [roomData, setRoomData] = useState<any>([]);
+  const [roomDataAfterFilter, setRoomDataAfterFilter] = useState<any>([]);
   const [search, setSearch] = useState<string>("");
 
   async function fetchData() {
@@ -130,6 +131,13 @@ export default function Resources() {
     }
   }, [medicineData]);
 
+  useEffect(() => {
+    setRoomDataAfterFilter(roomData);
+    if (search) {
+      handleSearch("Room", search);
+    }
+  }, [roomData]);
+
   const handleSearch = (from: string, data: string) => {
     setSearch(data);
     console.log("Search from", from, "for: ", data);
@@ -166,6 +174,22 @@ export default function Resources() {
           setMedicineDataAfterFilter(result);
         } else {
           setMedicineDataAfterFilter(medicineData);
+        }
+        break;
+      case "Room":
+        if (data) {
+          result = roomData.filter((item: any) => {
+            return (
+              item.name.toLowerCase().includes(data.toLowerCase()) ||
+              item.status.toLowerCase().includes(data.toLowerCase()) ||
+              item.capacity.toString().includes(data.toLowerCase()) ||
+              item.location.toLowerCase().includes(data.toLowerCase()) ||
+              item._id.toString().includes(data.toLowerCase())
+            );
+          });
+          setRoomDataAfterFilter(result);
+        } else {
+          setRoomDataAfterFilter(roomData);
         }
         break;
     }
@@ -215,7 +239,7 @@ export default function Resources() {
     />,
     <TableOfficers />,
     <TableRoom
-      dataSource={roomData}
+      dataSource={roomDataAfterFilter}
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
@@ -227,7 +251,7 @@ export default function Resources() {
     />,
     <SearchBarMedicine onSearch={(data) => handleSearch("Medicine", data)} />,
     <SearchBarOfficers />,
-    <SearchBarRoom />,
+    <SearchBarRoom onSearch={(data) => handleSearch("Room", data)} />,
   ];
 
   return (

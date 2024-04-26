@@ -7,12 +7,17 @@ import {
   MenuItem,
   Paper,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 
-export default function SearchBarRoom() {
+interface Props {
+  onSearch: (searchInput: string) => void;
+}
+
+export default function SearchBarRoom({ onSearch }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [searchInput, setSearchInput] = React.useState<string>("");
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +25,13 @@ export default function SearchBarRoom() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSearch(searchInput);
+  };
+  useEffect(() => {
+    onSearch(searchInput);
+  }, [searchInput]);
   return (
     <Box
       sx={{
@@ -39,6 +51,7 @@ export default function SearchBarRoom() {
           alignItems: "center",
           width: "100%",
         }}
+        onSubmit={handleSearch}
       >
         <Box sx={{ p: 1 }}>
           <SearchIcon />
@@ -47,6 +60,9 @@ export default function SearchBarRoom() {
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search"
           inputProps={{ "aria-label": "Search" }}
+          onChange={(e) => {
+            setSearchInput(e.target.value);
+          }}
         />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Button

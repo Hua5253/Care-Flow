@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import userRouter from "./routes/users";
 import pathwayRouter from "./routes/pathways";
+import templatePathwayRouter from "./routes/templatePathways";
 import procedureRouter from "./routes/procedures";
 import resourceRouter from "./routes/resources";
 import authRouter from "./routes/auth";
@@ -38,7 +39,7 @@ const chat = io.of('/chatroom').on('connection', (socket) => {
 })
 app.use(
   cors({
-    // origin: "https://care-flow.vercel.app",
+    //origin: "https://care-flow.vercel.app",
     origin: "http://localhost:5173",
     credentials: true,
   })
@@ -52,6 +53,7 @@ app.use("/pathway", pathwayRouter);
 app.use("/procedure", procedureRouter);
 app.use("/resource", resourceRouter);
 app.use("/auth", authRouter);
+app.use("/templatePathway", templatePathwayRouter);
 
 app.get("/", (req, res) => {
   res.send("Many Users");
@@ -64,7 +66,7 @@ const port = process.env.PORT || 4000;
 const MongoDBURI =
   "mongodb+srv://kangqichen:pyaKOyTUdz6JgKF0@cluster0.rromx.mongodb.net/CareFlow";
 
-mongoose.connect(MongoDBURI!).catch(e => {
+mongoose.connect(MongoDBURI!).catch((e) => {
   console.error("Connection error", e.message);
 });
 

@@ -21,19 +21,21 @@ import roomService from "../../services/room-service";
 
 const tabs: string[] = ["Medical Equipment", "Medicine", "Officers", "Room"];
 
-const searchbars: React.ReactElement[] = [
-  <SearchBarMedicalEquipment />,
-  <SearchBarMedicine />,
-  <SearchBarOfficers />,
-  <SearchBarRoom />,
-];
-
 export default function Resources() {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [open, setOpen] = useState<string>("");
   const [equipmentData, setEquipmentData] = useState<any>([]);
+  const [equipmentDataAfterFilter, setEquipmentDataAfterFilter] = useState<any>(
+    []
+  );
   const [medicineData, setMedicineData] = useState<any>([]);
+  const [medicineDataAfterFilter, setMedicineDataAfterFilter] = useState<any>(
+    []
+  );
   const [roomData, setRoomData] = useState<any>([]);
+  const [roomDataAfterFilter, setRoomDataAfterFilter] = useState<any>([]);
+  const [search, setSearch] = useState<string>("");
+
   async function fetchData() {
     try {
       switch (tabIndex) {
@@ -115,6 +117,84 @@ export default function Resources() {
     setOpen("");
   };
 
+  useEffect(() => {
+    setEquipmentDataAfterFilter(equipmentData);
+    if (search) {
+      handleSearch("Medical Equipment", search);
+    }
+  }, [equipmentData]);
+
+  useEffect(() => {
+    setMedicineDataAfterFilter(medicineData);
+    if (search) {
+      handleSearch("Medicine", search);
+    }
+  }, [medicineData]);
+
+  useEffect(() => {
+    setRoomDataAfterFilter(roomData);
+    if (search) {
+      handleSearch("Room", search);
+    }
+  }, [roomData]);
+
+  const handleSearch = (from: string, data: string) => {
+    setSearch(data);
+    console.log("Search from", from, "for: ", data);
+    let result = {};
+
+    switch (from) {
+      case "Medical Equipment":
+        if (data) {
+          result = equipmentData.filter((item: any) => {
+            return (
+              item.name.toLowerCase().includes(data.toLowerCase()) ||
+              item.category.toLowerCase().includes(data.toLowerCase()) ||
+              item.status.toLowerCase().includes(data.toLowerCase()) ||
+              item.quantity.toString().includes(data.toLowerCase()) ||
+              item._id.toString().includes(data.toLowerCase())
+            );
+          });
+          setEquipmentDataAfterFilter(result);
+        } else {
+          setEquipmentDataAfterFilter(equipmentData);
+        }
+        break;
+      case "Medicine":
+        if (data) {
+          result = medicineData.filter((item: any) => {
+            return (
+              item.name.toLowerCase().includes(data.toLowerCase()) ||
+              item.category.toLowerCase().includes(data.toLowerCase()) ||
+              item.usage.toLowerCase().includes(data.toLowerCase()) ||
+              item.packaging.toLowerCase().includes(data.toLowerCase()) ||
+              item.quantity.toString().includes(data.toLowerCase())
+            );
+          });
+          setMedicineDataAfterFilter(result);
+        } else {
+          setMedicineDataAfterFilter(medicineData);
+        }
+        break;
+      case "Room":
+        if (data) {
+          result = roomData.filter((item: any) => {
+            return (
+              item.name.toLowerCase().includes(data.toLowerCase()) ||
+              item.status.toLowerCase().includes(data.toLowerCase()) ||
+              item.capacity.toString().includes(data.toLowerCase()) ||
+              item.location.toLowerCase().includes(data.toLowerCase()) ||
+              item._id.toString().includes(data.toLowerCase())
+            );
+          });
+          setRoomDataAfterFilter(result);
+        } else {
+          setRoomDataAfterFilter(roomData);
+        }
+        break;
+    }
+  };
+
   const modals: React.ReactElement[] = [
     <ModalMedicalEquipment
       open={open === "Medical Equipment"}
@@ -148,21 +228,30 @@ export default function Resources() {
 
   const tables: React.ReactElement[] = [
     <TableMedicalEquipment
-      dataSource={equipmentData}
+      dataSource={equipmentDataAfterFilter}
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
     <TableMedicine
-      dataSource={medicineData}
+      dataSource={medicineDataAfterFilter}
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
     <TableOfficers />,
     <TableRoom
-      dataSource={roomData}
+      dataSource={roomDataAfterFilter}
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
+  ];
+
+  const searchbars: React.ReactElement[] = [
+    <SearchBarMedicalEquipment
+      onSearch={(data) => handleSearch("Medical Equipment", data)}
+    />,
+    <SearchBarMedicine onSearch={(data) => handleSearch("Medicine", data)} />,
+    <SearchBarOfficers />,
+    <SearchBarRoom onSearch={(data) => handleSearch("Room", data)} />,
   ];
 
   return (
@@ -179,7 +268,7 @@ export default function Resources() {
       <Typography variant="h5" gutterBottom>
         Resource
       </Typography>
-      <Box display="flex" sx={{ mb: 3, mt: 3 }}>
+      {/* <Box display="flex" sx={{ mb: 3, mt: 3 }}>
         <Grid
           container
           spacing={2}
@@ -206,15 +295,72 @@ export default function Resources() {
             </Fab>
           </Grid>
         </Grid>
+      </Box> */}
+      {/* <Box sx={{ mt: 2 }}>
+        <SearchBar />
+      </Box> */}
+      <Box
+        sx={{
+          border: "lightgrey solid",
+          mt: 3,
+          pl: "2em",
+          pr: "2em",
+          pb: "2em",
+          backgroundColor: "#e5e5e5",
+          borderRadius: 1,
+          width: "100%",
+        }}
+      >
+        <Tabs
+          sx={{ width: "100%" }}
+          value={tabIndex}
+          onChange={handleTabChange}
+        >
+          {tabs.map((tab, index) => (
+            <Tab
+              key={tab}
+              label={tab}
+              value={index}
+              sx={{ color: "dark grey" }}
+            />
+          ))}
+        </Tabs>
+        {modals[tabIndex]}
+        {/* {searchbars[tabIndex]} */}
+        <Box display="flex" sx={{ mb: 3, mt: 3 }}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Grid item style={{ flexGrow: 1 }}>
+              {/* <SearchBar /> */}
+              {searchbars[tabIndex]}
+            </Grid>
+            <Grid item>
+              <Fab
+                variant="extended"
+                size="small"
+                color="primary"
+                sx={{
+                  fontSize: "12px",
+                  alignItems: "center",
+                  borderRadius: 1,
+                  height: "45px",
+                }}
+                onClick={handleAdd}
+              >
+                <AddIcon fontSize="small" />
+                Create Item
+              </Fab>
+            </Grid>
+          </Grid>
+        </Box>
+        {tables[tabIndex]}
       </Box>
-      <Tabs sx={{ width: "100%" }} value={tabIndex} onChange={handleTabChange}>
-        {tabs.map((tab, index) => (
-          <Tab key={tab} label={tab} value={index} />
-        ))}
-      </Tabs>
-      {modals[tabIndex]}
-      {searchbars[tabIndex]}
-      {tables[tabIndex]}
     </Box>
   );
 }

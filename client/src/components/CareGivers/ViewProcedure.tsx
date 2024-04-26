@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Paper,
   Table,
@@ -12,54 +12,141 @@ import {
   Box,
   TextField,
 } from "@mui/material";
+import procedureService, {Procedure} from "../../services/procedure-service";
+import { useParams } from "react-router-dom";
 
-import ConfirmationModal from "../Modals/ConfirmationModal";
+import StartProcedureModal from "./Modals/StartProcedureModal";
+import CancelProcedureModal from "./Modals/CancelProcedureModal";
+import EndProcedureModal from "./Modals/EndProcedureModal";
 
 export default function ViewProcedure() {
   const [isEditing, setEditMode] = useState(false);
-  const [openConfirmation, setOpenConfirmation] = useState(false); // State to control the ConfirmationModal
+  const {id} = useParams();
+  
+  const [showStartProcedureModal, setShowStartProcedureModal] = useState(false);
+  const [showEndProcedureModal, setShowEndProcedureModal] = useState(false);
+  const [showCancelProcedureModal, setShowCancelProcedureModal] = useState(false);
 
-  const [text, setText] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lacinia metus a malesuada tristique." +
-      "Nunc non tortor a dolor vestibulum pulvinar." +
-      "Morbi placerat felis nec diam dictum pellentesque." +
-      "Nunc non ex facilisis ex condimentum sagittis ut vitae nulla." +
-      "Vivamus ut turpis quis velit ullamcorper tincidunt." +
-      "Pellentesque et enim viverra, hendrerit risus eu, ornare sem." +
-      "Pellentesque porta metus nec egestas aliquet." +
-      "Aliquam vulputate tellus non nibh placerat posuere." +
-      "Donec sed dolor et nisi mattis tincidunt in varius leo." +
-      "Vestibulum eget tortor porttitor, laoreet sem sed, feugiat quam." +
-      "Nulla dictum ligula in dolor pharetra fermentum." +
-      "Integer sit amet nibh non leo gravida bibendum non sit amet turpis."
-  );
+  const [originalText, setOriginalText] = useState(""); 
+  const [text, setText] = useState(""); 
+  const [procedure, setProcedure] = useState<Procedure>();
+  const [procedureStatus, setStatus] = useState("");
 
+  //fetches the procedure data based on id on first load
+  useEffect(() => {
+    const fetchProcedure = async () => {
+      try {
+        procedureService.getById<Procedure>(id as string).then((res) => setProcedure(res.data))
+      } catch (error) {
+        console.error('Failed to fetch procedures:', error);
+      }
+    }
+    fetchProcedure();
+  }, []);
+
+  //call to update procedure
+  const fetchProcedure = async () => {
+    try {
+      const res = await procedureService.getById<Procedure>(id as string);
+      setProcedure(res.data);
+      setOriginalText(res.data.details);
+      setText(res.data.details);
+      setStatus(res.data.status);
+    } catch (error) {
+      console.error('Failed to fetch procedures:', error);
+    }
+  };
+
+  //changes the details based on procedure details
+  useEffect(() => {
+    if (procedure) {
+      setOriginalText(procedure.details);
+      setText(procedure.details);
+      setStatus(procedure.status);
+    }
+  }, [procedure]);
+
+  useEffect(() => {
+    fetchProcedure();
+  }, [procedure]);
+
+
+  //handles editing mode 
   const handleEditClick = () => {
     setEditMode(true);
   };
 
+  //saves edited chances
   const handleSaveClick = () => {
+    setOriginalText(text);
+    setEditMode(false);
+    if(id){
+      procedureService.updateById(id,{details: text});
+    }
+  };
+
+  //cancels edited changes 
+  const handleCancelSaveClick = () => {
+    setText(originalText); 
     setEditMode(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setText(event.target.value);
 
+  //handles start procedure
   const handleStartProcedure = () => {
-    // Call this when you want to open the confirmation modal
-    setOpenConfirmation(true);
+    setShowStartProcedureModal(false)
+    if(id){
+      procedureService.updateById(id,{status: "ongoing"});
+    }
   };
 
-  const handleCloseConfirmation = () => {
-    // Call this to close the modal
-    setOpenConfirmation(false);
+  //handles ending a procedure
+  const handleEndProcedure = () => {
+    setShowEndProcedureModal(false)
+    if(id){
+      procedureService.updateById(id,{status: "completed"});
+    }
   };
 
-  const handleConfirmProcedure = () => {
-    // Handle the confirmation action here
-    console.log("Procedure started");
-    setOpenConfirmation(false); // Close modal after confirmation
+  //handles canceling a procedure
+  const handleCancelProcedure = () => {
+    setShowCancelProcedureModal(false)
+    if(id){
+      procedureService.updateById(id,{status: "canceled"});
+    }
   };
+
+  function formatDate(dateInput: Date | string| undefined): string {
+    if (!dateInput) {
+      return "No time available";
+    }
+    let date: Date;
+    if (dateInput instanceof Date) {
+      date = dateInput;
+    } else {
+      // Attempt to create a Date object from the string input
+      date = new Date(dateInput);
+    }
+    // Formate to month, date, year format
+    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function formatTime(timeInput: Date | string | undefined): string {
+    if (!timeInput) {
+      return "No time available";
+    }
+    let time: Date;
+    if (timeInput instanceof Date) {
+      time = timeInput;
+    } else {
+      // Attempt to create a Date object from the string input
+      time = new Date(timeInput);
+    }
+    // Format time to 12-hour AM/PM format
+    return time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true });
+  }
 
   return (
     <Box
@@ -88,20 +175,20 @@ export default function ViewProcedure() {
           <Table sx={{ width: "100%" }} aria-label="simple table">
             <TableBody>
               <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell align="left">Time</TableCell>
-                <TableCell align="left">Patient</TableCell>
                 <TableCell align="left">Procedure</TableCell>
+                <TableCell align="left">Patient</TableCell>
+                <TableCell align="left">Date</TableCell>
+                <TableCell align="left">Time</TableCell>
                 <TableCell align="left">Location</TableCell>
+                <TableCell align="left">Status</TableCell>
               </TableRow>
               <TableRow sx={{ backgroundColor: "#C2DFE3" }}>
-                {" "}
-                {/* Color applied here */}
-                <TableCell>Aug 24</TableCell>
-                <TableCell align="left">12:30 PM</TableCell>
-                <TableCell align="left">Alice Johnson</TableCell>
-                <TableCell align="left">MRI</TableCell>
-                <TableCell align="left">Room 2020</TableCell>
+                <TableCell align="left">{procedure?.name}</TableCell>
+                <TableCell align="left">{procedure?.patient}</TableCell>
+                <TableCell align="left">{formatDate(procedure?.start)}</TableCell>
+                <TableCell align="left">{formatTime(procedure?.start)}</TableCell>
+                <TableCell align="left">{procedure?.location}</TableCell>
+                <TableCell align="left">{procedureStatus}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -131,7 +218,7 @@ export default function ViewProcedure() {
               minHeight: "500px",
             }}
           >
-            {text}
+            {originalText}
           </Typography>
         )}
         <Box>
@@ -148,6 +235,7 @@ export default function ViewProcedure() {
                 variant="contained"
                 color="error"
                 sx={{ backgroundColor: "#5C6B73" }}
+                onClick={handleCancelSaveClick}
               >
                 Cancel edit
               </Button>
@@ -161,23 +249,29 @@ export default function ViewProcedure() {
               }}
             >
               <Box>
+              {procedureStatus === "waiting" && (
                 <Button
                   variant="contained"
-                  onClick={handleStartProcedure}
+                  onClick={() => setShowStartProcedureModal(true)}
                   sx={{ backgroundColor: "#5C6B73", marginRight: "8px" }}
                 >
                   Start procedure
                 </Button>
+              )}
+              {procedureStatus === "ongoing" && (
                 <Button
                   variant="contained"
-                  onClick={handleStartProcedure}
+                  onClick={() => setShowEndProcedureModal(true)}
                   sx={{ backgroundColor: "#5C6B73", marginRight: "8px" }}
                 >
                   End procedure
                 </Button>
+              )}
               </Box>
-              <Box>
-                <Button
+              
+              {(procedureStatus === "waiting" || procedureStatus === "ongoing") &&(
+                <Box>
+                  <Button
                   variant="contained"
                   onClick={handleEditClick}
                   sx={{ backgroundColor: "#5C6B73", marginRight: "8px" }}
@@ -186,20 +280,32 @@ export default function ViewProcedure() {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={handleStartProcedure}
+                  onClick={() => setShowCancelProcedureModal(true)}
                   color="error"
                   sx={{ backgroundColor: "#5C6B73" }}
                 >
                   Cancel procedure
                 </Button>
-              </Box>
+                </Box>
+              )}
+              
             </Box>
           )}
         </Box>
-        <ConfirmationModal
-          open={openConfirmation}
-          onClose={handleCloseConfirmation}
-          onConfirm={handleConfirmProcedure}
+        <StartProcedureModal
+          open = {showStartProcedureModal}
+          handleConfirm={handleStartProcedure}
+          handleCancel={() => setShowStartProcedureModal(false)}
+        />
+        <EndProcedureModal
+          open = {showEndProcedureModal}
+          handleConfirm={handleEndProcedure}
+          handleCancel={() => setShowEndProcedureModal(false)}
+        />
+        <CancelProcedureModal
+          open = {showCancelProcedureModal}
+          handleConfirm={handleCancelProcedure}
+          handleCancel={() => setShowCancelProcedureModal(false)}
         />
       </Paper>
     </Box>

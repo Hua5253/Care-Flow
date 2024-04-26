@@ -95,8 +95,8 @@ export default function EditProcedureModal({
         } else {
           setCaregiversNames([]);
         }
-        setStartTime(toLocalDateTimeString(procedure.start.toString()) || "");
-        setEndTime(toLocalDateTimeString(procedure.end.toString()) || "");
+        setStartTime(toLocalDateTimeString(procedure.start?.toString()) || "");
+        setEndTime(toLocalDateTimeString(procedure.end?.toString()) || "");
         setDetails(procedure.details || "");
       })
       .catch((err) => console.log(err));

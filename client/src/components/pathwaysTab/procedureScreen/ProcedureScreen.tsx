@@ -21,6 +21,7 @@ function ProcedureScreen() {
   const [showDeletePathwayModal, setShowDeletePathwayModal] = useState(false);
   const [showEditProcedureModal, setShowEditProcedureModal] = useState(false);
   const [procedureToEditId, setProcedureToEditId] = useState("");
+  const [procedureToDeleteId, setProcedureToDeleteId] = useState("");
 
   const { id } = useParams();
 
@@ -30,34 +31,38 @@ function ProcedureScreen() {
   useEffect(() => {
     pathwayService
       .getById<Pathway>(id as string)
-      .then((res) => setPathway(res.data))
-      .catch((err) => console.log(err));
+      .then(res => setPathway(res.data))
+      .catch(err => console.log(err));
   }, []);
 
   const handleDeletePathway = (id: string) => {
     pathwayService
       .deleteById(id)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
 
     for (let procedureId of pathway.procedures) {
       procedureService
         .deleteById(procedureId)
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err));
     }
 
     navigate("/manager-pathway");
   };
 
   const handleEditProcedure = (procedureId: string) => {
-    // console.log(procedureId);
     setProcedureToEditId(procedureId);
     setShowEditProcedureModal(true);
   };
 
+  const handleDeleteProcedure = (procedureId: string) => {
+    setProcedureToDeleteId(procedureId);
+    setShowDeleteProcedureModal(true);
+  };
+
   return (
-    <Container id="app">
+    <Container id='app'>
       <Box sx={{ flexGrow: 1, mt: 8 }}>
         <AppBanner cred={true} />
         <ManagerSideBar />
@@ -65,7 +70,7 @@ function ProcedureScreen() {
         <ProcedureList
           pathway={pathway}
           inEdit={inEdit}
-          handleDeleteProcedure={() => setShowDeleteProcedureModal(true)}
+          handleDeleteProcedure={handleDeleteProcedure}
           handleEditProcedure={handleEditProcedure}
         />
         <ProcedureButtons
@@ -83,8 +88,9 @@ function ProcedureScreen() {
         />
         {showDeleteProcedureModal && (
           <DeleteProcedureModal
-            handleConfirm={() => setShowDeleteProcedureModal(false)}
-            handleCancel={() => setShowDeleteProcedureModal(false)}
+            handleCloseModal={() => setShowDeleteProcedureModal(false)}
+            pathway={pathway}
+            procedureToDeleteId={procedureToDeleteId}
           />
         )}
         {showAddProcedureModal && (

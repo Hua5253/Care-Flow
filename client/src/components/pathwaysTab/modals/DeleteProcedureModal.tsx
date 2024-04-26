@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import pathwayService, { Pathway } from "../../../services/pathway-service";
+import procedureService from "../../../services/procedure-service";
 
 const modalStyle = {
   display: "flex",
@@ -24,39 +26,68 @@ const buttonContainerStyle = {
 };
 
 interface Props {
-    handleConfirm: () => void;
-    handleCancel: () => void;
+  handleCloseModal: () => void;
+  pathway: Pathway;
+  procedureToDeleteId: string;
 }
 
-export default function DeleteProcedureModal({handleConfirm, handleCancel}: Props) {
+export default function DeleteProcedureModal({
+  handleCloseModal,
+  pathway,
+  procedureToDeleteId,
+}: Props) {
+
+  const confirmDeleteProcedure = () => {
+    procedureService
+      .deleteById(procedureToDeleteId)
+      .catch(err => console.log(err));
+
+    const updatedProcedures: string[] = pathway.procedures.filter(
+      procedure => procedure !== procedureToDeleteId
+    );
+
+    const updatedPathway: Pathway = {
+      name: pathway.name,
+      patient: pathway.patient,
+      status: pathway.status,
+      is_template: pathway.is_template,
+      procedures: updatedProcedures,
+    };
+
+    pathwayService.updateById(pathway._id as string, updatedPathway);
+
+    handleCloseModal();
+  };
 
   let title = (
-    <h2 id="confirmation-modal-title">Delete the Procedure from pathway1</h2>
+    <h2 id='confirmation-modal-title'>
+      Delete the Procedure from {pathway.name}
+    </h2>
   );
 
   return (
     <Modal
       open={true}
       style={modalStyle}
-      aria-labelledby="confirmation-modal-title"
-      aria-describedby="confirmation-modal-description"
+      aria-labelledby='confirmation-modal-title'
+      aria-describedby='confirmation-modal-description'
     >
       <Box sx={paperStyle}>
         <div>
           {title}
           <div style={buttonContainerStyle}>
             <Button
-              onClick={handleConfirm}
-              variant="contained"
-              color="primary"
+              onClick={confirmDeleteProcedure}
+              variant='contained'
+              color='primary'
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
             >
               Confirm
             </Button>
             <Button
-              onClick={handleCancel}
-              variant="contained"
-              color="primary"
+              onClick={handleCloseModal}
+              variant='contained'
+              color='primary'
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
             >
               Cancel

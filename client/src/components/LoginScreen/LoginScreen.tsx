@@ -26,11 +26,14 @@ export default function LoginScreen() {
       id="loginScreen"
       sx={{
         display: "flex",
-        height: { xs: "90vh", sm: "60vh", md: "100%" },
+        //height: { xs: "90vh", sm: "60vh", md: "100%" },
         flexDirection: "column",
         justifyContent: { xs: "center", md: "flex-start" },
         alignItems: "center",
-        marginTop: "10%",
+        //marginTop: "10%",
+        pt: { xs: 2, sm: 8, md: 10, lg: 20 },
+        minHeight: "100vh",
+        width: "100%",
       }}
     >
       <NavBar cred={false} />

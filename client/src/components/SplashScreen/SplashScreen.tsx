@@ -8,9 +8,13 @@ export default function SplashScreen() {
       id="splashScreen"
       sx={{
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "column",
+        justifyContent: { xs: "center", s: "flex-start", md: "flex-start" },
         alignItems: "center",
-        marginTop: "10%",
+        //marginTop: "10%",
+        pt: { xs: 2, sm: 12, md: 10, lg: 18 },
+        minHeight: "100vh",
+        width: "100%",
       }}
     >
       <NavBar cred={false} />

@@ -26,7 +26,9 @@ export default function LoginScreen() {
       id="loginScreen"
       sx={{
         display: "flex",
-        justifyContent: "center",
+        height: { xs: "90vh", sm: "60vh", md: "100%" },
+        flexDirection: "column",
+        justifyContent: { xs: "center", md: "flex-start" },
         alignItems: "center",
         marginTop: "10%",
       }}

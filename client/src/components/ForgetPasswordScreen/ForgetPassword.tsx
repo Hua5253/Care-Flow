@@ -101,15 +101,16 @@ export default function ForgetPassword() {
           />
           <Box
             display="flex"
-            flexDirection="column"
+            flexDirection="row"
             alignItems="center"
+            justifyContent="space-between"
             sx={{ mt: 1 }}
           >
-            <Button type="submit" sx={buttonStyle}>
-              Send Request
-            </Button>
             <Button color="primary" sx={buttonStyle} onClick={handleBack}>
               Back
+            </Button>
+            <Button type="submit" sx={buttonStyle}>
+              Send Request
             </Button>
           </Box>
         </Box>

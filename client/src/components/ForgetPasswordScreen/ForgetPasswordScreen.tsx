@@ -8,9 +8,13 @@ export default function ForgetPasswordScreen() {
       id="forgetPasswordScreen"
       sx={{
         display: "flex",
-        justifyContent: "center",
+        height: { xs: "100vh", sm: "100vh", md: "100%" },
+        //height: "100%",
+        flexDirection: "column",
+        justifyContent: { xs: "center", s: "space-evenly", md: "flex-start" },
         alignItems: "center",
-        marginTop: "10%",
+        marginTop: { xs: "10%", s: "0" },
+        paddingY: { s: 0, md: 10 },
       }}
     >
       <NavBar cred={false} />

@@ -17,7 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import AuthContext from "../../auth";
 
 type FormData = {

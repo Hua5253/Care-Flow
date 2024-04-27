@@ -8,6 +8,7 @@ import { useState } from "react";
 interface showModal {
   showModal: () => void;
 }
+const drawerWidth = 240;
 
 export default function Accounts({ showModal }: showModal) {
   const [searchInput, setSearchInpt] = useState<string>("");
@@ -21,12 +22,9 @@ export default function Accounts({ showModal }: showModal) {
       sx={{
         flexGrow: 1,
         p: 3,
-        marginLeft: "6em",
         marginTop: 8,
-        width: "90%",
+        width: "100%",
         overflowX: "auto",
-        minWidth: 1,
-        minHeight: "80vh",
       }}
     >
       <Typography variant="h5" gutterBottom>

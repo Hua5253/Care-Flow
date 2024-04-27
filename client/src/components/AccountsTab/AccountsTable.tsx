@@ -138,7 +138,7 @@ export default function AccountsTable({ searchInput }: Props) {
                   {user.name.length > 10 ? "..." : ""}
                 </TableCell>
                 <TableCell align="left">
-                  {user.username.substring(0, 15)}
+                  {user.username.substring(0, 10)}
                   {user.username.length > 15 ? "..." : ""}
                 </TableCell>
                 <TableCell align="center">
@@ -153,7 +153,8 @@ export default function AccountsTable({ searchInput }: Props) {
                 <TableCell align="right" size="medium">
                   <Button
                     variant="outlined"
-                    sx={{ fontSize: "13px" }}
+                    sx={{ fontSize: "11px" }}
+                    size="small"
                     onClick={() => {
                       setSelectedUser({
                         id: user._id?.toString() || "",

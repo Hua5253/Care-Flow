@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useState } from "react";
 import AppBanner from "../AppBanner/AppBanner";
 import Accounts from "./Accounts";
@@ -16,11 +16,20 @@ export default function AccountsScreen() {
   return (
     <Container
       id="accountScreen"
-      sx={{ display: "flex", alignContent: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignContent: "center",
+      }}
     >
       <AppBanner cred={true} />
       <AdminSideBar />
-      <Accounts showModal={toggleCreateNewUserModal} />
+      <Box
+        component="main"
+        ml={{ xs: "50px", sm: "50px", md: "50px", lg: "150px", xlg: "50px" }}
+      >
+        <Accounts showModal={toggleCreateNewUserModal} />
+      </Box>
       {createUserModal && <CreateNewUserModal onclose={toggleClose} />}
     </Container>
   );

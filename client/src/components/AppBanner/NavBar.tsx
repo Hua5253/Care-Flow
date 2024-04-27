@@ -26,9 +26,10 @@ export default function NavBar({ cred }: Prop) {
   const handleNavToLoginScreen = () => {
     navigate("/login");
   };
-  const handleLogout = () => {
-    auth.logoutUser();
+  const handleLogout = async () => {
+    await auth.logoutUser();
     navigate("/");
+    localStorage.clear();
   };
   return (
     <AppBar

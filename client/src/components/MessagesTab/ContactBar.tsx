@@ -59,17 +59,27 @@ export default function ContactBar(props: ContactBarProps) {
             <ListItem
               key={contact.id}
               sx={{
-                borderBottom: 1,
+                borderBottom: "0.5px solid #989A9D",
                 cursor: "pointer",
                 background: current === contact.id ? "#42a5f5" : "",
+                "&:hover": {
+                  backgroundColor:
+                    current === contact.id ? "#42a5f5" : "#f5f5f5",
+                },
               }}
               onClick={() => setCurrent(contact.id)}
             >
               <ListItemAvatar>
-                <Avatar src={contact.avatar} />
+                <Avatar src={contact.avatar}>
+                  {contact.name[0].toUpperCase()}
+                </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={contact.name}
+                primary={
+                  contact.name.length > 15
+                    ? contact.name.substring(0, 15) + "..."
+                    : contact.name
+                }
                 secondary={contact.lastMessage}
               />
             </ListItem>

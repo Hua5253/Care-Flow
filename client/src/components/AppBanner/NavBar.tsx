@@ -75,7 +75,7 @@ export default function NavBar({ cred }: Prop) {
               }}
             >
               <IconButton onClick={handleClick}>
-                <Avatar>{auth.user?.name[0]}</Avatar>
+                <Avatar variant="rounded">{auth.user?.name[0]}</Avatar>
               </IconButton>
               <Menu
                 anchorEl={anchorEl}

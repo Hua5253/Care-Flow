@@ -164,8 +164,8 @@ export default function ChatBox(props: ChatBoxProps) {
               }}
             >
               <Box display="flex" alignItems="center">
-                <Avatar sx={{ mr: 3 }} />
-                <Typography variant="h5">{user?.name}</Typography>
+                <Avatar sx={{ mr: 3 }}>{user?.name[0].toUpperCase()}</Avatar>
+                <Typography variant="h6">{user?.name}</Typography>
               </Box>
               <Divider />
             </Box>
@@ -202,7 +202,7 @@ export default function ChatBox(props: ChatBoxProps) {
               //border: "1px solid black",
               //borderColor: "divider",
               borderRadius: 1,
-              height: 20,
+              height: 30,
               background: "white",
               boxShadow: 2,
             }}

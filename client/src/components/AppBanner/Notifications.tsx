@@ -50,10 +50,14 @@ export default function Notifications() {
             width: "20em",
             backgroundColor: "#5C6B73", // Outer popover background
             p: 1,
+            borderRadius: 1, // rounded corners
+            marginX: 1,
           },
         }}
       >
-        <Typography sx={{ p: 2, color: "white" }}>Notifications</Typography>
+        <Typography sx={{ p: 2, color: "white" }} variant="h6">
+          Notifications
+        </Typography>
         <List sx={{ pt: 0 }}>
           <ListItem
             button
@@ -62,6 +66,9 @@ export default function Notifications() {
               mb: 1,
               borderRadius: "10px", // rounded corners
               "&:last-child": { mb: 0 }, // remove bottom margin for the last item
+              "&:hover": {
+                backgroundColor: "#7D9BA6", // change background color on hover
+              },
             }}
           >
             <ListItemIcon>
@@ -78,6 +85,9 @@ export default function Notifications() {
               backgroundColor: "#9DB4C0",
               mb: 1, // margin bottom for spacing
               borderRadius: "10px", // rounded corners
+              "&:hover": {
+                backgroundColor: "#7D9BA6", // change background color on hover
+              },
             }}
           >
             <ListItemIcon>

@@ -124,7 +124,7 @@ export default function ViewProcedure() {
                   <TableCell align="left">{procedure.status}</TableCell>
                   <TableCell align="left">
                     <Button
-                      onClick={() => navigate(`/procedure/${procedure._id}`)}
+                      onClick={() => navigate(`/schedule/${procedure._id}`)}
                     >
                       Open
                     </Button>

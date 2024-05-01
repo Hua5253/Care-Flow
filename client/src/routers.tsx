@@ -13,20 +13,20 @@ import TemplatePathwayScreen from "./components/pathwaysTab/templatePathwayScree
 import TemplateProcedureScreen from "./components/pathwaysTab/templateProcedureScreen";
 
 const router = createBrowserRouter([
-    { path: "/", element: <SplashScreen /> },
-    { path: "/manager-pathway", element: <PathwayScreen /> },
-    { path: "/pathways/:id", element: <ProcedureScreen /> },
-    { path: "/manager-template", element: <TemplatePathwayScreen /> },
-    {path: "/template-pathways/:id", element: <TemplateProcedureScreen />},
-    { path: "/resources", element: <ResourceScreen /> },
-    { path: "/accounts", element: <AccountsScreen /> },
-    { path: "/messages/admin", element: <MessagesTab /> },
-    { path: "/messages/manager", element: <MessagesTab /> },
-    { path: "/messages/caregiver", element: <MessagesTab /> },
-    { path: "/login", element: <LoginScreen /> },
-    { path: "/forgetPassword", element: <ForgetPasswordScreen /> },
-    { path: "/schedule", element: <CaregiverScreen /> },
-    { path: "/procedure/:id", element: <ViewProcedureScreen /> },
+  { path: "/", element: <SplashScreen /> },
+  { path: "/manager-pathway", element: <PathwayScreen /> },
+  { path: "/manager-pathway/:id", element: <ProcedureScreen /> },
+  { path: "/manager-template", element: <TemplatePathwayScreen /> },
+  { path: "/manager-template/:id", element: <TemplateProcedureScreen /> },
+  { path: "/resources", element: <ResourceScreen /> },
+  { path: "/accounts", element: <AccountsScreen /> },
+  { path: "/messages/admin", element: <MessagesTab /> },
+  { path: "/messages/manager", element: <MessagesTab /> },
+  { path: "/messages/caregiver", element: <MessagesTab /> },
+  { path: "/login", element: <LoginScreen /> },
+  { path: "/forgetPassword", element: <ForgetPasswordScreen /> },
+  { path: "/schedule", element: <CaregiverScreen /> },
+  { path: "/schedule/:id", element: <ViewProcedureScreen /> },
 ]);
 
 export default router;

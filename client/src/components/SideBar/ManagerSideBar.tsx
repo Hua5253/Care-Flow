@@ -26,6 +26,7 @@ export default function ManagerSideBar() {
   const goTo = (e: string) => {
     navigate(e);
   };
+  console.log(location.pathname);
 
   return (
     <Box>
@@ -51,7 +52,28 @@ export default function ManagerSideBar() {
         <List>
           {managerTabs.map(({ icon, name, path }, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => goTo(path)}>
+              <ListItemButton
+                onClick={() => goTo(path)}
+                sx={{
+                  backgroundColor:
+                    location.pathname === path ||
+                    location.pathname.includes(path)
+                      ? "#cfe8fc"
+                      : "inherit", // Highlight if active
+                  "&:hover": {
+                    backgroundColor:
+                      location.pathname === path ||
+                      location.pathname.includes(path)
+                        ? "#cfe8fc"
+                        : "#f4f4f4", // Different hover color if not active
+                  },
+                  borderRight:
+                    location.pathname === path ||
+                    location.pathname.includes(path)
+                      ? "5px solid #2196f3"
+                      : "none", // Highlight if active
+                }}
+              >
                 <ListItemIcon
                   sx={{
                     "& .MuiSvgIcon-root": { fontSize: "2rem" },
@@ -89,7 +111,27 @@ export default function ManagerSideBar() {
             <ListItem key={index} disablePadding>
               <ListItemButton
                 onClick={() => goTo(path)}
-                sx={{ justifyContent: "center", pl: "auto" }}
+                sx={{
+                  justifyContent: "center",
+                  pl: "auto",
+                  backgroundColor:
+                    location.pathname === path ||
+                    location.pathname.includes(path)
+                      ? "#cfe8fc"
+                      : "inherit", // Highlight if active
+                  "&:hover": {
+                    backgroundColor:
+                      location.pathname === path ||
+                      location.pathname.includes(path)
+                        ? "#cfe8fc"
+                        : "#f4f4f4", // Different hover color if not active
+                  },
+                  borderRight:
+                    location.pathname === path ||
+                    location.pathname.includes(path)
+                      ? "5px solid #2196f3"
+                      : "none", // Highlight if active
+                }}
               >
                 <ListItemIcon
                   sx={{

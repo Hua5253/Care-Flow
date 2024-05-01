@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   Typography,
   Fade,
+  Divider,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -27,6 +28,32 @@ export default function Notifications() {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const UpcomingProcedureNotificationStyle = {
+    backgroundColor: "#e0e0e0",
+    //border: "0.5px solid grey",
+    borderBottom: "1px solid #f9f9f9",
+    boxShadow: 1,
+    mb: 1,
+    mt: 1,
+    borderRadius: "10px", // rounded corners
+    "&:last-child": { mb: 0 }, // remove bottom margin for the last item
+    "&:hover": {
+      backgroundColor: "#B8BEC1", // change background color on hover
+    },
+  };
+
+  const MessageNotificationStyle = {
+    backgroundColor: "#9DB4C0",
+    mb: 1, // margin bottom for spacing
+    borderRadius: "10px", // rounded corners
+    borderBottom: "1px solid #f9f9f9",
+    boxShadow: 1,
+    mt: 1,
+    "&:hover": {
+      backgroundColor: "#7D9BA6", // change background color on hover
+    },
+  };
 
   const notifications = [
     {
@@ -95,25 +122,12 @@ export default function Notifications() {
           },
         }}
       >
-        <Typography sx={{ p: 2 }} variant="h6">
+        <Typography sx={{ p: 1, cursor: "default" }} variant="h6">
           Notifications
         </Typography>
+        <Divider sx={{}} />
         <List sx={{ pt: 0 }}>
-          <ListItem
-            button
-            sx={{
-              backgroundColor: "#e0e0e0",
-              //border: "0.5px solid grey",
-              borderBottom: "1px solid #f9f9f9",
-              boxShadow: 1,
-              mb: 1,
-              borderRadius: "10px", // rounded corners
-              "&:last-child": { mb: 0 }, // remove bottom margin for the last item
-              "&:hover": {
-                backgroundColor: "#B8BEC1", // change background color on hover
-              },
-            }}
-          >
+          <ListItem button sx={UpcomingProcedureNotificationStyle}>
             <ListItemIcon>
               <EventNoteIcon color="action" />
             </ListItemIcon>
@@ -122,19 +136,7 @@ export default function Notifications() {
               secondary="Aug 24 12:30pm, Alice Johnson, MRI"
             />
           </ListItem>
-          <ListItem
-            button
-            sx={{
-              backgroundColor: "#9DB4C0",
-              mb: 1, // margin bottom for spacing
-              borderRadius: "10px", // rounded corners
-              borderBottom: "1px solid #f9f9f9",
-              boxShadow: 1,
-              "&:hover": {
-                backgroundColor: "#7D9BA6", // change background color on hover
-              },
-            }}
-          >
+          <ListItem button sx={MessageNotificationStyle}>
             <ListItemIcon>
               <ChatIcon color="action" />
             </ListItemIcon>

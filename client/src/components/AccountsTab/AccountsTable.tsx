@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -94,11 +95,20 @@ export default function AccountsTable({ searchInput }: Props) {
       .catch((err) => console.log(err));
   }, [userList]);
 
+  const headerFontStyle = {
+    fontWeight: "bold",
+    backgroundColor: "#E3E3E4",
+  };
+
   return (
     <Box>
       <TableContainer
         component={Paper}
-        sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
+        sx={{
+          width: "100%",
+          border: "solid 0.1em grey",
+          shadow: "inherit",
+        }}
       >
         <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
           <TableHead
@@ -107,13 +117,27 @@ export default function AccountsTable({ searchInput }: Props) {
             }}
           >
             <TableRow>
-              <TableCell align="left">ID</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Username</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="left">Phone Number</TableCell>
-              <TableCell align="left">Role</TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>ID</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Name</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Username</TableSortLabel>
+              </TableCell>
+              <TableCell align="center" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Email</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Phone Number</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Role</TableSortLabel>
+              </TableCell>
+              <TableCell align="center" sx={headerFontStyle}>
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody
@@ -129,7 +153,7 @@ export default function AccountsTable({ searchInput }: Props) {
                   "&:hover": { backgroundColor: "#f5f5f5" },
                 }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell scope="row">
                   {user._id?.substring(0, 10)}
                   {user._id?.length ? (user._id.length > 10 ? "..." : "") : ""}
                 </TableCell>
@@ -153,7 +177,13 @@ export default function AccountsTable({ searchInput }: Props) {
                 <TableCell align="right" size="medium">
                   <Button
                     variant="outlined"
-                    sx={{ fontSize: "11px" }}
+                    sx={{
+                      fontSize: "12px",
+                      padding: "7px 14px",
+                      ":hover": {
+                        backgroundColor: "#e0e0e0",
+                      },
+                    }}
                     size="small" // or "medium" or "large"
                     onClick={() => {
                       setSelectedUser({
@@ -169,7 +199,7 @@ export default function AccountsTable({ searchInput }: Props) {
                     Change Password
                   </Button>
                   <IconButton
-                    size="medium"
+                    size="large"
                     sx={{ ml: 3 }}
                     onClick={() => {
                       setSelectedUser({

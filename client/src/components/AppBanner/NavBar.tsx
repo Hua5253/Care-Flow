@@ -53,7 +53,7 @@ export default function NavBar({ cred }: Prop) {
             textAlign: "left",
             paddingLeft: "2em",
             "&:hover": {
-              cursor: "pointer",
+              cursor: "default",
             },
           }}
         >

@@ -125,7 +125,7 @@ export default function Notifications() {
         <Typography sx={{ p: 1, cursor: "default" }} variant="h6">
           Notifications
         </Typography>
-        <Divider sx={{}} />
+        <Divider sx={{ borderColor: "#bcbcbc" }} />
         <List sx={{ pt: 0 }}>
           <ListItem button sx={UpcomingProcedureNotificationStyle}>
             <ListItemIcon>

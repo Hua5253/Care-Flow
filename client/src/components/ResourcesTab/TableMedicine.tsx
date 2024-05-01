@@ -97,10 +97,10 @@ export default function TableMedicine({ dataSource, onEdit, onDelete }: Prop) {
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Packaging</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "14%" }}>
               <TableSortLabel active={true}>Stock Quantity</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "15%" }}>
               Actions
             </TableCell>
           </TableRow>
@@ -131,7 +131,6 @@ export default function TableMedicine({ dataSource, onEdit, onDelete }: Prop) {
                 </Button>
                 <IconButton
                   size="medium"
-                  sx={{ ml: 3 }}
                   onClick={() => handleDelete(data._id || "")}
                 >
                   <DeleteIcon />

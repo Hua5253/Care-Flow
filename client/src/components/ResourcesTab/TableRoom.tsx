@@ -107,7 +107,7 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Current Status</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "15%" }}>
               Actions
             </TableCell>
           </TableRow>
@@ -142,7 +142,6 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
                 </Button>
                 <IconButton
                   size="medium"
-                  sx={{ ml: 3 }}
                   onClick={() => handleDelete(data._id || "")}
                 >
                   <DeleteIcon />

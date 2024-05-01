@@ -24,14 +24,19 @@ export default function ContactBar(props: ContactBarProps) {
     <Paper
       variant="outlined"
       sx={{
-        width: "30%",
+        width: "fit-content",
         flexShrink: 0,
         overflow: "auto",
-        mt: 10,
-        ml: 10,
-        mr: 5,
-        mb: 1,
-        padding: 1,
+        // mr: 5,
+        // mb: 1,
+        //p: 1,
+        pt: 0,
+        pr: 1,
+        pl: 1,
+        height: "80vh",
+        border: "0.5px solid #989A9D",
+        borderTopRightRadius: "0",
+        borderBottomRightRadius: "0",
       }}
     >
       <Box sx={{ overflow: "auto" }}>
@@ -44,14 +49,22 @@ export default function ContactBar(props: ContactBarProps) {
           <ListItem>
             <TextField
               value={query.name}
-              onChange={e => setQuery({ name: e.target.value })}
+              onChange={(e) => setQuery({ name: e.target.value })}
               size="small"
               placeholder="Find or start a conversation"
               fullWidth
             />
           </ListItem>
           {contacts?.map((contact) => (
-            <ListItem key={contact.id} sx={{ borderBottom: 1, cursor: 'pointer', background: current === contact.id ? '#42a5f5' : '' }} onClick={() => setCurrent(contact.id)}>
+            <ListItem
+              key={contact.id}
+              sx={{
+                borderBottom: 1,
+                cursor: "pointer",
+                background: current === contact.id ? "#42a5f5" : "",
+              }}
+              onClick={() => setCurrent(contact.id)}
+            >
               <ListItemAvatar>
                 <Avatar src={contact.avatar} />
               </ListItemAvatar>

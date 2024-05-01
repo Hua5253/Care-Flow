@@ -107,13 +107,13 @@ export default function TableMedicalEquipment({
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Category</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "5%" }}>
               <TableSortLabel active={true}>Quantity Available</TableSortLabel>
             </TableCell>
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Status</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "15%" }}>
               Actions
             </TableCell>
           </TableRow>
@@ -149,7 +149,6 @@ export default function TableMedicalEquipment({
                 </Button>
                 <IconButton
                   size="medium"
-                  sx={{ ml: 3 }}
                   onClick={() => handleDelete(data._id || "")}
                 >
                   <DeleteIcon />

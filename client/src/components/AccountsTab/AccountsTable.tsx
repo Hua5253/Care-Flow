@@ -154,7 +154,7 @@ export default function AccountsTable({ searchInput }: Props) {
                   <Button
                     variant="outlined"
                     sx={{ fontSize: "11px" }}
-                    size="small"
+                    size="small" // or "medium" or "large"
                     onClick={() => {
                       setSelectedUser({
                         id: user._id?.toString() || "",

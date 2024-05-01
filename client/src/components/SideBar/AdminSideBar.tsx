@@ -72,7 +72,7 @@ export default function AdminSideBar() {
           display: { lg: "none", xl: "none" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
-            width: drawerWidth / 4,
+            width: "100px",
           },
         }}
         variant="persistent"
@@ -82,13 +82,16 @@ export default function AdminSideBar() {
         <List>
           {adminTabs.map(({ icon, name, path }, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => goTo(path)}>
+              <ListItemButton
+                onClick={() => goTo(path)}
+                sx={{ justifyContent: "center", pl: "auto" }}
+              >
                 <ListItemIcon
                   sx={{
                     minWidth: "auto",
-                    justifyContent: "center",
                     "& .MuiSvgIcon-root": { fontSize: "2rem" },
                   }}
+                  id={name}
                 >
                   {icon}
                 </ListItemIcon>

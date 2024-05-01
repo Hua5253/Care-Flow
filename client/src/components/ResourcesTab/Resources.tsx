@@ -257,11 +257,14 @@ export default function Resources() {
     <Box
       sx={{
         flexGrow: 1,
-        p: 3,
-        marginLeft: "6em",
-        marginTop: 8,
+        //p: 3,
+        //marginLeft: "6em",
+        //marginTop: "10vh",
         width: "100%",
+        height: "fit-content",
         minWidth: 0,
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Typography variant="h5" gutterBottom>
@@ -301,13 +304,15 @@ export default function Resources() {
       <Box
         sx={{
           border: "lightgrey solid",
-          mt: 3,
-          pl: "2em",
-          pr: "2em",
-          pb: "2em",
+          //mt: 3,
+          // mr: "2em",
+          //ml: "2em",
+          p: 1,
+          //pb: "2em",
           backgroundColor: "#e5e5e5",
           borderRadius: 1,
           width: "100%",
+          height: "100%",
         }}
       >
         <Tabs

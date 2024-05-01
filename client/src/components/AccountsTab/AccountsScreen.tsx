@@ -26,7 +26,8 @@ export default function AccountsScreen() {
       <AdminSideBar />
       <Box
         component="main"
-        ml={{ xs: "50px", sm: "50px", md: "50px", lg: "150px", xlg: "50px" }}
+        ml={{ xs: "20vw", sm: "20vw", md: "20vw", lg: "12vw", xl: "2vw" }}
+        width="75vw"
       >
         <Accounts showModal={toggleCreateNewUserModal} />
       </Box>

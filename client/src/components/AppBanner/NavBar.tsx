@@ -66,9 +66,16 @@ export default function NavBar({ cred }: Prop) {
         ) : (
           <>
             <Notifications />
-            <Box sx={{ paddingLeft: "2em", paddingRight: "2em" }}>
+            <Box
+              sx={{
+                paddingLeft: "2em",
+                paddingRight: "2em",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               <IconButton onClick={handleClick}>
-                <Avatar />
+                <Avatar>{auth.user?.name[0]}</Avatar>
               </IconButton>
               <Menu
                 anchorEl={anchorEl}

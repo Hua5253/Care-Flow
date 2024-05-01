@@ -8,6 +8,7 @@ import {
   ListItemText,
   ListItemIcon,
   Typography,
+  Fade,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -27,9 +28,22 @@ export default function Notifications() {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  const notifications = [
+    {
+      action: "Upcoming procedure",
+      title: "Upcoming procedure",
+      details: "Aug 24 12:30pm, Alice Johnson, MRI",
+    },
+    {
+      action: "Message",
+      title: "John Doe",
+      details: "Yes of course. Are there problems...",
+    },
+  ];
+
   return (
     <Box sx={{ paddingLeft: "1em" }}>
-      <IconButton color="inherit" onClick={handleClick}>
+      <IconButton color="inherit" onClick={handleClick} size="large">
         <NotificationsIcon />
       </IconButton>
       <Popover
@@ -39,35 +53,64 @@ export default function Notifications() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
+          horizontal: "center",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "left",
+          horizontal: "center",
         }}
+        // sx={{
+        //   "& .MuiPopover-paper": {
+        //     width: "fit-content",
+        //     backgroundColor: "#5C6B73", // Outer popover background
+        //     p: 1,
+        //     borderRadius: 1, // rounded corners
+        //     marginX: 1,
+        //   },
+        // }}
+        color="#f3f6f4"
+        TransitionComponent={Fade}
         sx={{
+          mt: 1.5,
           "& .MuiPopover-paper": {
-            width: "20em",
-            backgroundColor: "#5C6B73", // Outer popover background
-            p: 1,
-            borderRadius: 1, // rounded corners
-            marginX: 1,
+            width: "fit-contene", // Adjust width to your requirement
+            backgroundColor: "#ffffff",
+            p: 2,
+            borderRadius: 1, // Slightly rounded corners,
+            boxShadow: 10,
+            overflow: "visible", // Hide the overflow
+            "&::before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: "42%",
+              width: 20,
+              height: 20,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+              overflow: "scroll", // Hide the overflow
+            },
           },
         }}
       >
-        <Typography sx={{ p: 2, color: "white" }} variant="h6">
+        <Typography sx={{ p: 2 }} variant="h6">
           Notifications
         </Typography>
         <List sx={{ pt: 0 }}>
           <ListItem
             button
             sx={{
-              backgroundColor: "#9DB4C0",
+              backgroundColor: "#e0e0e0",
+              //border: "0.5px solid grey",
+              borderBottom: "1px solid #f9f9f9",
+              boxShadow: 1,
               mb: 1,
               borderRadius: "10px", // rounded corners
               "&:last-child": { mb: 0 }, // remove bottom margin for the last item
               "&:hover": {
-                backgroundColor: "#7D9BA6", // change background color on hover
+                backgroundColor: "#B8BEC1", // change background color on hover
               },
             }}
           >
@@ -85,6 +128,8 @@ export default function Notifications() {
               backgroundColor: "#9DB4C0",
               mb: 1, // margin bottom for spacing
               borderRadius: "10px", // rounded corners
+              borderBottom: "1px solid #f9f9f9",
+              boxShadow: 1,
               "&:hover": {
                 backgroundColor: "#7D9BA6", // change background color on hover
               },

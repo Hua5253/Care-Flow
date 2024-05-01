@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Notifications from "./Notifications";
-import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
+import { Avatar, Box, Fade, IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 interface Prop {
@@ -74,8 +74,11 @@ export default function NavBar({ cred }: Prop) {
                 alignItems: "center",
               }}
             >
-              <IconButton onClick={handleClick}>
+              <IconButton onClick={handleClick} sx={{ gap: "8px" }}>
                 <Avatar variant="rounded">{auth.user?.name[0]}</Avatar>
+                <Typography variant="body1" noWrap sx={{ color: "white" }}>
+                  {auth.user?.name}
+                </Typography>
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
@@ -83,6 +86,35 @@ export default function NavBar({ cred }: Prop) {
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}
+                color="#f3f6f4"
+                TransitionComponent={Fade}
+                sx={{
+                  overflow: "visible",
+                  mt: 1,
+                  "& .MuiPaper-root": {
+                    overflow: "visible",
+                    "&::before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: "40%",
+                      width: 20,
+                      height: 20,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
               >
                 <MenuItem>Change Password</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>

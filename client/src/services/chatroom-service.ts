@@ -1,5 +1,11 @@
 import create from "./http-service";
 
+export interface Notification {
+  read_status: Boolean;
+  type: String;
+  content: String;
+}
+
 export interface User {
   id?: string;
   _id?: string;
@@ -10,13 +16,7 @@ export interface User {
   phone_number: string;
   role: string;
   chat_rooms?: Chatroom;
-  Notifications?: [
-    {
-      read_status: Boolean;
-      type: String;
-      content: String;
-    }
-  ];
+  notifications?: Notification[];
 }
 
 interface Chatroom {

@@ -1,6 +1,8 @@
 import create from "./http-service";
 
 export interface Notification {
+  _id: string;
+  name: string;
   read_status: Boolean;
   type: String;
   content: String;
@@ -30,4 +32,4 @@ interface Message {
   time: Date;
 }
 
-export default create("/users");
+export default create("/users/notification");

@@ -11,13 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+const caregiverTabs = [
+  { icon: <EventAvailableIcon />, name: "Schedule", path: "/schedule" },
+  { icon: <MailIcon />, name: "Message", path: "/Messages/caregiver" },
+];
+
 export default function CaregiverSideBar() {
   const navigate = useNavigate();
   const theme = useTheme();
-  const caregiverTabs = [
-    { icon: <EventAvailableIcon />, name: "Schedule", path: "/schedule" },
-    { icon: <MailIcon />, name: "Message", path: "/Messages/caregiver" },
-  ];
   const isBetweenXsAndMd = useMediaQuery(theme.breakpoints.between("xs", "xl"));
   const drawerWidth = isBetweenXsAndMd ? 0 : 240;
 

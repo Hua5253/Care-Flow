@@ -36,6 +36,7 @@ const chat = io.of('/chatroom').on('connection', (socket: UserSocket) => {
 
     socket.on('chat', (roomId, userId, message) => {
       chat.to(roomId).emit('chat', roomId, userId, message);
+      chat.emit('notification', message);
     });
 
     socket.on('disconnect', () => {

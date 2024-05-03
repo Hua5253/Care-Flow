@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box } from "@mui/material";
 import ContactBar from "./ContactBar";
 import ChatBox from "./ChatBox";
 import userService, { User } from "../../services/user-service";
@@ -6,6 +6,7 @@ import roomService from "../../services/chatroom-service";
 import messageService, { Message } from "../../services/message-service";
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../../socket";
+import { useSearchParams, useLocation } from "react-router-dom";
 
 export default function MessagesContent() {
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -17,6 +18,8 @@ export default function MessagesContent() {
   const [message, setMessage] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
   const [messages, setMessages] = useState<any[]>([]);
+  const [search] = useSearchParams();
+  const location = useLocation();
 
   const handleRoomCreate = async () => {
     const profile = JSON.parse(localStorage.getItem("profile") || "{}");
@@ -101,8 +104,24 @@ export default function MessagesContent() {
     fetchMessage(roomId);
   }, [roomId]);
 
+  useEffect(() => {
+    const currentId = search.get("id");
+    if (currentId !== current) {
+      setCurrent(currentId as string);
+    }
+  }, [current, location.search]);
+
   return (
-    <Container sx={{ display: "flex", width: "100vw" }}>
+    <Box
+      sx={{
+        display: "flex",
+        marginTop: "64px",
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "self-start",
+        gap: 2,
+      }}
+    >
       <ContactBar
         contacts={contacts}
         current={current}
@@ -119,6 +138,6 @@ export default function MessagesContent() {
         setMessage={setMessage}
         onMessageSend={handleMessageSend}
       />
-    </Container>
+    </Box>
   );
 }

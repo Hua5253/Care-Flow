@@ -60,6 +60,7 @@ export default function ConfirmationModal({
           {body}
           <div style={buttonContainerStyle}>
             <Button
+              data-testid="confirm"
               onClick={onConfirm}
               variant="contained"
               color="primary"
@@ -68,6 +69,7 @@ export default function ConfirmationModal({
               Confirm
             </Button>
             <Button
+              data-testid="cancel"
               onClick={onClose}
               variant="contained"
               color="primary"

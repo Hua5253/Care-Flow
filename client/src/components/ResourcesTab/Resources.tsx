@@ -267,40 +267,9 @@ export default function Resources() {
         justifyContent: "center",
       }}
     >
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h4" pb={1} gutterBottom>
         Resource
       </Typography>
-      {/* <Box display="flex" sx={{ mb: 3, mt: 3 }}>
-        <Grid
-          container
-          spacing={2}
-          sx={{ alignItems: "center", justifyContent: "center" }}
-        >
-          <Grid item xs={10}>
-            <SearchBar />
-          </Grid>
-          <Grid item xs={2}>
-            <Fab
-              variant="extended"
-              size="small"
-              color="primary"
-              sx={{
-                fontSize: "12px",
-                alignItems: "center",
-                borderRadius: 1,
-                height: "45px",
-              }}
-              onClick={handleAdd}
-            >
-              <AddIcon fontSize="small" />
-              Create Item
-            </Fab>
-          </Grid>
-        </Grid>
-      </Box> */}
-      {/* <Box sx={{ mt: 2 }}>
-        <SearchBar />
-      </Box> */}
       <Box
         sx={{
           border: "lightgrey solid",

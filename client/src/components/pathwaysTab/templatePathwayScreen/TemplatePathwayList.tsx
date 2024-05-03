@@ -11,6 +11,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
+  Typography,
 } from "@mui/material";
 import procedureService from "../../../services/procedure-service";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +24,7 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "name", label: "Name", minWidth: 170 },
+  { id: "name", label: "Template Name", minWidth: 170 },
   { id: "open", label: "", minWidth: 170, align: "right" },
 ];
 
@@ -67,8 +69,27 @@ function TemplatePathwayList({ handleAddPathwayClick }: Props) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, p: 7 }}>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        width: "100%",
+        height: "fit-content",
+        minWidth: 0,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Typography variant="h4" pb={1} gutterBottom>
+        Template Pathway
+      </Typography>
+      <Paper
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          border: "solid 0.1em grey",
+          shadow: "inherit",
+        }}
+      >
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -79,7 +100,11 @@ function TemplatePathwayList({ handleAddPathwayClick }: Props) {
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
                   >
-                    {column.label}
+                    {column.label && (
+                      <TableSortLabel active={true} sx={{ fontWeight: 700 }}>
+                        {column.label}
+                      </TableSortLabel>
+                    )}
                   </TableCell>
                 ))}
               </TableRow>

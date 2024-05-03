@@ -43,7 +43,11 @@ export default function ContactBar(props: ContactBarProps) {
         <List>
           <ListItem>
             <ListItemText
-              primary={<Typography variant="h6">Messaging</Typography>}
+              primary={
+                <Typography variant="h5" fontWeight="bolder">
+                  Messaging
+                </Typography>
+              }
             />
           </ListItem>
           <ListItem>
@@ -51,7 +55,7 @@ export default function ContactBar(props: ContactBarProps) {
               value={query.name}
               onChange={(e) => setQuery({ name: e.target.value })}
               size="small"
-              placeholder="Find or start a conversation"
+              placeholder="Find a contact..."
               fullWidth
             />
           </ListItem>

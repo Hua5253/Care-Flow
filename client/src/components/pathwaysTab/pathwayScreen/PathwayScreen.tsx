@@ -8,41 +8,54 @@ import ManagerSideBar from "../../SideBar/ManagerSideBar";
 import BlankPathwayFormModal from "../modals/BlankPathwayFormModal";
 
 export default function PathwayScreen() {
-    const [showAddPathwayModal, setShowAddPathwayModal] = useState(false);
-    const [showBlankPathwayFormModal, setShowBlankPathwayFormModal] =
-        useState(false);
+  const [showAddPathwayModal, setShowAddPathwayModal] = useState(false);
+  const [showBlankPathwayFormModal, setShowBlankPathwayFormModal] =
+    useState(false);
 
-    const handleAddPathwayModalClick = () => {
-        setShowAddPathwayModal(true);
-    };
+  const handleAddPathwayModalClick = () => {
+    setShowAddPathwayModal(true);
+  };
 
-    return (
-        <Container sx={{ display: "flex" }}>
-            <Box
-                sx={{
-                    flexGrow: 1,
-                    p: 3,
-                    marginLeft: "6em",
-                    marginTop: 8,
-                    width: "100%",
-                    overflowX: "auto",
-                    minWidth: 0,
-                }}
-            >
-                <AppBanner cred={true} />
-                <ManagerSideBar />
-                <PathwayList showModal={handleAddPathwayModalClick} />
-                {showAddPathwayModal && (
-                    <CreatePathwayModal
-                        handleClose={() => setShowAddPathwayModal(false)}
-                        createBlankPathway={() => setShowBlankPathwayFormModal(true)}
-                    />
-                )}
-                <BlankPathwayFormModal
-                    open={showBlankPathwayFormModal}
-                    handleClose={() => setShowBlankPathwayFormModal(false)}
-                />
-            </Box>
-        </Container>
-    );
+  return (
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100vw",
+        //ml: { xs: "20vw", sm: "12vw", md: "15vw", lg: "20vw", xl: "20vw" },
+        // mt: "50px",
+        height: "100vh",
+      }}
+    >
+      <AppBanner cred={true} />
+      <ManagerSideBar />
+      <Box
+        component="main"
+        sx={{
+          mt: "75px",
+          ml: { sm: "100px", md: "120px" },
+          pl: { sm: "50px", md: "40px" },
+          backgroundColor: "#f5f5f5",
+          width: "80%",
+          height: "90%",
+          pr: 9,
+          pt: 2,
+          pb: 2,
+          overflow: "scroll",
+        }}
+      >
+        <PathwayList showModal={handleAddPathwayModalClick} />
+      </Box>
+      {showAddPathwayModal && (
+        <CreatePathwayModal
+          handleClose={() => setShowAddPathwayModal(false)}
+          createBlankPathway={() => setShowBlankPathwayFormModal(true)}
+        />
+      )}
+      <BlankPathwayFormModal
+        open={showBlankPathwayFormModal}
+        handleClose={() => setShowBlankPathwayFormModal(false)}
+      />
+    </Container>
+  );
 }

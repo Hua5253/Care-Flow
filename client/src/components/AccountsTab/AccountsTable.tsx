@@ -200,7 +200,7 @@ export default function AccountsTable({ searchInput }: Props) {
                   </Button>
                   <IconButton
                     size="large"
-                    sx={{ ml: 3 }}
+                    sx={{ ml: 3, ":hover": { backgroundColor: "red" } }}
                     onClick={() => {
                       setSelectedUser({
                         id: user._id?.toString() || "",

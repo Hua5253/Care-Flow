@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import { useState } from "react";
 import AppBanner from "../AppBanner/AppBanner";
 import Accounts from "./Accounts";
-import CreateNewUserModal from "../CareGivers/Modals/CreateNewUserModal";
+import CreateNewUserModal from "./Modals/CreateNewUserModal";
 import AdminSideBar from "../SideBar/AdminSideBar";
 
 export default function AccountsScreen() {
@@ -14,7 +14,10 @@ export default function AccountsScreen() {
     setCreateUserModal(false);
   };
   return (
-    <Container id="accountScreen" sx={{ display: "flex" }}>
+    <Container
+      id="accountScreen"
+      sx={{ display: "flex", alignContent: "center" }}
+    >
       <AppBanner cred={true} />
       <AdminSideBar />
       <Accounts showModal={toggleCreateNewUserModal} />

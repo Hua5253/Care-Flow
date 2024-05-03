@@ -125,15 +125,16 @@ const deleteRoom: RequestHandler = async (request, response, next) => {
 
 const createEquipment: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
-  const catagory = request.body.category;
+  const category = request.body.category;
   const quantity = request.body.quantity;
+  const status = request.body.status;
 
   if (!name) {
     return response
       .status(400)
       .json({ error: "name is required in the request body." });
   }
-  if (!catagory) {
+  if (!category) {
     return response
       .status(400)
       .json({ error: "catagory is required in the request body." });
@@ -143,12 +144,18 @@ const createEquipment: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "quantity is required in the request body." });
   }
+  if (!status) {
+    return response
+      .status(400)
+      .json({ error: "status is required in the request body." });
+  }
 
   try {
     const newEquipment = await EquipmentModel.create({
       name: name,
-      catagory: catagory,
+      category: category,
       quantity: quantity,
+      status: status,
     });
 
     response.status(201).json(newEquipment);
@@ -182,7 +189,7 @@ export const getEquipmentById: RequestHandler = async (
 ) => {
   const equipmentId = request.params.id;
   try {
-    const equipment = await RoomModel.findById(equipmentId);
+    const equipment = await EquipmentModel.findById(equipmentId);
 
     if (equipment) {
       response.status(200).json(equipment);
@@ -197,14 +204,14 @@ export const getEquipmentById: RequestHandler = async (
 const updateEquipment: RequestHandler = async (request, response, next) => {
   const equipmentId = request.params.id;
 
-  const { name, category, quantity } = request.body;
+  const { name, category, quantity, status } = request.body;
 
-  if (name && category && quantity === undefined) {
+  if (name && category && quantity && status === undefined) {
     return response.status(400).json({ error: "all fields must be provided" });
   }
 
   try {
-    const updates = { name, category, quantity };
+    const updates = { name, category, quantity, status };
 
     const updatedEquipment = await EquipmentModel.findByIdAndUpdate(
       equipmentId,
@@ -225,7 +232,9 @@ const updateEquipment: RequestHandler = async (request, response, next) => {
 const deleteEquipment: RequestHandler = async (request, response, next) => {
   const equipmentId = request.params.id;
   try {
-    const deletedEquipment = await RoomModel.findByIdAndDelete(equipmentId);
+    const deletedEquipment = await EquipmentModel.findByIdAndDelete(
+      equipmentId
+    );
 
     if (!deletedEquipment) {
       return response.status(404).json({ error: "Equipment not found" });
@@ -239,7 +248,7 @@ const deleteEquipment: RequestHandler = async (request, response, next) => {
 
 const createMedicine: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
-  const catagory = request.body.category;
+  const category = request.body.category;
   const usage = request.body.usage;
   const packaging = request.body.packaging;
   const quantity = request.body.quantity;
@@ -249,7 +258,7 @@ const createMedicine: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "name is required in the request body." });
   }
-  if (!catagory) {
+  if (!category) {
     return response
       .status(400)
       .json({ error: "catagory is required in the request body." });
@@ -259,6 +268,7 @@ const createMedicine: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "usage is required in the request body." });
   }
+  //is packaging required? bc it is is not stated in the schema as required
   if (!packaging) {
     return response
       .status(400)
@@ -273,7 +283,7 @@ const createMedicine: RequestHandler = async (request, response, next) => {
   try {
     const newMedicine = await MedicineModel.create({
       name: name,
-      catagory: catagory,
+      category: category,
       usage: usage,
       packaging: packaging,
       quantity: quantity,

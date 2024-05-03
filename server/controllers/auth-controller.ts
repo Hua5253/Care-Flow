@@ -1,45 +1,62 @@
 import { Request, Response } from "express";
-import { Users } from "../models/user_model";
-import { User } from "../models/user_model";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import UserModel from "../models/user_schema";
+
 const loginUser = async (req: Request, res: Response) => {
-  console.log("login user");
-  console.log(req.body);
   const { username, password } = req.body;
-
-  //find if username is in the database
-  let existingUser: User[] | null = Users.filter(
-    (user) => user.username.toLowerCase() === username.toLowerCase()
-  );
-  existingUser = existingUser.length === 0 ? null : existingUser;
-
-  //return error if the username is not in the database
-  if (!existingUser) {
+  const loginUser = await UserModel.findOne({
+    username: username
+  }).exec();
+  if (!loginUser) {
+    console.error("user not found");
     return res.status(401).json({
       errorMsg: "Wrong username or password provided.",
     });
   }
 
-  //compare password
-  const passwordCorrect = existingUser[0].password === password;
+  const correctPassword = await bcrypt.compare(password, loginUser.password);
+  if (correctPassword) {
+    const token = jwt.sign({
+      user: loginUser._id
+    }, process.env.JWT_SECRET || ":r(4[CaQ3`N<#8EV~7<K75Rd/ZpfzBkv`m-x]+QnjQcXazr%w;");
 
-  if (!passwordCorrect) {
+    console.log("jwt token", token);
+
+    res.cookie("token", token, {
+      httpOnly: true
+    }).status(200).json({
+      error: false,
+      user: loginUser
+    }).send();
+  } else {
     return res.status(401).json({
       errorMsg: "Wrong username or password provided.",
     });
   }
 
-  //return user when password and username is both verified
-  res.status(200).json({
-    error: false,
-    user: {
-      username: existingUser[0].username,
-      role: existingUser[0].role,
-    },
-  });
 };
+
 const logoutUser = async (req: Request, res: Response) => {
   console.log("logout user");
-  res.json({ error: false });
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(0)
+  })
+    .json({ error: false });
 };
-const AuthController = { loginUser, logoutUser };
+
+const loggedIn = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.json(false);
+    jwt.verify(token, process.env.JWT_SECRET || ":r(4[CaQ3`N<#8EV~7<K75Rd/ZpfzBkv`m-x]+QnjQcXazr%w;");
+
+    res.send(true);
+  } catch (error) {
+    res.json(false);
+  }
+}
+
+const AuthController = { loginUser, logoutUser, loggedIn };
 export default AuthController;

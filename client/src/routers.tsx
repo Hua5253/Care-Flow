@@ -9,14 +9,15 @@ import ForgetPasswordScreen from "./components/ForgetPasswordScreen";
 import CaregiverScreen from "./components/CareGivers/CaregiverScreen";
 import ViewProcedureScreen from "./components/CareGivers/ViewProcedureScreen";
 import ResourceScreen from "./components/ResourcesTab";
-import TemplateScreen from "./components/pathwaysTab/templateScreen/TemplateScreen";
+import TemplatePathwayScreen from "./components/pathwaysTab/templatePathwayScreen";
+import TemplateProcedureScreen from "./components/pathwaysTab/templateProcedureScreen";
 
 const router = createBrowserRouter([
     { path: "/", element: <SplashScreen /> },
     { path: "/manager-pathway", element: <PathwayScreen /> },
-    { path: "/manager-procedure", element: <ProcedureScreen /> },
     { path: "/pathways/:id", element: <ProcedureScreen /> },
-    { path: "/manager-template", element: <TemplateScreen /> },
+    { path: "/manager-template", element: <TemplatePathwayScreen /> },
+    {path: "/template-pathways/:id", element: <TemplateProcedureScreen />},
     { path: "/resources", element: <ResourceScreen /> },
     { path: "/accounts", element: <AccountsScreen /> },
     { path: "/messages/admin", element: <MessagesTab /> },

@@ -7,12 +7,16 @@ import {
   MenuItem,
   Paper,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
+interface Props {
+  onSearch: (searchInput: string) => void;
+}
 
-export default function SearchBarMedicalEquipment() {
+export default function SearchBarMedicalEquipment({ onSearch }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [searchInput, setSearchInput] = React.useState<string>("");
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +24,15 @@ export default function SearchBarMedicalEquipment() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSearch(searchInput);
+  };
+
+  useEffect(() => {
+    onSearch(searchInput);
+  }, [searchInput]);
+
   return (
     <Box
       sx={{
@@ -27,6 +40,8 @@ export default function SearchBarMedicalEquipment() {
         alignItems: "left",
         border: "1px solid",
         borderRadius: 1,
+        marginTop: "1em",
+        marginBottom: "1em",
       }}
     >
       <Paper
@@ -37,6 +52,7 @@ export default function SearchBarMedicalEquipment() {
           alignItems: "center",
           width: "100%",
         }}
+        onSubmit={handleSearch}
       >
         <Box sx={{ p: 1 }}>
           <SearchIcon />
@@ -45,6 +61,9 @@ export default function SearchBarMedicalEquipment() {
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search"
           inputProps={{ "aria-label": "Search" }}
+          onChange={(e) => {
+            setSearchInput(e.target.value);
+          }}
         />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Button
@@ -72,6 +91,7 @@ export default function SearchBarMedicalEquipment() {
           <MenuItem>Category</MenuItem>
           <MenuItem>Status</MenuItem>
           <MenuItem>ID</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

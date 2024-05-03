@@ -52,12 +52,14 @@ interface Props {
   showModal: boolean;
   templatePathway: Pathway;
   handleClose: () => void;
+  updatePathway: (newProcedureId: string) => void;
 }
 
 export default function AddTemplateProcedureModal({
   showModal,
   templatePathway,
   handleClose,
+  updatePathway
 }: Props) {
   const [procedureName, setProcedureName] = useState("");
   const [details, setDetails] = useState("");
@@ -77,6 +79,7 @@ export default function AddTemplateProcedureModal({
     procedureService
       .create<Procedure>(newProcedure)
       .then(res => {
+        updatePathway(res.data._id as string);
         const updatedPathway: Pathway = {
           ...templatePathway,
           procedures: [...templatePathway.procedures, res.data._id as string],

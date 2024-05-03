@@ -6,7 +6,6 @@ import {
   IconButton,
   InputBase,
   Paper,
-  Toolbar,
   Typography,
   CircularProgress,
 } from "@mui/material";
@@ -91,33 +90,38 @@ export default function ChatBox(props: ChatBoxProps) {
 
   return (
     current && (
-      <Box sx={{ width: "100%", mt: 2, overflow: "auto" }}>
-        <Toolbar />
+      <Box sx={{ width: "70%", overflow: "auto", mx: 1 }}>
         <Paper
           ref={scrollRef}
           elevation={3}
           sx={{
             overflowY: "scroll",
-            p: 2,
             height: "75vh",
-            mb: 2,
           }}
           variant="elevation"
         >
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 2,
+              position: "sticky",
+              top: 0,
+              background: "white",
             }}
           >
-            <Box display="flex" alignItems="center">
-              <Avatar sx={{ mr: 3 }} />
-              <Typography variant="h5">{user?.name}</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2,
+              }}
+            >
+              <Box display="flex" alignItems="center">
+                <Avatar sx={{ mr: 3 }} />
+                <Typography variant="h5">{user?.name}</Typography>
+              </Box>
             </Box>
+            <Divider />
           </Box>
-          <Divider />
           <Box
             sx={{
               display: "flex",

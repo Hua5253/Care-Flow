@@ -43,7 +43,7 @@ export default function ManagerSideBar() {
       <List>
         {managerTabs.map(({ icon, name, path }, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton onClick={() => goTo(path)}>
+            <ListItemButton onClick={() => goTo(path)} data-testid={name}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={name} />
             </ListItemButton>

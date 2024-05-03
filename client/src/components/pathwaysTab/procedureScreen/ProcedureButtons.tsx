@@ -1,5 +1,7 @@
 import { Box, Button } from "@mui/material";
 import { Pathway } from "../../../services/pathway-service";
+import { useEffect, useState } from "react";
+import procedureService, { Procedure } from "../../../services/procedure-service";
 
 interface Props {
   inEdit: boolean;
@@ -23,9 +25,30 @@ function ProcedureButtons({
   handleDeletePathway,
   handlePublishPathway
 }: Props) {
+  const [allProcedures, setAllProcedures] = useState<Procedure[]>([]);
+  useEffect(() => {
+    procedureService
+      .getAll<Procedure>()
+      .then((res) => setAllProcedures(res.data))
+      .catch((err) => console.log(err));
+  }, [pathway.procedures]);
+
+  const procedures: Procedure[] = [];
+
+  for (let procedure of allProcedures) {
+    if (pathway.procedures?.includes(procedure._id as string))
+      procedures.push(procedure);
+  }
 
   const disablePublishButton: boolean =
     pathway.status === "unpublished" ? false : true;
+
+  let disableEndPathwayButton: boolean = false;
+  if(pathway.procedures?.length === 0) disableEndPathwayButton = true;
+  if(pathway.status === "unpublished") disableEndPathwayButton = true;
+  for(let procedure of procedures) {
+    if(procedure.status !== "completed") disableEndPathwayButton = true;
+  }
 
   if (inEdit) {
     return (
@@ -64,7 +87,7 @@ function ProcedureButtons({
           <Button variant="contained" onClick={handleDeletePathway}>
             Delete Pathway
           </Button>
-          <Button variant="contained">End Pathway</Button>
+          <Button variant="contained" disabled={disableEndPathwayButton}>End Pathway</Button>
         </Box>
       </Box>
     );

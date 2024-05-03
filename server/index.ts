@@ -72,10 +72,7 @@ app.get("/", (req, res) => {
 
 const port = process.env.PORT || 4000;
 
-// const MongoDBURI = process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI;
-
-const MongoDBURI =
-  "mongodb+srv://kangqichen:pyaKOyTUdz6JgKF0@cluster0.rromx.mongodb.net/CareFlow";
+const MongoDBURI = process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI;
 
 mongoose.connect(MongoDBURI!).catch((e) => {
   console.error("Connection error", e.message);

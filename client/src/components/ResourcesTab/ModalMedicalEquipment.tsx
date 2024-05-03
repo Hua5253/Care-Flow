@@ -161,8 +161,10 @@ export default function ModalMedicalEquipment({
                 },
               }}
             >
-              {medicialEquipmentCategories.map((category) => (
-                <MenuItem value={category}>{category}</MenuItem>
+              {medicialEquipmentCategories.map((category, index) => (
+                <MenuItem value={category} key={category + index}>
+                  {category}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -202,8 +204,10 @@ export default function ModalMedicalEquipment({
                 },
               }}
             >
-              {statusOptions.map((option) => (
-                <MenuItem value={option}>{option}</MenuItem>
+              {statusOptions.map((option, index) => (
+                <MenuItem value={option} key={option + index}>
+                  {option}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>

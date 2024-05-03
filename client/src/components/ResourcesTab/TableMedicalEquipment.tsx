@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalMedicalEquipment from "./ModalMedicalEquipment";
@@ -118,6 +119,21 @@ export default function TableMedicalEquipment({
             </TableCell>
           </TableRow>
         </TableHead>
+        {dataSource.length === 0 && (
+          <TableBody>
+            <TableRow>
+              <TableCell
+                align="center"
+                colSpan={5}
+                sx={{ backgroundColor: "#f5f5f5" }}
+              >
+                <Typography variant="h5" sx={{ color: "#989A9D" }}>
+                  No Data
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
         <TableBody>
           {dataSource.map((data, index) => (
             <TableRow

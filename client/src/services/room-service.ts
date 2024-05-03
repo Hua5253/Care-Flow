@@ -4,6 +4,7 @@ export interface Room {
   _id?: string;
   name: string;
   location: string;
+  currentCapacity: number;
   capacity: number;
   status: string;
 }

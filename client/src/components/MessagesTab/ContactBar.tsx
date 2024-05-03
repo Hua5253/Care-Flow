@@ -10,17 +10,16 @@ import {
   Paper,
 } from "@mui/material";
 
-const contacts = [
-  {
-    id: 1,
-    name: "John Doe",
-    lastMessage: "Yes of course. Are there problems...",
-    avatar: "/path-to-avatar.jpg", // Replace with path to avatar image
-  },
-  // ... more contacts
-];
+interface ContactBarProps {
+  query: Record<string, string>;
+  setQuery: (query: Record<string, string>) => void;
+  contacts?: any[];
+  current: string;
+  setCurrent: (current: string) => void;
+}
 
-export default function ContactBar() {
+export default function ContactBar(props: ContactBarProps) {
+  const { query, setQuery, contacts = [], current, setCurrent } = props;
   return (
     <Paper
       variant="outlined"
@@ -44,13 +43,15 @@ export default function ContactBar() {
           </ListItem>
           <ListItem>
             <TextField
+              value={query.name}
+              onChange={e => setQuery({ name: e.target.value })}
               size="small"
               placeholder="Find or start a conversation"
               fullWidth
             />
           </ListItem>
-          {contacts.map((contact) => (
-            <ListItem button key={contact.id} sx={{ borderBottom: 1 }}>
+          {contacts?.map((contact) => (
+            <ListItem key={contact.id} sx={{ borderBottom: 1, cursor: 'pointer', background: current === contact.id ? '#42a5f5' : '' }} onClick={() => setCurrent(contact.id)}>
               <ListItemAvatar>
                 <Avatar src={contact.avatar} />
               </ListItemAvatar>

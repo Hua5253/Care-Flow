@@ -7,20 +7,24 @@ export class HttpService {
     this.endpoint = endpoint;
   }
 
-  getAll<T>() {
-    return apiClient.get<T[]>(this.endpoint);
+  getAll<T>(query?: Record<string, any>) {
+    return apiClient.get<T[]>(this.endpoint, { params: query });
   }
 
   getById<T>(id: string) {
     return apiClient.get<T>(this.endpoint + "/" + id);
   }
 
-  create<T>(entity: T) {
-    return apiClient.post<T>(this.endpoint, entity);
+  create<T, R = any>(entity: T) {
+    return apiClient.post<T & R>(this.endpoint, entity);
   }
 
-  updateById<T>(id: string, entity: T) {
-    apiClient.put<T>(this.endpoint + "/" + id, entity);
+  updateById<T, R = any>(id: string, entity: T) {
+    return apiClient.put<T & R>(this.endpoint + "/" + id, entity);
+  }
+
+  deleteById<T>(id: string) {
+    return apiClient.delete<T>(this.endpoint + "/" + id);
   }
 }
 

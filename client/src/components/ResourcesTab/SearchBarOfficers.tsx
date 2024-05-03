@@ -27,6 +27,8 @@ export default function SearchBarOfficers() {
         alignItems: "left",
         border: "1px solid",
         borderRadius: 1,
+        marginTop: "1em",
+        marginBottom: "1em",
       }}
     >
       <Paper
@@ -71,6 +73,7 @@ export default function SearchBarOfficers() {
           <MenuItem>Position</MenuItem>
           <MenuItem>Category</MenuItem>
           <MenuItem>Department</MenuItem>
+          <MenuItem>All</MenuItem>
         </Menu>
       </Paper>
     </Box>

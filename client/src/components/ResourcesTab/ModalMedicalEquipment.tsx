@@ -1,10 +1,12 @@
 import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  onOk: () => void;
+  onOk: (data: any) => void;
   title: string;
+  item?: any;
 }
 
 export default function ModalMedicalEquipment({
@@ -12,6 +14,7 @@ export default function ModalMedicalEquipment({
   onClose,
   onOk,
   title,
+  item,
 }: ModalProps) {
   const style = {
     position: "absolute",
@@ -56,12 +59,30 @@ export default function ModalMedicalEquipment({
     },
     my: 2, // Added more vertical spacing
   };
+  const [name, setName] = useState(item?.name || "");
+  const [category, setCategory] = useState(item?.category || "");
+  const [quantity, setQuantity] = useState(item?.quantity ?? "");
+  const [status, setStatus] = useState(item?.status || "");
+
+  useEffect(() => {
+    setName(item?.name || "");
+    setCategory(item?.category || "");
+    setQuantity(item?.quantity ?? "");
+    setStatus(item?.status || "");
+  }, [item]);
+
+  const resetForm = () => {
+    setName("");
+    setCategory("");
+    setQuantity("");
+    setStatus("");
+  };
 
   return (
     <div>
       <Modal
         open={open}
-        onClose={onClose}
+        //onClose={onClose}
         aria-labelledby="procedure-modal-title"
       >
         <Box sx={style}>
@@ -78,37 +99,50 @@ export default function ModalMedicalEquipment({
             id="name"
             label="Name"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setName(e.target.value)}
+            value={name}
           />
-          <TextField
+          {/* <TextField
             required
             id="classification"
             label="Classification"
             sx={textFieldStyles} // Added more vertical spacing
-          />
+            onChange={(e) => setName(e.target.value)}
+          /> */}
+          {/* Not sure what classification is for? */}
           <TextField
             required
-            id="catagory"
-            label="Catagory"
+            id="category"
+            label="Category"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setCategory(e.target.value)}
+            value={category}
           />
           <TextField
             required
             id="quantity"
             label="Quantity Available"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setQuantity(e.target.value)}
+            value={quantity}
           />
           <TextField
             required
             id="status"
             label="Status"
             sx={textFieldStyles} // Added more vertical spacing
+            onChange={(e) => setStatus(e.target.value)}
+            value={status}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={onOk}
+              onClick={() => {
+                onOk({ name, category, quantity, status });
+                resetForm();
+              }}
             >
               Confirm
             </Button>

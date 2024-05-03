@@ -45,10 +45,12 @@ export default function Login({ closeAlert }: Prop) {
       navigate("/login");
     }
   }, [auth?.user]);
+
   useEffect(() => {
     setError(auth?.errorMsg);
   }, [auth?.errorMsg]);
   // Should we put these stylings into css files separately?
+
   const boxStyle: SxProps<Theme> = {
     backgroundColor: "hsla(200,100%,50%,0.2);", // Replace with the actual color from the splash screen
     color: "black",
@@ -78,7 +80,7 @@ export default function Login({ closeAlert }: Prop) {
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevents the form from resetting
   };
   const handleForgetPassword = () => navigate("/forgetPassword");
 
@@ -86,6 +88,7 @@ export default function Login({ closeAlert }: Prop) {
     register,
     handleSubmit,
     reset,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -109,7 +112,6 @@ export default function Login({ closeAlert }: Prop) {
             {...register("username", { required: "Username is required" })}
             margin="normal"
             fullWidth
-            // required
             placeholder="Username"
             id="username"
             name="username"
@@ -118,11 +120,14 @@ export default function Login({ closeAlert }: Prop) {
             }}
             error={Boolean(errors.username)}
             helperText={errors.username?.message}
+            onChange={() => {
+              clearErrors("username");
+              clearErrors("password");
+            }}
           />
           <TextField
             {...register("password", { required: "Password is required" })}
             margin="normal"
-            // required
             fullWidth
             placeholder="Password"
             name="password"
@@ -146,6 +151,10 @@ export default function Login({ closeAlert }: Prop) {
             }}
             error={Boolean(errors.password)}
             helperText={errors.password?.message}
+            onChange={() => {
+              clearErrors("password");
+              clearErrors("username");
+            }}
           />
           <Link
             onClick={handleForgetPassword}

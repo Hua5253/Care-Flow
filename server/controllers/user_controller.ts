@@ -1,8 +1,11 @@
 import { RequestHandler, response } from "express";
 import UserModel from "../models/user_schema";
 import ChatModel from "../models/chatroom_schema";
+import MessageModel from "../models/message_schema";
+import bcrypt from "bcrypt";
+const saltRound = 10;
 
-export const createUser: RequestHandler = async (request, response, next) => {
+const createUser: RequestHandler = async (request, response, next) => {
   const name = request.body.name;
   const username = request.body.username;
   const password = request.body.password;
@@ -40,12 +43,14 @@ export const createUser: RequestHandler = async (request, response, next) => {
       .status(400)
       .json({ error: "role is required in the request body." });
   }
+  const salt = await bcrypt.genSalt(saltRound);
+  const hash = await bcrypt.hash(password, salt);
 
   try {
     const newPathway = await UserModel.create({
       name: name,
       username: username,
-      password: password,
+      password: hash,
       email: email,
       phone_number: phone_number,
       role: role,
@@ -57,12 +62,14 @@ export const createUser: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const getUsers: RequestHandler = async (request, response, next) => {
+const getUsers: RequestHandler = async (request, response, next) => {
+  const { name } = request.query;
   try {
-    const users = await UserModel.find();
+    const nameRegex = new RegExp(name as string, 'i');
+    const users = name ? await UserModel.find({ name: nameRegex }) : await UserModel.find();
 
     if (users) {
-      response.status(200).json(users);
+      response.status(200).json(users.map(i => ({ id: i._id, ...i.toJSON() })));
     } else {
       response.status(404).json({ error: "no users found" });
     }
@@ -71,13 +78,13 @@ export const getUsers: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const getUserById: RequestHandler = async (request, response, next) => {
-  const userId = request.params.userId;
+const getUserById: RequestHandler = async (request, response, next) => {
+  const userId = request.params.id;
   try {
     const user = await UserModel.findById(userId);
 
     if (user) {
-      response.status(200).json(user);
+      response.status(200).json({ ...user.toJSON(), id: user._id });
     } else {
       response.status(404).json({ error: "no user found" });
     }
@@ -86,8 +93,8 @@ export const getUserById: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const updateUser: RequestHandler = async (request, response, next) => {
-  const userId = request.params.userId;
+const updateUser: RequestHandler = async (request, response, next) => {
+  const userId = request.params.id;
 
   const { name, username, password, email, phone_number, role } = request.body;
 
@@ -105,6 +112,12 @@ export const updateUser: RequestHandler = async (request, response, next) => {
   try {
     const updates = { name, username, password, email, phone_number, role };
 
+    if (password) {
+      const salt = await bcrypt.genSalt(saltRound);
+      const hash = await bcrypt.hash(password, salt);
+      updates.password = hash;
+    }
+
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
       { $set: updates },
@@ -121,12 +134,8 @@ export const updateUser: RequestHandler = async (request, response, next) => {
   }
 };
 
-export const updateNotifications: RequestHandler = async (
-  request,
-  response,
-  next
-) => {
-  const userId = request.params.userId;
+const updateNotifications: RequestHandler = async (request, response, next) => {
+  const userId = request.params.id;
 
   const { notification } = request.body;
 
@@ -153,11 +162,17 @@ export const updateNotifications: RequestHandler = async (
   }
 };
 
-export const createChatroom: RequestHandler = async (
-  request,
-  response,
-  next
-) => {
+const deleteUser: RequestHandler = async (request, response, next) => {
+  const userId = request.params.id;
+  try {
+    const user = await UserModel.findOneAndDelete({ _id: userId });
+    response.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createChatroom: RequestHandler = async (request, response, next) => {
   const users = request.body.users;
 
   if (!users) {
@@ -167,41 +182,32 @@ export const createChatroom: RequestHandler = async (
   }
 
   try {
-    const newChatroom = await ChatModel.create({
-      users: users,
-    });
-
-    response.status(201).json(newChatroom);
-  } catch (error) {
-    next(error);
-  }
-};
-export const deleteUser: RequestHandler = async (request, response, next) => {
-  const userId = request.params.userId;
-  try {
-    const user = await UserModel.findOneAndDelete({ _id: userId });
-    response.status(200).json(user);
+    const oldChatroom = await ChatModel.find({ users });
+    if (oldChatroom && oldChatroom[0]) {
+      response.status(201).json(oldChatroom[0]._id);
+    } else {
+      const newChatroom = await ChatModel.create({
+        users: users,
+      });
+      response.status(201).json(newChatroom._id);
+    }
   } catch (error) {
     next(error);
   }
 };
 
-export const updateChatroom: RequestHandler = async (
-  request,
-  response,
-  next
-) => {
-  const chatroomId = request.params.chatroomId;
-  const message = request.body.message;
+const updateChatroom: RequestHandler = async (request, response, next) => {
+  const { id } = request.params;
+  const { message } = request.body;
 
-  if (chatroomId && message === undefined) {
+  if (!id || !message) {
     return response.status(400).json({ error: "all fields must be provided" });
   }
 
   try {
-    const updateChatroom = await ChatModel.findByIdAndUpdate(chatroomId, {
+    const updateChatroom = await ChatModel.findByIdAndUpdate(id, {
       $push: { history: message },
-    });
+    }, { new: true });
 
     if (!updateChatroom) {
       return response.status(404).json({ error: "Chatroom not found" });
@@ -213,16 +219,42 @@ export const updateChatroom: RequestHandler = async (
   }
 };
 
-export const getMessages: RequestHandler = async (request, response, next) => {
-  const chatroomId = request.params.chatroomId;
+const getMessages: RequestHandler = async (request, response, next) => {
+  const { id } = request.params;
   try {
-    const chatRoom = await ChatModel.findById(chatroomId).populate("history");
+    const chatRoom = await ChatModel.findById(id).populate("history");
 
     if (chatRoom) {
       response.status(200).json(chatRoom.history);
     } else {
       response.status(404).json({ error: "Chatroom not found" });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createMessage: RequestHandler = async (request, response, next) => {
+  const { poster, content } = request.body;
+
+  if (!poster) {
+    return response
+      .status(400)
+      .json({ error: "poster is required in the request body." });
+  }
+
+  if (!content) {
+    return response
+      .status(400)
+      .json({ error: "content is required in the request body." });
+  }
+
+  try {
+    const message = await MessageModel.create({
+      poster,
+      content
+    });
+    response.status(201).json(message._id);
   } catch (error) {
     next(error);
   }
@@ -238,4 +270,5 @@ export default {
   updateChatroom,
   getMessages,
   deleteUser,
+  createMessage
 };

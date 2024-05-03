@@ -10,7 +10,9 @@ import resourceRouter from "./routes/resources";
 import authRouter from "./routes/auth";
 import { Server, Socket } from 'socket.io';
 import http from 'http';
-import UserModel from "./models/user_schema";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface UserSocket extends Socket {
   userId?: string;
@@ -81,3 +83,5 @@ mongoose.connect(MongoDBURI!).catch((e) => {
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
+
+export default app;

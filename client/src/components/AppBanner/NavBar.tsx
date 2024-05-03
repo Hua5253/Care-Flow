@@ -4,14 +4,20 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Notifications from "./Notifications";
 import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../auth";
+import NotificationService, {
+  Notification,
+} from "../../services/notification-service";
+import { socket } from "../../socket";
+
 interface Prop {
   cred: Boolean;
 }
 
-import AuthContext from "../../auth";
 export default function NavBar({ cred }: Prop) {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const { auth } = useContext<any>(AuthContext);
   const login = cred;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -31,6 +37,36 @@ export default function NavBar({ cred }: Prop) {
     navigate("/");
     localStorage.clear();
   };
+
+  const fetchNotifications = async () => {
+    const profile = JSON.parse(localStorage.getItem("profile") || "{}");
+    const { data = [] } = await NotificationService.getAll<Notification>({
+      userId: profile._id,
+    });
+    setNotifications(data.filter((i) => !i.read_status));
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  useEffect(() => {
+    async function onNotification(message: {
+      receiverId: string;
+      content: string;
+    }) {
+      const profile = JSON.parse(localStorage.getItem("profile") || "{}");
+      if (message.receiverId === profile._id && message.content) {
+        fetchNotifications();
+      }
+    }
+    socket.on("notification", onNotification);
+
+    return () => {
+      socket.off("notification", onNotification);
+    };
+  }, []);
+
   return (
     <AppBar
       sx={{
@@ -61,7 +97,7 @@ export default function NavBar({ cred }: Prop) {
           </Button>
         ) : (
           <>
-            <Notifications />
+            <Notifications dataSource={notifications} />
             <Box sx={{ paddingLeft: "2em", paddingRight: "2em" }}>
               <IconButton onClick={handleClick}>
                 <Avatar />

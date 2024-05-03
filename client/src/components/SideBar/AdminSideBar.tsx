@@ -8,15 +8,20 @@ import MailIcon from "@mui/icons-material/Mail";
 import GroupIcon from "@mui/icons-material/Group";
 import { Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
-const drawerWidth = 240;
+const adminTabs = [
+  { icon: <GroupIcon />, name: "Accounts", path: "/accounts" },
+  { icon: <MailIcon />, name: "Message", path: "/Messages/admin" },
+];
 
 export default function AdminSideBar() {
-  const adminTabs = [
-    { icon: <GroupIcon />, name: "Accounts", path: "/accounts" },
-    { icon: <MailIcon />, name: "Message", path: "/Messages/admin" },
-  ];
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isBetweenXsAndMd = useMediaQuery(theme.breakpoints.between("xs", "xl"));
+
+  const drawerWidth = isBetweenXsAndMd ? 0 : 240;
 
   const goTo = (e: string) => {
     navigate(e);

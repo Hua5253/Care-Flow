@@ -26,6 +26,10 @@ export class HttpService {
   deleteById<T>(id: string) {
     return apiClient.delete<T>(this.endpoint + "/" + id);
   }
+
+  updateByPath<T, R = any>(path: string, entity: T) {
+    return apiClient.put<T & R>(this.endpoint + "/" + path, entity);
+  }
 }
 
 const create = (endpoint: string) => new HttpService(endpoint);

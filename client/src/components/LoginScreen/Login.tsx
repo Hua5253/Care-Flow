@@ -34,7 +34,6 @@ export default function Login({ closeAlert }: Prop) {
   const [error, setError] = useState("");
   useEffect(() => {
     const role = auth?.user?.role;
-    console.log(role);
     if (role === "admin") {
       navigate("/accounts");
     } else if (role === "manager") {

@@ -9,6 +9,7 @@ import {
   TextField,
   Paper,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 interface ContactBarProps {
   query: Record<string, string>;
@@ -20,6 +21,12 @@ interface ContactBarProps {
 
 export default function ContactBar(props: ContactBarProps) {
   const { query, setQuery, contacts = [], current, setCurrent } = props;
+  const [_, setSearch] = useSearchParams();
+
+  const handleCurrent = (id: string) => {
+    setSearch({ id });
+    setCurrent(id);
+  };
   return (
     <Paper
       variant="outlined"
@@ -27,11 +34,6 @@ export default function ContactBar(props: ContactBarProps) {
         width: "30%",
         flexShrink: 0,
         overflow: "auto",
-        mt: 10,
-        ml: 10,
-        mr: 5,
-        mb: 1,
-        padding: 1,
       }}
     >
       <Box sx={{ overflow: "auto" }}>
@@ -44,14 +46,22 @@ export default function ContactBar(props: ContactBarProps) {
           <ListItem>
             <TextField
               value={query.name}
-              onChange={e => setQuery({ name: e.target.value })}
+              onChange={(e) => setQuery({ name: e.target.value })}
               size="small"
               placeholder="Find or start a conversation"
               fullWidth
             />
           </ListItem>
           {contacts?.map((contact) => (
-            <ListItem key={contact.id} sx={{ borderBottom: 1, cursor: 'pointer', background: current === contact.id ? '#42a5f5' : '' }} onClick={() => setCurrent(contact.id)}>
+            <ListItem
+              key={contact.id}
+              sx={{
+                borderBottom: 1,
+                cursor: "pointer",
+                background: current === contact.id ? "#42a5f5" : "",
+              }}
+              onClick={() => handleCurrent(contact.id)}
+            >
               <ListItemAvatar>
                 <Avatar src={contact.avatar} />
               </ListItemAvatar>

@@ -29,17 +29,21 @@ interface Props {
   handleCloseModal: () => void;
   pathway: Pathway;
   procedureToDeleteId: string;
+  removeProcedureFromPathway: (id: string) => void;
 }
 
 export default function DeleteProcedureModal({
   handleCloseModal,
   pathway,
   procedureToDeleteId,
+  removeProcedureFromPathway,
 }: Props) {
 
   const confirmDeleteProcedure = () => {
     procedureService
-      .deleteById(procedureToDeleteId)
+      .deleteById(procedureToDeleteId).then(() => {
+        removeProcedureFromPathway(procedureToDeleteId);
+      })
       .catch(err => console.log(err));
 
     const updatedProcedures: string[] = pathway.procedures.filter(

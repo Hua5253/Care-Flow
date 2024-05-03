@@ -61,6 +61,18 @@ function ProcedureScreen() {
     setShowDeleteProcedureModal(true);
   };
 
+  const addProcedureToPathway = (newProcedureId: string) => {
+    const updatedProcedures = [...pathway.procedures, newProcedureId];
+    const updatedPathway = { ...pathway, procedures: updatedProcedures };
+    setPathway(updatedPathway);
+  };
+
+  const removeProcedureFromPathway = (deletedProcedureId: string) => {
+    const updatedProcedures = pathway.procedures.filter(id => id !== deletedProcedureId);
+    const updatedPathway = { ...pathway, procedures: updatedProcedures };
+    setPathway(updatedPathway);
+  };
+
   return (
     <Container id='app'>
       <Box sx={{ flexGrow: 1, mt: 8 }}>
@@ -91,12 +103,14 @@ function ProcedureScreen() {
             handleCloseModal={() => setShowDeleteProcedureModal(false)}
             pathway={pathway}
             procedureToDeleteId={procedureToDeleteId}
+            removeProcedureFromPathway={removeProcedureFromPathway}
           />
         )}
         {showAddProcedureModal && (
           <AddProcedureModal
             pathway={pathway}
             handleClose={() => setShowAddProcedureModal(false)}
+            addProcedureToPathway={addProcedureToPathway}
           />
         )}
         {showDeletePathwayModal && (

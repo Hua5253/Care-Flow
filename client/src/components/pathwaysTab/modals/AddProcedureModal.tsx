@@ -52,9 +52,10 @@ const textFieldStyles = {
 interface Props {
   pathway: Pathway;
   handleClose: () => void;
+  addProcedureToPathway: (id: string) => void;
 }
 
-export default function AddProcedureModal({ pathway, handleClose }: Props) {
+export default function AddProcedureModal({ pathway, handleClose, addProcedureToPathway }: Props) {
   const [procedureName, setProcedureName] = useState("");
   const [caregiversNames, setCaregiversNames] = useState([""]);
   const [location, setLocation] = useState("");
@@ -109,6 +110,7 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
     procedureService
       .create(newProcedure)
       .then((res) => {
+        addProcedureToPathway(res.data._id);
         const updatedPathway: Pathway = {
           ...pathway,
           procedures: [...pathway.procedures, res.data._id as string],

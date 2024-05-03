@@ -26,23 +26,12 @@ function ProcedureList({
   handleEditProcedure,
 }: Props) {
   const [allProcedures, setAllProcedures] = useState<Procedure[]>([]);
-  // const [procedures, setProcedures] = useState<Procedure[]>([]);
   useEffect(() => {
     procedureService
       .getAll<Procedure>()
       .then((res) => setAllProcedures(res.data))
       .catch((err) => console.log(err));
-  }, []);
-
-  // useEffect(() => {
-  //   procedureService.getAll<Procedure>().then(res => {
-  //     for (let procedure of res.data) {
-  //       if (pathway.procedures?.includes(procedure._id as string)) {
-  //         setProcedures([...procedures, procedure]);
-  //       }
-  //     }
-  //   });
-  // }, []);
+  }, [pathway.procedures]);
 
   const procedures: Procedure[] = [];
 

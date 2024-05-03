@@ -8,8 +8,13 @@ import templatePathwayRouter from "./routes/templatePathways";
 import procedureRouter from "./routes/procedures";
 import resourceRouter from "./routes/resources";
 import authRouter from "./routes/auth";
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import http from 'http';
+import UserModel from "./models/user_schema";
+
+interface UserSocket extends Socket {
+  userId?: string;
+}
 
 const app = express();
 const server = http.createServer(app);
@@ -18,25 +23,30 @@ const io = new Server(server, {
     origin: 'http://localhost:5173'
   }
 });
-const chat = io.of('/chatroom').on('connection', (socket) => {
+const onlineUsers: Record<string, string> = {};
+const chat = io.of('/chatroom').on('connection', (socket: UserSocket) => {
   console.log('connect socket successfully!')
   try {
     socket.on('create or join', (roomId, userId) => {
+      onlineUsers[userId] = socket.id;
+      socket.userId = userId;
       socket.join(roomId);
       chat.to(roomId).emit('joined', roomId, userId);
-    })
-    socket.on('chat', (roomId, userId, chatText) => {
-      console.log('client', roomId, userId, chatText)
-      chat.to(roomId).emit('chat', roomId, userId, chatText)
-    })
+    });
+
+    socket.on('chat', (roomId, userId, message) => {
+      chat.to(roomId).emit('chat', roomId, userId, message);
+    });
+
     socket.on('disconnect', () => {
+      delete onlineUsers[socket.userId as string];
       console.log('someone disconnected')
-    })
+    });
   } catch (e) {
     console.error('connect socket error:', e)
   }
-
 })
+
 app.use(
   cors({
     //origin: "https://care-flow.vercel.app",

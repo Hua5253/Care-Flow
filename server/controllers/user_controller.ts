@@ -192,6 +192,24 @@ const createNotification: RequestHandler = async (request, response, next) => {
   }
 };
 
+const updateNotificationsRead: RequestHandler = async (request, response, next) => {
+  const { posterId } = request.body;
+  console.log('posterId', posterId)
+  try {
+    const updateUser = await UserModel.updateMany(
+      { 'notifications.content': { $regex: new RegExp(`^${posterId}:`, 'g') } },
+      { $set: { 'notifications.$[].read_status': true } },
+      { multi: true }
+    );
+
+    if (!updateUser) {
+      return response.status(404).json({ error: 'User not found.' });
+    }
+    return response.status(200).json(updateUser);
+  } catch (error) {
+    next(error);
+  }
+};
 const updateNotification: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
   const notificationId = request.body.notificationId;
@@ -338,6 +356,7 @@ export default {
   updateUser,
   getNotifications,
   createNotification,
+  updateNotificationsRead,
   updateNotification,
   createChatroom,
   updateChatroom,

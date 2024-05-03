@@ -3,7 +3,7 @@ import ContactBar from "./ContactBar";
 import ChatBox from "./ChatBox";
 import userService, { User } from "../../services/user-service";
 import roomService from "../../services/chatroom-service";
-import messageService, { Message } from "../../services/message-service";
+import { Message } from "../../services/message-service";
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../../socket";
 import { useSearchParams, useLocation } from "react-router-dom";
@@ -47,22 +47,20 @@ export default function MessagesContent() {
   const handleMessageSend = async () => {
     const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     if (message && roomId && !isSending) {
-      console.log(profile);
       setIsSending(true);
-      const { data: messageId } = await messageService.create<Message>({
+      const { data } = await roomService.updateById<Message>(roomId, {
         poster: profile._id,
         content: message,
       });
-      if (messageId) {
-        const { data } = await roomService.updateById<
-          { message: string },
-          string
-        >(roomId, { message: messageId });
-        if (data) {
-          socket.emit("chat", roomId, profile._id, message);
+      if (data) {
+        socket.emit("chat", roomId, profile._id, {
+          receiverId: current,
+          content: message,
+        });
+        socket.once("chat", () => {
           setMessage("");
           setIsSending(false);
-        }
+        });
       }
     }
   };
@@ -96,7 +94,7 @@ export default function MessagesContent() {
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off("foo", onChat);
+      socket.off("chat", onChat);
     };
   }, []);
 

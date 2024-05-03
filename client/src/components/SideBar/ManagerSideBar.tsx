@@ -10,18 +10,21 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ListIcon from "@mui/icons-material/List";
 import { Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
-const drawerWidth = 240;
+const managerTabs = [
+  { icon: <LocalHospitalIcon />, name: "Resource", path: "/resources" },
+  { icon: <AssignmentIcon />, name: "Pathway", path: "/manager-pathway" },
+  { icon: <ListIcon />, name: "Template", path: "/manager-template" },
+  { icon: <MailIcon />, name: "Message", path: "/Messages/manager" },
+];
 
 export default function ManagerSideBar() {
-  const managerTabs = [
-    { icon: <LocalHospitalIcon />, name: "Resource", path: "/resources" },
-    { icon: <AssignmentIcon />, name: "Pathway", path: "/manager-pathway" },
-    { icon: <ListIcon />, name: "Template", path: "/manager-template" },
-    { icon: <MailIcon />, name: "Message", path: "/Messages/manager" },
-  ];
-
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isBetweenXsAndMd = useMediaQuery(theme.breakpoints.between("xs", "xl"));
+  const drawerWidth = isBetweenXsAndMd ? 0 : 240;
 
   const goTo = (e: string) => {
     navigate(e);

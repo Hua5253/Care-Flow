@@ -26,7 +26,13 @@ function ProcedureScreen() {
   const { id } = useParams();
 
   const [pathway, setPathway] = useState<Pathway>({} as Pathway);
+  const [refetchToggle, setRefetchToggle] = useState(false);
+
   const navigate = useNavigate();
+
+  const toggleRefetch = () => {
+    setRefetchToggle(prev => !prev);
+  };
 
   useEffect(() => {
     pathwayService
@@ -84,6 +90,7 @@ function ProcedureScreen() {
           inEdit={inEdit}
           handleDeleteProcedure={handleDeleteProcedure}
           handleEditProcedure={handleEditProcedure}
+          refetchToggle={refetchToggle} 
         />
         <ProcedureButtons
           inEdit={inEdit}
@@ -97,6 +104,7 @@ function ProcedureScreen() {
           procedureToEditId={procedureToEditId}
           handleClose={() => setShowEditProcedureModal(false)}
           pathway={pathway}
+          refetchProcedures={toggleRefetch}
         />
         {showDeleteProcedureModal && (
           <DeleteProcedureModal

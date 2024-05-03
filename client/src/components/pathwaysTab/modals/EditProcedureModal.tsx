@@ -54,6 +54,7 @@ interface Props {
   handleClose: () => void;
   procedureToEditId: string;
   pathway: Pathway;
+  refetchProcedures: () => void;
 }
 
 export default function EditProcedureModal({
@@ -61,6 +62,7 @@ export default function EditProcedureModal({
   handleClose,
   procedureToEditId,
   pathway,
+  refetchProcedures,
 }: Props) {
   const [procedureName, setProcedureName] = useState("");
   const [caregiversNames, setCaregiversNames] = useState<string[]>([]);
@@ -101,8 +103,6 @@ export default function EditProcedureModal({
       })
       .catch((err) => console.log(err));
   }, [procedureToEditId]);
-
-  //   console.log(caregiversNames);
 
   const handleCaregiverChange = (
     index: number,
@@ -145,7 +145,7 @@ export default function EditProcedureModal({
 
     procedureService
       .updateById(procedureToEditId, updatedProcedure)
-      .then((res) => console.log(res.data))
+      .then(() => refetchProcedures())
       .catch((err) => console.log(err));
 
     handleClose();

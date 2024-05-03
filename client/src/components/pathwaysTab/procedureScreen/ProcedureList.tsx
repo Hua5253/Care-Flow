@@ -17,6 +17,7 @@ interface Props {
   pathway: Pathway;
   handleDeleteProcedure: (id: string) => void;
   handleEditProcedure: (id: string) => void;
+  refetchToggle: boolean;
 }
 
 function ProcedureList({
@@ -24,6 +25,7 @@ function ProcedureList({
   pathway,
   handleDeleteProcedure,
   handleEditProcedure,
+  refetchToggle
 }: Props) {
   const [allProcedures, setAllProcedures] = useState<Procedure[]>([]);
   useEffect(() => {
@@ -31,7 +33,7 @@ function ProcedureList({
       .getAll<Procedure>()
       .then((res) => setAllProcedures(res.data))
       .catch((err) => console.log(err));
-  }, [pathway.procedures]);
+  }, [pathway.procedures, refetchToggle]);
 
   const procedures: Procedure[] = [];
 

@@ -10,13 +10,13 @@ const userSchema = new Schema(
         phone_number: { type: String, required: true },
         role: { type: String, required: true },
         chat_rooms: [
-            {type: ObjectId, ref: 'Chat_room'}
+            { type: ObjectId, ref: 'Chat_room' }
         ],
-        notifications: { type: [{
-            read_status: Boolean,
-            type: String,
-            content: String
-        }]},        
+        notifications: [{
+            read_status: { type: Boolean },
+            type: { type: String },
+            content: { type: String }
+        }]
     })
 type Note = InferSchemaType<typeof userSchema>;
 export default model<Note>("User", userSchema);

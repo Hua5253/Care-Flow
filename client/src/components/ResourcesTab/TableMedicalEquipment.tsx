@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalMedicalEquipment from "./ModalMedicalEquipment";
@@ -107,10 +108,12 @@ export default function TableMedicalEquipment({
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Category</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700, width: "5%" }}>
-              <TableSortLabel active={true}>Quantity Available</TableSortLabel>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "20%" }}>
+              <TableSortLabel active={true}>
+                Quantity (Available / Total)
+              </TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "13%" }}>
               <TableSortLabel active={true}>Status</TableSortLabel>
             </TableCell>
             <TableCell align="left" sx={{ fontWeight: 700, width: "15%" }}>
@@ -118,6 +121,21 @@ export default function TableMedicalEquipment({
             </TableCell>
           </TableRow>
         </TableHead>
+        {dataSource.length === 0 && (
+          <TableBody>
+            <TableRow>
+              <TableCell
+                align="center"
+                colSpan={6}
+                sx={{ backgroundColor: "#f5f5f5" }}
+              >
+                <Typography variant="h5" sx={{ color: "#989A9D" }}>
+                  No Data
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
         <TableBody>
           {dataSource.map((data, index) => (
             <TableRow
@@ -132,7 +150,9 @@ export default function TableMedicalEquipment({
               </TableCell>
               <TableCell align="left">{data._id}</TableCell>
               <TableCell align="left">{data.category}</TableCell>
-              <TableCell align="left">{data.quantity}</TableCell>
+              <TableCell align="left">
+                {data.currentQuantity} / {data.quantity}
+              </TableCell>
               <TableCell
                 align="left"
                 style={{ color: getStatusColor(data.status) }}

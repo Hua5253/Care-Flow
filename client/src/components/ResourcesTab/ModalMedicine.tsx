@@ -1,4 +1,14 @@
-import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Modal,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 interface ModalProps {
   open: boolean;
@@ -7,6 +17,32 @@ interface ModalProps {
   title: string;
   item?: any;
 }
+
+const medicineCategories = [
+  "Antipyretics",
+  "Analgesics",
+  "Antimalarial",
+  "Antibiotics",
+  "Antiseptics",
+  "Antacids",
+  "Antihistamines",
+  "Antifungals",
+  "Antivirals",
+  "Bronchodilators",
+  "Laxatives",
+  "Antidiarrheals",
+  "Antitussives",
+  "Hormones",
+  "Immunosuppressants",
+  "Muscle Relaxants",
+  "Pain Killers",
+  "Stimulants",
+  "Tranquilizers",
+  "Vasodilators",
+  "NSAID",
+]
+  .sort()
+  .concat("Others");
 
 export default function ModalMedicine({
   open,
@@ -104,14 +140,58 @@ export default function ModalMedicine({
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
-          <TextField
+          {/* <TextField
             required
             id="category"
             label="Category"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setCategory(e.target.value)}
             value={category}
-          />
+          /> */}
+          <FormControl required sx={textFieldStyles}>
+            <InputLabel id="medicine-category">Category</InputLabel>
+            <Select
+              labelId="medicine-category"
+              id="medical-equipment-category"
+              value={category}
+              label="Category"
+              onChange={(e) => setCategory(e.target.value)}
+              sx={{
+                color: "white",
+                "& .MuiSvgIcon-root": { color: "white" },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 30 * 4.5,
+                    width: "inherit",
+                  },
+                  sx: {
+                    "&::-webkit-scrollbar": {
+                      width: "10px", // adjust scrollbar width
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "rgba(0,0,0,0.5)", // scrollbar color
+                      borderRadius: "4px", // scrollbar corner radius
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "white", // scrollbar track color
+                    },
+                    "&.MuiPaper-root": {
+                      overflowY: "scroll", // Ensures scrollbar is always shown
+                    },
+                  },
+                },
+              }}
+            >
+              {medicineCategories.map((category, index) => (
+                <MenuItem value={category} key={category + index}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <TextField
             required
             id="usage"

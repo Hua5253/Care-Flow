@@ -5,6 +5,7 @@ export interface Equipment {
   name: string;
   category: string;
   quantity: number;
+  currentQuantity: number;
   status: "In Stock" | "Low Stock" | "Out of Stock" | "On Order";
 }
 

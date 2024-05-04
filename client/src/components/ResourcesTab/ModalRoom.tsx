@@ -1,4 +1,14 @@
-import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Modal,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface ModalProps {
@@ -8,6 +18,15 @@ interface ModalProps {
   title: string;
   item?: any;
 }
+
+const roomOccupacyOptions = [
+  "Vacant",
+  "Low Occupancy",
+  "Moderate Occupancy",
+  "High Occupancy",
+  "Near Capacity",
+  "Full Capacity",
+];
 
 export default function ModalRoom({
   open,
@@ -118,14 +137,59 @@ export default function ModalRoom({
             onChange={(e) => setCapacity(e.target.value)}
             value={capacity}
           />
-          <TextField
+          {/* <TextField
             required
             id="current-status"
             label="Current Status"
             sx={textFieldStyles} // Added more vertical spacing
             onChange={(e) => setStatus(e.target.value)}
             value={status}
-          />
+          /> */}
+
+          <FormControl required sx={textFieldStyles}>
+            <InputLabel id="room-status">Status</InputLabel>
+            <Select
+              labelId="room-status"
+              id="room-status-options"
+              value={status}
+              label="Status"
+              onChange={(e) => setStatus(e.target.value)}
+              sx={{
+                color: "white",
+                "& .MuiSvgIcon-root": { color: "white" },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 30 * 4.5,
+                    width: "inherit",
+                  },
+                  sx: {
+                    "&::-webkit-scrollbar": {
+                      width: "10px", // adjust scrollbar width
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "rgba(0,0,0,0.5)", // scrollbar color
+                      borderRadius: "4px", // scrollbar corner radius
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "white", // scrollbar track color
+                    },
+                    "&.MuiPaper-root": {
+                      overflowY: "scroll", // Ensures scrollbar is always shown
+                    },
+                  },
+                },
+              }}
+            >
+              {roomOccupacyOptions.map((status, index) => (
+                <MenuItem value={status} key={status + index}>
+                  {status}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"

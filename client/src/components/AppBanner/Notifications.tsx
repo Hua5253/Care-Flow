@@ -48,8 +48,20 @@ export default function Notifications(props: NotificationsProps) {
   };
 
   return (
-    <Box sx={{ paddingLeft: "1em" }}>
-      <IconButton color="inherit" onClick={handleClick}>
+    <Box
+      sx={{
+        //paddingLeft: "1em",
+        display: "flex",
+        alignItem: "center",
+        justifyContent: "center",
+      }}
+    >
+      <IconButton
+        color="inherit"
+        onClick={handleClick}
+        size="large"
+        aria-describedby={id}
+      >
         <NotificationsIcon />
       </IconButton>
       <Popover
@@ -67,8 +79,26 @@ export default function Notifications(props: NotificationsProps) {
         }}
         sx={{
           "& .MuiPopover-paper": {
-            width: "20em",
-            backgroundColor: "#5C6B73", // Outer popover background
+            width: "fit-content", // Adjust width to your requirement
+            backgroundColor: "#ffffff",
+            p: 2,
+            borderRadius: 1, // Slightly rounded corners,
+            boxShadow: 10,
+            overflow: "visible", // Hide the overflow
+            "&::before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              width: 20,
+              height: 20,
+              left: "50%", // Aligns the arrow center with the center of the popover
+              bgcolor: "background.paper",
+              transform: "translateX(-50%) translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+
+              overflow: "scroll", // Hide the overflow
+            },
           },
         }}
       >

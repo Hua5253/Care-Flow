@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -105,6 +106,21 @@ export default function TableMedicine({ dataSource, onEdit, onDelete }: Prop) {
             </TableCell>
           </TableRow>
         </TableHead>
+        {dataSource.length === 0 && (
+          <TableBody>
+            <TableRow>
+              <TableCell
+                align="center"
+                colSpan={5}
+                sx={{ backgroundColor: "#f5f5f5" }}
+              >
+                <Typography variant="h5" sx={{ color: "#989A9D" }}>
+                  No Data
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
         <TableBody>
           {dataSource.map((data, index) => (
             <TableRow

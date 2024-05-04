@@ -10,7 +10,9 @@ import resourceRouter from "./routes/resources";
 import authRouter from "./routes/auth";
 import { Server, Socket } from 'socket.io';
 import http from 'http';
-import UserModel from "./models/user_schema";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface UserSocket extends Socket {
   userId?: string;
@@ -72,10 +74,7 @@ app.get("/", (req, res) => {
 
 const port = process.env.PORT || 4000;
 
-// const MongoDBURI = process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI;
-
-const MongoDBURI =
-  "mongodb+srv://kangqichen:pyaKOyTUdz6JgKF0@cluster0.rromx.mongodb.net/CareFlow";
+const MongoDBURI = process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI;
 
 mongoose.connect(MongoDBURI!).catch((e) => {
   console.error("Connection error", e.message);
@@ -84,3 +83,5 @@ mongoose.connect(MongoDBURI!).catch((e) => {
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
+
+export default app;

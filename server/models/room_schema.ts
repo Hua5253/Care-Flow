@@ -28,6 +28,7 @@ roomSchema.pre("findOneAndUpdate", async function (next) {
     return next(new Error("Document not found"));
   }
   const currentCapacity = item.currentCapacity;
+  const inUse = item.capacity - currentCapacity;
 
   const update = this.getUpdate() as UpdateQuery<any>;
   if (update.$set) {
@@ -39,12 +40,19 @@ roomSchema.pre("findOneAndUpdate", async function (next) {
       );
 
       let newCapacity = Number(fields.capacity);
-      if (newCapacity < currentCapacity) {
-        newCapacity = currentCapacity;
-        update.$set.capacity = currentCapacity;
+      if (newCapacity < inUse) {
+        // update.$set.capacity = item.capacity;
+        // newCapacity = item.capacity;
+        return next(
+          new Error(
+            "Cannot set capacity lower than the number of rooms currently in use"
+          )
+        );
+      } else {
+        update.$set.currentCapacity = newCapacity - inUse;
       }
 
-      const ratio = currentCapacity / newCapacity;
+      const ratio = inUse / newCapacity;
 
       let status;
 

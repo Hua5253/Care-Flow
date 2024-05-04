@@ -41,6 +41,10 @@ const chat = io.of('/chatroom').on('connection', (socket: UserSocket) => {
       chat.emit('notification', message);
     });
 
+    socket.on('notification', (message) => {
+      chat.emit('notification', message);
+    });
+
     socket.on('disconnect', () => {
       delete onlineUsers[socket.userId as string];
       console.log('someone disconnected')

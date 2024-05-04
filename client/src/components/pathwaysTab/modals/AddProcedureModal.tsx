@@ -5,6 +5,7 @@ import userService, { User } from "../../../services/user-service";
 import procedureService, {
   Procedure,
 } from "../../../services/procedure-service";
+import { socket } from "../../../socket";
 
 const style = {
   position: "absolute",
@@ -87,15 +88,15 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
   };
 
   const confirmAddProcedure = () => {
+    const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     const caregivers: string[] = [];
     for (let user of allUsers) {
       if (caregiversNames.includes(user.name))
         caregivers.push(user._id as string);
     }
 
-    console.log(caregivers);
-
     const newProcedure: Procedure = {
+      posterId: profile._id,
       name: procedureName,
       caregiver: caregivers,
       location: location,
@@ -113,6 +114,15 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
           ...pathway,
           procedures: [...pathway.procedures, res.data._id as string],
         };
+        if (newProcedure.caregiver && newProcedure.caregiver.length > 0) {
+          console.log(newProcedure.caregiver);
+          for (const receiverId of newProcedure.caregiver) {
+            socket.emit("notification", {
+              receiverId,
+              content: details,
+            });
+          }
+        }
         pathwayService
           .updateById<Pathway>(pathway._id as string, updatedPathway)
           .then((res) => console.log(res.data))

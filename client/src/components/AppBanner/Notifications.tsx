@@ -21,6 +21,29 @@ interface NotificationsProps {
   dataSource: Notification[];
 }
 
+const formatTime = (time: string) => {
+  if (!time) return "";
+  return new Date(time).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+const formatContent = (content?: String) => {
+  if (!content) return "";
+  const [_posterId, _name, patient, detail, time1, time2, time3] =
+    content.split(":");
+  return [
+    patient,
+    `${detail.substring(0, 15)}...`,
+    formatTime(`${time1}:${time2}:${time3}`),
+  ]
+    .filter((i) => i)
+    .join(",");
+};
+
 export default function Notifications(props: NotificationsProps) {
   const navigate = useNavigate();
   const { dataSource = [] } = props;
@@ -37,13 +60,23 @@ export default function Notifications(props: NotificationsProps) {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const handleNotificationClick = async (userId: string) => {
+  const handleNotificationClick = async ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: String;
+  }) => {
     const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     const { data } = await notificationService.updateByPath("status/read", {
-      posterId: userId,
+      posterId: id,
     });
     if (data) {
-      navigate(`/messages/${profile.role}?id=${userId}`);
+      if (type === "message") {
+        navigate(`/messages/${profile.role}?id=${id}`);
+      } else {
+        navigate(`/schedule`);
+      }
     }
   };
 
@@ -79,7 +112,10 @@ export default function Notifications(props: NotificationsProps) {
               <ListItem
                 key={i._id}
                 onClick={() =>
-                  handleNotificationClick(i?.content?.split(":")?.[0])
+                  handleNotificationClick({
+                    id: i?.content?.split(":")?.[0],
+                    type: i.type,
+                  })
                 }
                 sx={{
                   backgroundColor: "#9DB4C0",
@@ -99,6 +135,12 @@ export default function Notifications(props: NotificationsProps) {
             ) : (
               <ListItem
                 key={i._id}
+                onClick={() =>
+                  handleNotificationClick({
+                    id: i?.content?.split(":")?.[0],
+                    type: i.type,
+                  })
+                }
                 sx={{
                   backgroundColor: "#9DB4C0",
                   mb: 1,
@@ -111,8 +153,8 @@ export default function Notifications(props: NotificationsProps) {
                   <EventNoteIcon color="action" />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Upcoming procedure"
-                  secondary="Aug 24 12:30pm, Alice Johnson, MRI"
+                  primary={i?.content?.split(":")?.[1] || "-"}
+                  secondary={formatContent(i?.content)}
                 />
               </ListItem>
             )

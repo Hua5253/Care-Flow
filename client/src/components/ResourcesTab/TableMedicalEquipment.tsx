@@ -126,7 +126,7 @@ export default function TableMedicalEquipment({
             <TableRow>
               <TableCell
                 align="center"
-                colSpan={5}
+                colSpan={6}
                 sx={{ backgroundColor: "#f5f5f5" }}
               >
                 <Typography variant="h5" sx={{ color: "#989A9D" }}>

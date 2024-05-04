@@ -55,7 +55,11 @@ interface Props {
   addProcedureToPathway: (id: string) => void;
 }
 
-export default function AddProcedureModal({ pathway, handleClose, addProcedureToPathway }: Props) {
+export default function AddProcedureModal({
+  pathway,
+  handleClose,
+  addProcedureToPathway,
+}: Props) {
   const [procedureName, setProcedureName] = useState("");
   const [caregiversNames, setCaregiversNames] = useState([""]);
   const [location, setLocation] = useState("");
@@ -63,6 +67,15 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
   const [endTime, setEndTime] = useState("");
   const [details, setDetails] = useState("");
   const [allUsers, setAllUsers] = useState<User[]>([]);
+
+  const [errors, setErrors] = useState({
+    procedureName: "",
+    caregivers: "",
+    location: "",
+    startTime: "",
+    endTime: "",
+    details: "",
+  });
 
   useEffect(() => {
     userService.getAll<User>().then((res) => setAllUsers(res.data));
@@ -88,13 +101,13 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
   };
 
   const confirmAddProcedure = () => {
+    if (!validate()) return;
+
     const caregivers: string[] = [];
     for (let user of allUsers) {
       if (caregiversNames.includes(user.name))
         caregivers.push(user._id as string);
     }
-
-    console.log(caregivers);
 
     const newProcedure: Procedure = {
       name: procedureName,
@@ -125,6 +138,52 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
     handleClose();
   };
 
+  const validate = () => {
+    let isValid = true;
+    let newErrors = {
+      procedureName: "",
+      caregivers: "",
+      location: "",
+      startTime: "",
+      endTime: "",
+      details: "",
+    };
+
+    if (!procedureName.trim()) {
+      newErrors.procedureName = "Procedure name is required.";
+      isValid = false;
+    }
+    if (
+      caregiversNames.length === 0 ||
+      caregiversNames.every((name) => !name.trim())
+    ) {
+      newErrors.caregivers = "At least one caregiver is required.";
+      isValid = false;
+    }
+    if (!location.trim()) {
+      newErrors.location = "Location is required.";
+      isValid = false;
+    }
+    if (!startTime.trim()) {
+      newErrors.startTime = "Start time is required.";
+      isValid = false;
+    }
+    if (!endTime.trim()) {
+      newErrors.endTime = "End time is required.";
+      isValid = false;
+    } else if (new Date(startTime) >= new Date(endTime)) {
+      newErrors.endTime = "End time must be later than start time.";
+      isValid = false;
+    }
+    if (!details.trim()) {
+      newErrors.details = "Details are required.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   return (
     <div>
       <Modal
@@ -147,6 +206,8 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
             label="Procedure Name"
             value={procedureName}
             onChange={(event) => setProcedureName(event.target.value)}
+            error={!!errors.procedureName}
+            helperText={errors.procedureName}
             sx={textFieldStyles}
           />
           {caregiversNames.map((caregiver, index) => (
@@ -156,6 +217,8 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
                 label="Caregiver"
                 value={caregiver}
                 onChange={(event) => handleCaregiverChange(index, event)}
+                error={!!errors.caregivers && index === 0}
+                helperText={index === 0 ? errors.caregivers : ""}
                 sx={{ ...textFieldStyles, flex: 1 }}
               />
               <Button
@@ -174,7 +237,12 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
             id="location"
             label="Location"
             value={location}
-            onChange={(event) => setLocation(event.target.value)}
+            onChange={(event) => {
+              setLocation(event.target.value);
+              setErrors((prev) => ({ ...prev, location: "" }));
+            }}
+            error={!!errors.location}
+            helperText={errors.location}
             sx={textFieldStyles}
           />
           <TextField
@@ -183,7 +251,12 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
             label="Start Time"
             type="datetime-local"
             value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            onChange={(e) => {
+              setStartTime(e.target.value);
+              setErrors((prev) => ({ ...prev, startTime: "", endTime: "" }));
+            }}
+            error={!!errors.startTime}
+            helperText={errors.startTime}
             InputLabelProps={{
               shrink: true,
             }}
@@ -195,7 +268,12 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
             label="End Time"
             type="datetime-local"
             value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            onChange={(e) => {
+              setEndTime(e.target.value);
+              setErrors((prev) => ({ ...prev, endTime: "" }));
+            }}
+            error={!!errors.endTime}
+            helperText={errors.endTime}
             InputLabelProps={{
               shrink: true,
             }}
@@ -206,7 +284,12 @@ export default function AddProcedureModal({ pathway, handleClose, addProcedureTo
             id="procedure-detail"
             label="Procedure Detail"
             value={details}
-            onChange={(event) => setDetails(event.target.value)}
+            onChange={(event) => {
+              setDetails(event.target.value);
+              setErrors((prev) => ({ ...prev, details: "" })); 
+            }}
+            error={!!errors.details}
+            helperText={errors.details}
             multiline
             rows={4}
             sx={textFieldStyles}

@@ -61,13 +61,38 @@ export default function EditPathwayModal({
 }: Props) {
   const [pathwayName, setPathwayName] = useState("");
   const [patient, setPatient] = useState("");
+  const [errors, setErrors] = useState({
+    pathwayName: "",
+    patient: "",
+  });
 
   useEffect(() => {
     if (pathway) {
       setPathwayName(pathway.name || "");
       setPatient(pathway.patient || "");
     }
-  }, [pathway]); 
+  }, [pathway]);
+
+  const validate = () => {
+    let hasError = false;
+    let errors = { pathwayName: "", patient: "" };
+
+    if (!pathwayName.trim()) {
+      errors.pathwayName = "Pathway name is required.";
+      hasError = true;
+    } else if (pathwayName.length > 50) {
+      errors.pathwayName = "Pathway name must be less than 50 characters.";
+      hasError = true;
+    }
+
+    if (!patient.trim()) {
+      errors.patient = "Patient name is required.";
+      hasError = true;
+    }
+
+    setErrors(errors);
+    return !hasError;
+  };
 
   return (
     <div>
@@ -90,14 +115,24 @@ export default function EditPathwayModal({
             id="pathway-name"
             label="Pathway Name"
             value={pathwayName}
-            onChange={(event) => setPathwayName(event.target.value)}
+            onChange={(event) => {
+              setPathwayName(event.target.value);
+              setErrors((prev) => ({ ...prev, pathwayName: "" })); 
+            }}
+            error={!!errors.pathwayName}
+            helperText={errors.pathwayName}
             sx={textFieldStyles}
           />
           <TextField
             id="patient-name"
             label="Patient Name"
             value={patient}
-            onChange={(event) => setPatient(event.target.value)}
+            onChange={(event) => {
+              setPatient(event.target.value);
+              setErrors((prev) => ({ ...prev, patient: "" })); 
+            }}
+            error={!!errors.patient}
+            helperText={errors.patient}
             sx={textFieldStyles}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
@@ -105,7 +140,12 @@ export default function EditPathwayModal({
               variant="contained"
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
-              onClick={() => handleEditPathway(pathwayName, patient)}
+              onClick={() => {
+                if (validate()) {
+                  handleEditPathway(pathwayName, patient);
+                  handleClose();
+                }
+              }}
             >
               Confirm
             </Button>

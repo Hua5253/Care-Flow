@@ -7,13 +7,14 @@ import {
   InputBase,
   Paper,
   Typography,
+  CircularProgress,
 } from "@mui/material";
-import MailIconTwoTone from "@mui/icons-material/Mail";
 import SendIcon from "@mui/icons-material/Send";
 import Message from "./Message";
 import userService, { User } from "../../services/user-service";
 
 interface ChatBoxProps {
+  loading: boolean;
   current: string;
   message: string;
   setMessage: (message: string) => void;
@@ -53,8 +54,15 @@ function formatTime(timestamp: string) {
 }
 
 export default function ChatBox(props: ChatBoxProps) {
-  const { current, message, setMessage, onMessageSend, messages, scrollRef } =
-    props;
+  const {
+    current,
+    message,
+    setMessage,
+    onMessageSend,
+    messages,
+    scrollRef,
+    loading,
+  } = props;
   const [user, setUser] = useState<User>();
 
   const msglist = messages.map((i) => ({
@@ -81,139 +89,84 @@ export default function ChatBox(props: ChatBoxProps) {
   }, [JSON.stringify(messages)]);
 
   return (
-    <>
-      {!current && (
-        <Box
+    current && (
+      <Box sx={{ width: "70%", overflow: "auto", mx: 1 }}>
+        <Paper
+          ref={scrollRef}
+          elevation={3}
           sx={{
-            width: "100%",
-            height: "80vh",
-            background: "#f5f5f5",
-            pl: 1.5,
-            pr: 1.5,
-            //pt: 0,
-            //height: "80vh",
-            backgroundColor: "#E3E3E4",
-            borderTopRightRadius: "5px",
-            borderBottomRightRadius: "5px",
-            border: "0.5px solid #989A9D",
-            borderLeft: "none",
-            alignContent: "center",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
+            overflowY: "scroll",
+            height: "75vh",
           }}
+          variant="elevation"
         >
-          <MailIconTwoTone sx={{ fontSize: 80, color: "#989A9D" }} />
-          <Typography variant="h4" sx={{ ml: 2, color: "#989A9D" }}>
-            Messaging...
-          </Typography>
-          <Typography variant="h6" sx={{ ml: 2, color: "#989A9D" }}>
-            Select a user to start messaging
-          </Typography>
-        </Box>
-      )}
-      {current && (
-        <Box
-          sx={{
-            width: "100%",
-            height: "80vh",
-            background: "#f5f5f5",
-            pl: 1.5,
-            pr: 1.5,
-            //pt: 0,
-            //height: "80vh",
-            backgroundColor: "#E3E3E4",
-            borderTopRightRadius: "5px",
-            borderBottomRightRadius: "5px",
-            border: "0.5px solid #989A9D",
-            borderLeft: "none",
-            alignContent: "space-around",
-          }}
-        >
-          <Paper
-            ref={scrollRef}
-            elevation={3}
+          <Box
             sx={{
-              overflowY: "scroll",
-              overflowX: "hidden",
-              pl: 0,
-              pr: 2,
-              pb: 1,
-              mb: 2,
-              flexShrink: 0,
-              height: "85%",
+              position: "sticky",
+              top: 0,
+              background: "white",
             }}
-            variant="elevation"
           >
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "start",
+                alignItems: "center",
                 mb: 2,
-                position: "sticky",
-                p: 2,
-                background: "white",
-                top: 0,
-                zIndex: 1,
-                borderBottom: "1px solid #f5f5f5",
-                width: "120%",
-                flexDirection: "column",
-                boxShadow: 1,
               }}
             >
               <Box display="flex" alignItems="center">
-                <Avatar sx={{ mr: 3 }}>{user?.name[0].toUpperCase()}</Avatar>
-                <Typography variant="h6">{user?.name}</Typography>
+                <Avatar sx={{ mr: 3 }} />
+                <Typography variant="h5">{user?.name}</Typography>
               </Box>
-              <Divider />
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                mt: 2,
-                p: 2,
-                overflow: "auto",
-              }}
-            >
-              {msglist.map((item) => {
-                return (
-                  <Message
-                    key={item._id}
-                    message={item.content}
-                    date={formatTime(item.time)}
-                    self={item.self}
-                  />
-                );
-              })}
-            </Box>
-          </Paper>
+            <Divider />
+          </Box>
           <Box
-            component="form"
             sx={{
               display: "flex",
-              alignItems: "center",
-              //mb: 0,
-              px: 2,
-              py: 1,
-              //border: "1px solid black",
-              //borderColor: "divider",
-              borderRadius: 1,
-              height: 30,
-              background: "white",
-              boxShadow: 2,
+              flexDirection: "column",
+              gap: 2,
+              mt: 2,
+              overflow: "auto",
             }}
           >
-            <InputBase
-              onChange={(e) => setMessage(e.target.value)}
-              value={message}
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Type your message"
-              inputProps={{ "aria-label": "type your message" }}
-            />
+            {msglist.map((item) => {
+              return (
+                <Message
+                  key={item._id}
+                  message={item.content}
+                  date={formatTime(item.time)}
+                  self={item.self}
+                />
+              );
+            })}
+          </Box>
+        </Paper>
+        <Box
+          component="form"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            mb: 1,
+            px: 2,
+            py: 1,
+            border: "2px solid black",
+            borderColor: "divider",
+            borderRadius: 1,
+            height: 25,
+          }}
+        >
+          <InputBase
+            onChange={(e) => setMessage(e.target.value)}
+            value={message}
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Type your message"
+            inputProps={{ "aria-label": "type your message" }}
+          />
+          {loading ? (
+            <CircularProgress size={20} />
+          ) : (
             <IconButton
               sx={{ p: "10px" }}
               aria-label="send"
@@ -221,9 +174,9 @@ export default function ChatBox(props: ChatBoxProps) {
             >
               <SendIcon />
             </IconButton>
-          </Box>
+          )}
         </Box>
-      )}
-    </>
+      </Box>
+    )
   );
 }

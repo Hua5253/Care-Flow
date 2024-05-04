@@ -22,8 +22,6 @@ export default function PathwayScreen() {
         display: "flex",
         flexDirection: "column",
         width: "100vw",
-        //ml: { xs: "20vw", sm: "12vw", md: "15vw", lg: "20vw", xl: "20vw" },
-        // mt: "50px",
         height: "100vh",
       }}
     >

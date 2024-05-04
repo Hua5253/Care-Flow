@@ -31,8 +31,6 @@ export default function Accounts({ showModal }: showModal) {
       <Typography variant="h5" gutterBottom>
         Users Dashboard
       </Typography>
-      {/* <Toolbar variant="dense" /> */}
-      {/* input search and filter bar here */}
       <Box display="flex" sx={{ mb: 3, mt: 3 }}>
         <Grid container spacing={2} sx={{ alignItems: "center" }}>
           <Grid item xs={12} sm={8} md={9} lg={10} sx={{ pr: 1 }}>

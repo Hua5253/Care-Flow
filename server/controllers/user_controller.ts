@@ -97,7 +97,6 @@ const updateUser: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
 
   const { name, username, password, email, phone_number, role } = request.body;
-
   if (
     name &&
     username &&
@@ -134,26 +133,101 @@ const updateUser: RequestHandler = async (request, response, next) => {
   }
 };
 
-const updateNotifications: RequestHandler = async (request, response, next) => {
+const getNotifications: RequestHandler = async (request, response, next) => {
+  const { userId } = request.query;
+  try {
+    const user = await UserModel.findById(userId);
+    const list = [];
+    if (user && user.notifications?.length > 0) {
+      for (const notification of user.notifications) {
+        const notificationUserId = notification.content?.split(':')?.[0];
+        if (notificationUserId) {
+          const notificationUser = await UserModel.findById(notificationUserId);
+          list.push({
+            ...notification.toJSON(),
+            name: notificationUser?.name,
+          })
+        }
+      }
+    }
+
+    if (user) {
+      response.status(200).json(list);
+    } else {
+      response.status(404).json({ error: "no user found" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createNotification: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
+  const { sender, content } = request.body;  // Here, sender is the name of the person sending message, and content is the message; you should adjust this to fit your actual data
 
-  const { notification } = request.body;
-
-  if (notification === undefined) {
-    return response.status(400).json({ error: "notificaiton must be defined" });
+  if (!sender || !content) {
+    return response.status(400).json({ error: "Both sender and content must be defined" });
   }
 
-  try {
-    const updates = { notification };
+  const notification = {
+    read_status: false,
+    type: "new_message",
+    content: `You have a new message from ${sender}: ${content}`,
+  };
 
+  try {
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      { $set: updates },
+      { $push: { notifications: notification } },
       { new: true, runValidators: true }
     );
 
     if (!updatedUser) {
       return response.status(404).json({ error: "User not found" });
+    }
+
+    response.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateNotificationsRead: RequestHandler = async (request, response, next) => {
+  const { posterId } = request.body;
+  console.log('posterId', posterId)
+  try {
+    const updateUser = await UserModel.updateMany(
+      { 'notifications.content': { $regex: new RegExp(`^${posterId}:`, 'g') } },
+      { $set: { 'notifications.$[].read_status': true } },
+      { multi: true }
+    );
+
+    if (!updateUser) {
+      return response.status(404).json({ error: 'User not found.' });
+    }
+    return response.status(200).json(updateUser);
+  } catch (error) {
+    next(error);
+  }
+};
+const updateNotification: RequestHandler = async (request, response, next) => {
+  const userId = request.params.id;
+  const notificationId = request.body.notificationId;
+
+
+  if (notificationId === undefined) {
+    return response.status(400).json({ error: "notificationId must be defined" });
+  }
+
+  try {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: userId, "notifications._id": notificationId },
+      { "$set": { "notifications.$.read_status": true } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return response.status(404).json({ error: "User or Notification not found" });
     }
 
     response.status(200).json(updatedUser);
@@ -198,20 +272,60 @@ const createChatroom: RequestHandler = async (request, response, next) => {
 
 const updateChatroom: RequestHandler = async (request, response, next) => {
   const { id } = request.params;
-  const { message } = request.body;
+  const { poster, content } = request.body;
+  if (!poster) {
+    return response
+      .status(400)
+      .json({ error: "poster is required in the request body." });
+  }
 
-  if (!id || !message) {
-    return response.status(400).json({ error: "all fields must be provided" });
+  if (!content) {
+    return response
+      .status(400)
+      .json({ error: "content is required in the request body." });
+  }
+
+  if (!id) {
+    return response
+      .status(400)
+      .json({ error: "id is required in the request query." });
   }
 
   try {
+    const message = await MessageModel.create({ poster, content });
     const updateChatroom = await ChatModel.findByIdAndUpdate(id, {
-      $push: { history: message },
+      $push: { history: message._id },
     }, { new: true });
 
     if (!updateChatroom) {
       return response.status(404).json({ error: "Chatroom not found" });
     }
+
+    const chatRoomData = await ChatModel.findById(id);
+    if (chatRoomData && chatRoomData.users) {
+      for (const userId of chatRoomData.users) {
+        if (userId.toString() !== poster) {
+          try {
+            await UserModel.findByIdAndUpdate(
+              { _id: userId },
+              {
+                $push: {
+                  notifications: {
+                    read_status: false,
+                    type: 'message',
+                    content: `${poster}:${message.content}`
+                  }
+                }
+              },
+              { new: true, runValidators: true }
+            )
+          } catch (err) {
+            console.log('UserModel findByIdAndUpdate', err)
+          }
+        }
+      }
+    }
+
 
     response.status(200).json(updateChatroom);
   } catch (error) {
@@ -234,41 +348,18 @@ const getMessages: RequestHandler = async (request, response, next) => {
   }
 };
 
-const createMessage: RequestHandler = async (request, response, next) => {
-  const { poster, content } = request.body;
-
-  if (!poster) {
-    return response
-      .status(400)
-      .json({ error: "poster is required in the request body." });
-  }
-
-  if (!content) {
-    return response
-      .status(400)
-      .json({ error: "content is required in the request body." });
-  }
-
-  try {
-    const message = await MessageModel.create({
-      poster,
-      content
-    });
-    response.status(201).json(message._id);
-  } catch (error) {
-    next(error);
-  }
-};
 
 export default {
   createUser,
   getUsers,
   getUserById,
   updateUser,
-  updateNotifications,
+  getNotifications,
+  createNotification,
+  updateNotificationsRead,
+  updateNotification,
   createChatroom,
   updateChatroom,
   getMessages,
   deleteUser,
-  createMessage
 };

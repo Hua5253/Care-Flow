@@ -1,17 +1,15 @@
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import ContactBar from "./ContactBar";
 import ChatBox from "./ChatBox";
 import userService, { User } from "../../services/user-service";
 import roomService from "../../services/chatroom-service";
-import messageService, { Message } from "../../services/message-service";
+import { Message } from "../../services/message-service";
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../../socket";
-
-const profile = JSON.parse(localStorage.getItem("profile") || "{}");
-
-let isSending = false;
+import { useSearchParams, useLocation } from "react-router-dom";
 
 export default function MessagesContent() {
+  const [isSending, setIsSending] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [_isConnected, setIsConnected] = useState(socket.connected);
   const [contacts, setContacts] = useState<User[]>();
@@ -20,8 +18,11 @@ export default function MessagesContent() {
   const [message, setMessage] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
   const [messages, setMessages] = useState<any[]>([]);
+  const [search] = useSearchParams();
+  const location = useLocation();
 
   const handleRoomCreate = async () => {
+    const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     const { data: roomId } = await roomService.create<
       { users: string[] },
       string
@@ -31,6 +32,7 @@ export default function MessagesContent() {
   };
 
   const fetchData = async (query: Record<string, any>) => {
+    const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     const { data = [] } = await userService.getAll<User>(query);
     setContacts(data.filter((i) => i._id !== profile._id));
   };
@@ -43,22 +45,22 @@ export default function MessagesContent() {
   };
 
   const handleMessageSend = async () => {
+    const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     if (message && roomId && !isSending) {
-      isSending = true;
-      const { data: messageId } = await messageService.create<Message>({
+      setIsSending(true);
+      const { data } = await roomService.updateById<Message>(roomId, {
         poster: profile._id,
         content: message,
       });
-      if (messageId) {
-        const { data } = await roomService.updateById<
-          { message: string },
-          string
-        >(roomId, { message: messageId });
-        if (data) {
-          socket.emit("chat", roomId, profile._id, message);
+      if (data) {
+        socket.emit("chat", roomId, profile._id, {
+          receiverId: current,
+          content: message,
+        });
+        socket.once("chat", () => {
           setMessage("");
-          isSending = false;
-        }
+          setIsSending(false);
+        });
       }
     }
   };
@@ -92,7 +94,7 @@ export default function MessagesContent() {
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off("foo", onChat);
+      socket.off("chat", onChat);
     };
   }, []);
 
@@ -100,19 +102,22 @@ export default function MessagesContent() {
     fetchMessage(roomId);
   }, [roomId]);
 
+  useEffect(() => {
+    const currentId = search.get("id");
+    if (currentId !== current) {
+      setCurrent(currentId as string);
+    }
+  }, [current, location.search]);
+
   return (
-    <Container
+    <Box
       sx={{
         display: "flex",
+        marginTop: "64px",
+        width: "100%",
         flexDirection: "row",
-        flexShrink: 3,
-        //width: "100vw",
-        //mt: 5,
-        pt: 3,
-        pr: 1,
-        pb: 3,
-        pl: 0,
-        height: "fit-content",
+        alignItems: "self-start",
+        gap: 2,
       }}
     >
       <ContactBar
@@ -122,8 +127,8 @@ export default function MessagesContent() {
         query={query}
         setQuery={setQuery}
       />
-
       <ChatBox
+        loading={isSending}
         scrollRef={scrollRef}
         messages={messages}
         current={current}
@@ -131,6 +136,6 @@ export default function MessagesContent() {
         setMessage={setMessage}
         onMessageSend={handleMessageSend}
       />
-    </Container>
+    </Box>
   );
 }

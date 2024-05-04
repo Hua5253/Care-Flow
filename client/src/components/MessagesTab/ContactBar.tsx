@@ -9,6 +9,7 @@ import {
   TextField,
   Paper,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 interface ContactBarProps {
   query: Record<string, string>;
@@ -20,34 +21,26 @@ interface ContactBarProps {
 
 export default function ContactBar(props: ContactBarProps) {
   const { query, setQuery, contacts = [], current, setCurrent } = props;
+  const [_, setSearch] = useSearchParams();
+
+  const handleCurrent = (id: string) => {
+    setSearch({ id });
+    setCurrent(id);
+  };
   return (
     <Paper
       variant="outlined"
       sx={{
-        width: "fit-content",
+        width: "30%",
         flexShrink: 0,
         overflow: "auto",
-        // mr: 5,
-        // mb: 1,
-        //p: 1,
-        pt: 0,
-        pr: 1,
-        pl: 1,
-        height: "80vh",
-        border: "0.5px solid #989A9D",
-        borderTopRightRadius: "0",
-        borderBottomRightRadius: "0",
       }}
     >
       <Box sx={{ overflow: "auto" }}>
         <List>
           <ListItem>
             <ListItemText
-              primary={
-                <Typography variant="h5" fontWeight="bolder">
-                  Messaging
-                </Typography>
-              }
+              primary={<Typography variant="h6">Messaging</Typography>}
             />
           </ListItem>
           <ListItem>
@@ -55,7 +48,7 @@ export default function ContactBar(props: ContactBarProps) {
               value={query.name}
               onChange={(e) => setQuery({ name: e.target.value })}
               size="small"
-              placeholder="Find a contact..."
+              placeholder="Find or start a conversation"
               fullWidth
             />
           </ListItem>
@@ -63,27 +56,17 @@ export default function ContactBar(props: ContactBarProps) {
             <ListItem
               key={contact.id}
               sx={{
-                borderBottom: "0.5px solid #989A9D",
+                borderBottom: 1,
                 cursor: "pointer",
                 background: current === contact.id ? "#42a5f5" : "",
-                "&:hover": {
-                  backgroundColor:
-                    current === contact.id ? "#42a5f5" : "#f5f5f5",
-                },
               }}
-              onClick={() => setCurrent(contact.id)}
+              onClick={() => handleCurrent(contact.id)}
             >
               <ListItemAvatar>
-                <Avatar src={contact.avatar}>
-                  {contact.name[0].toUpperCase()}
-                </Avatar>
+                <Avatar src={contact.avatar} />
               </ListItemAvatar>
               <ListItemText
-                primary={
-                  contact.name.length > 15
-                    ? contact.name.substring(0, 15) + "..."
-                    : contact.name
-                }
+                primary={contact.name}
                 secondary={contact.lastMessage}
               />
             </ListItem>

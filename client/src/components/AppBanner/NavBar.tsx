@@ -6,7 +6,7 @@ import Notifications from "./Notifications";
 import { Avatar, Box, Fade, IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../../auth";
+import AuthContext from "../../auth/auth";
 import NotificationService, {
   Notification,
 } from "../../services/notification-service";

@@ -22,12 +22,14 @@ const loginUser = async (req: Request, res: Response) => {
     }, process.env.JWT_SECRET || ":r(4[CaQ3`N<#8EV~7<K75Rd/ZpfzBkv`m-x]+QnjQcXazr%w;");
 
     console.log("jwt token", token);
-
+    console.log(loginUser.role);
+    
     res.cookie("token", token, {
       httpOnly: true
     }).status(200).json({
       error: false,
-      user: loginUser
+      user: loginUser,
+      role: loginUser.role
     }).send();
   } else {
     return res.status(401).json({

@@ -11,6 +11,7 @@ import ViewProcedureScreen from "./components/CareGivers/ViewProcedureScreen";
 import ResourceScreen from "./components/ResourcesTab";
 import TemplatePathwayScreen from "./components/pathwaysTab/templatePathwayScreen";
 import TemplateProcedureScreen from "./components/pathwaysTab/templateProcedureScreen";
+import AuthWrapper from "./auth/requireAuth";
 
 const router = createBrowserRouter([
   { path: "/", element: <SplashScreen /> },

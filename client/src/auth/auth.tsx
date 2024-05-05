@@ -16,8 +16,10 @@ const AuthContext = createContext({});
 function AuthContextProvider({ children }: Props) {
   const [auth, setAuth] = useState<any>({
     user: null,
+    role: "",
     loggedIn: false,
     errorMsg: "",
+    accessToken: ""
   });
   const authReducer = (action: any) => {
     const { type, payload } = action;
@@ -27,6 +29,8 @@ function AuthContextProvider({ children }: Props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMsg: payload.errorMsg,
+          role: payload.role,
+          accessToken: payload.accessToken
         });
       }
       case AuthActionType.LOGOUT_USER: {
@@ -34,6 +38,8 @@ function AuthContextProvider({ children }: Props) {
           user: null,
           loggedIn: false,
           errorMsg: "",
+          role: "",
+          accessToken: ""
         });
       }
     }
@@ -43,12 +49,16 @@ function AuthContextProvider({ children }: Props) {
     try {
       const response = await authService.login({ username, password });
       if (response.status === 200) {
+        // console.log(response.data);
+        const accessToken = response?.data?.accessToken;
         authReducer({
           type: AuthActionType.LOGIN_USER,
           payload: {
             user: response.data.user,
+            role: response.data.user.role,
             loggedIn: true,
             errorMsg: null,
+            accessToken: accessToken
           },
         });
         if (response.data.user) {
@@ -86,7 +96,7 @@ function AuthContextProvider({ children }: Props) {
     }
   };
   return (
-    <AuthContext.Provider value={{ auth }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ auth,setAuth }}>{children}</AuthContext.Provider>
   );
 }
 export default AuthContext;

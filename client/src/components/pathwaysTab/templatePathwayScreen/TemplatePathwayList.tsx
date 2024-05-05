@@ -11,6 +11,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
+  Typography,
 } from "@mui/material";
 import procedureService from "../../../services/procedure-service";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +24,7 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "name", label: "Name", minWidth: 170 },
+  { id: "name", label: "Template Name", minWidth: 170 },
   { id: "open", label: "", minWidth: 170, align: "right" },
 ];
 
@@ -41,7 +43,7 @@ function TemplatePathwayList({ handleAddPathwayClick }: Props) {
       .then(({ data: templatePathways }) =>
         setTemplatePathways(templatePathways)
       )
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   const handleDeleteTemplatePathway = (id: string) => {
@@ -49,65 +51,88 @@ function TemplatePathwayList({ handleAddPathwayClick }: Props) {
       .deleteById<Pathway>(id)
       .then(({ data: pathway }) => {
         const newTemplatePathways = templatePathways.filter(
-          templatePathway => templatePathway._id !== pathway._id
+          (templatePathway) => templatePathway._id !== pathway._id
         );
         setTemplatePathways(newTemplatePathways);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
     templatePathwayService
       .getById<Pathway>(id)
       .then(({ data: templatePathway }) => {
         for (let procedureId of templatePathway.procedures) {
           procedureService
             .deleteById(procedureId)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
+            .then((res) => console.log(res.data))
+            .catch((err) => console.log(err));
         }
       });
   };
 
   return (
-    <Box sx={{ flexGrow: 1, p: 7 }}>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        width: "100%",
+        height: "fit-content",
+        minWidth: 0,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Typography variant="h4" pb={1} gutterBottom>
+        Template Pathway
+      </Typography>
+      <Paper
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          border: "solid 0.1em grey",
+          shadow: "inherit",
+        }}
+      >
         <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label='sticky table'>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map(column => (
+                {columns.map((column) => (
                   <TableCell
                     key={column.id}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
                   >
-                    {column.label}
+                    {column.label && (
+                      <TableSortLabel active={true} sx={{ fontWeight: 700 }}>
+                        {column.label}
+                      </TableSortLabel>
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {templatePathways.map(templatePathway => {
+              {templatePathways.map((templatePathway) => {
                 return (
                   <TableRow
                     hover
-                    role='checkbox'
+                    role="checkbox"
                     tabIndex={-1}
                     key={templatePathway._id}
                   >
                     <TableCell>{templatePathway.name}</TableCell>
                     <TableCell align={"right"}>
                       <Button
-                        variant='contained'
+                        variant="contained"
                         sx={{ m: 1 }}
                         onClick={() =>
                           navigate(
-                            "/template-pathways" + "/" + templatePathway._id
+                            "/manager-template" + "/" + templatePathway._id
                           )
                         }
                       >
                         Open
                       </Button>
                       <Button
-                        variant='contained'
+                        variant="contained"
                         sx={{ m: 1 }}
                         onClick={() =>
                           handleDeleteTemplatePathway(
@@ -125,7 +150,7 @@ function TemplatePathwayList({ handleAddPathwayClick }: Props) {
           </Table>
         </TableContainer>
       </Paper>
-      <Button variant='contained' sx={{ m: 1 }} onClick={handleAddPathwayClick}>
+      <Button variant="contained" sx={{ m: 1 }} onClick={handleAddPathwayClick}>
         Add Pathway
       </Button>
     </Box>

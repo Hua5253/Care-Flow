@@ -79,10 +79,10 @@ export default function TableOfficers() {
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Contact Information</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "30%" }}>
               <TableSortLabel active={true}>Responsibilities</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "15%" }}>
               Actions
             </TableCell>
           </TableRow>
@@ -110,7 +110,7 @@ export default function TableOfficers() {
                 >
                   Edit
                 </Button>
-                <IconButton size="medium" sx={{ ml: 3 }}>
+                <IconButton size="medium">
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

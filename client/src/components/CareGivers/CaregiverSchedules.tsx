@@ -17,15 +17,13 @@ export default function ViewProcedure() {
   const [procedures, setProcedures] = useState<any>([]);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     async function fetchData() {
       try {
         await procedureService.getAll().then((res) => {
           setProcedures(res.data);
         });
-      }
-      catch (error) {
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
@@ -41,7 +39,11 @@ export default function ViewProcedure() {
       date = new Date(dateInput);
     }
     // Formate to month, date, year format
-    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    return date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   }
 
   function formatTime(timeInput: Date | string): string {
@@ -53,7 +55,11 @@ export default function ViewProcedure() {
       time = new Date(timeInput);
     }
     // Format time to 12-hour AM/PM format
-    return time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true });
+    return time.toLocaleTimeString(undefined, {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
   }
 
   return (
@@ -67,6 +73,8 @@ export default function ViewProcedure() {
         width: "100%",
         overflowX: "auto",
         minWidth: 0,
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Paper
@@ -101,8 +109,7 @@ export default function ViewProcedure() {
                 <TableCell align="left">Location</TableCell>
                 <TableCell align="left">Status</TableCell>
               </TableRow>
-              {procedures.map((procedure: any, index : any) => (
-                
+              {procedures.map((procedure: any, index: any) => (
                 <TableRow
                   key={index}
                   sx={{ backgroundColor: index % 2 === 0 ? "#C2DFE3" : null }}
@@ -110,13 +117,17 @@ export default function ViewProcedure() {
                   <TableCell align="left">{procedure.name}</TableCell>
                   <TableCell align="left">{procedure.patient}</TableCell>
                   <TableCell>{formatDate(procedure.start)}</TableCell>
-                  <TableCell align="left">{formatTime(procedure.start)}</TableCell>
+                  <TableCell align="left">
+                    {formatTime(procedure.start)}
+                  </TableCell>
                   <TableCell align="left">{procedure.location}</TableCell>
                   <TableCell align="left">{procedure.status}</TableCell>
                   <TableCell align="left">
-                    <Button onClick={() => navigate(`/procedure/${procedure._id}`)}>
+                    <Button
+                      onClick={() => navigate(`/schedule/${procedure._id}`)}
+                    >
                       Open
-                      </Button>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

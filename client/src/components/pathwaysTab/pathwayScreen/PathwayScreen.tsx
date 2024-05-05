@@ -61,42 +61,55 @@ export default function PathwayScreen() {
   };
 
   return (
-    <Container sx={{ display: "flex" }}>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100vw",
+        //ml: { xs: "20vw", sm: "12vw", md: "15vw", lg: "20vw", xl: "20vw" },
+        // mt: "50px",
+        height: "100vh",
+      }}
+    >
+      <AppBanner cred={true} />
+      <ManagerSideBar />
       <Box
+        component="main"
         sx={{
-          flexGrow: 1,
-          p: 3,
-          marginLeft: "6em",
-          marginTop: 8,
-          width: "100%",
-          overflowX: "auto",
-          minWidth: 0,
+          mt: "75px",
+          ml: { sm: "100px", md: "120px" },
+          pl: { sm: "50px", md: "40px" },
+          backgroundColor: "#f5f5f5",
+          width: "80%",
+          height: "90%",
+          pr: 9,
+          pt: 2,
+          pb: 2,
+          overflow: "scroll",
         }}
       >
-        <AppBanner cred={true} />
-        <ManagerSideBar />
         <PathwayList
           showModal={handleAddPathwayModalClick}
           pathways={pathways}
           handleEditPathway={handleEditPathwayButtonClick}
         />
-        {showAddPathwayModal && (
-          <CreatePathwayModal
-            handleClose={() => setShowAddPathwayModal(false)}
-            createBlankPathway={() => setShowBlankPathwayFormModal(true)}
-          />
-        )}
-        <BlankPathwayFormModal
-          open={showBlankPathwayFormModal}
-          handleClose={() => setShowBlankPathwayFormModal(false)}
-        />
-        <EditPathwayModal
-          pathway={pathwayToEdit}
-          showModal={showEditPathwayModal}
-          handleClose={() => setShowEditPathwayModal(false)}
-          handleEditPathway={handleEditPathway}
-        />
       </Box>
+      {showAddPathwayModal && (
+        <CreatePathwayModal
+          handleClose={() => setShowAddPathwayModal(false)}
+          createBlankPathway={() => setShowBlankPathwayFormModal(true)}
+        />
+      )}
+      <BlankPathwayFormModal
+        open={showBlankPathwayFormModal}
+        handleClose={() => setShowBlankPathwayFormModal(false)}
+      />
+      <EditPathwayModal
+        pathway={pathwayToEdit}
+        showModal={showEditPathwayModal}
+        handleClose={() => setShowEditPathwayModal(false)}
+        handleEditPathway={handleEditPathway}
+      />
     </Container>
   );
 }

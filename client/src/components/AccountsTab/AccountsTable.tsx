@@ -5,6 +5,7 @@ import {
   Paper,
   Table,
   TableBody,
+  TableSortLabel,
   TableCell,
   TableContainer,
   TableHead,
@@ -15,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ResetPasswordModal from "./Modals/ResetPasswordModal";
 import userService, { User } from "../../services/user-service";
 import DeleteUserConfirmationModal from "./Modals/DeleteUserConfirmationModal";
+import { pink } from "@mui/material/colors";
 
 interface Props {
   searchInput: any;
@@ -94,11 +96,20 @@ export default function AccountsTable({ searchInput }: Props) {
       .catch((err) => console.log(err));
   }, [userList]);
 
+  const headerFontStyle = {
+    fontWeight: "bold",
+    backgroundColor: "#E3E3E4",
+  };
+
   return (
     <Box>
       <TableContainer
         component={Paper}
-        sx={{ width: "100%", border: "solid 0.1em grey", shadow: "inherit" }}
+        sx={{
+          width: "100%",
+          border: "solid 0.1em grey",
+          shadow: "inherit",
+        }}
       >
         <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
           <TableHead
@@ -106,15 +117,27 @@ export default function AccountsTable({ searchInput }: Props) {
               cursor: "default",
             }}
           >
-            <TableRow>
-              <TableCell align="left">ID</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Username</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="left">Phone Number</TableCell>
-              <TableCell align="left">Role</TableCell>
-              <TableCell align="center">Actions</TableCell>
-            </TableRow>
+            <TableCell align="left" sx={headerFontStyle}>
+              <TableSortLabel active={true}>ID</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={headerFontStyle}>
+              <TableSortLabel active={true}>Name</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={headerFontStyle}>
+              <TableSortLabel active={true}>Username</TableSortLabel>
+            </TableCell>
+            <TableCell align="center" sx={headerFontStyle}>
+              <TableSortLabel active={true}>Email</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={headerFontStyle}>
+              <TableSortLabel active={true}>Phone Number</TableSortLabel>
+            </TableCell>
+            <TableCell align="left" sx={headerFontStyle}>
+              <TableSortLabel active={true}>Role</TableSortLabel>
+            </TableCell>
+            <TableCell align="center" sx={headerFontStyle} width="25%">
+              Actions
+            </TableCell>
           </TableHead>
           <TableBody
             sx={{
@@ -129,7 +152,7 @@ export default function AccountsTable({ searchInput }: Props) {
                   "&:hover": { backgroundColor: "#f5f5f5" },
                 }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell scope="row">
                   {user._id?.substring(0, 10)}
                   {user._id?.length ? (user._id.length > 10 ? "..." : "") : ""}
                 </TableCell>
@@ -153,7 +176,16 @@ export default function AccountsTable({ searchInput }: Props) {
                 <TableCell align="right" size="medium">
                   <Button
                     variant="outlined"
-                    sx={{ fontSize: "13px" }}
+                    size="small"
+                    sx={{
+                      fontSize: "11px",
+                      padding: "7px 14px",
+
+                      ":hover": {
+                        backgroundColor: "#e0e0e0",
+                        fontWeight: "bold",
+                      },
+                    }}
                     onClick={() => {
                       setSelectedUser({
                         id: user._id?.toString() || "",
@@ -168,8 +200,8 @@ export default function AccountsTable({ searchInput }: Props) {
                     Change Password
                   </Button>
                   <IconButton
-                    size="medium"
-                    sx={{ ml: 3 }}
+                    size="large"
+                    sx={{ ml: 3, ":hover": { color: pink[500] } }}
                     onClick={() => {
                       setSelectedUser({
                         id: user._id?.toString() || "",

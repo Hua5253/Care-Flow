@@ -20,13 +20,12 @@ export default function Accounts({ showModal }: showModal) {
     <Box
       sx={{
         flexGrow: 1,
-        p: 3,
-        marginLeft: "6em",
+        pt: 3,
+        pr: 1,
+        pb: 3,
         marginTop: 8,
-        width: "90%",
+        width: "100%",
         overflowX: "auto",
-        minWidth: 1,
-        minHeight: "80vh",
       }}
     >
       <Typography variant="h5" gutterBottom>

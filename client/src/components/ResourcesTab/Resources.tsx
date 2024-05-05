@@ -257,57 +257,25 @@ export default function Resources() {
     <Box
       sx={{
         flexGrow: 1,
-        p: 3,
-        marginLeft: "6em",
-        marginTop: 8,
         width: "100%",
+        height: "fit-content",
         minWidth: 0,
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h4" pb={1} gutterBottom>
         Resource
       </Typography>
-      {/* <Box display="flex" sx={{ mb: 3, mt: 3 }}>
-        <Grid
-          container
-          spacing={2}
-          sx={{ alignItems: "center", justifyContent: "center" }}
-        >
-          <Grid item xs={10}>
-            <SearchBar />
-          </Grid>
-          <Grid item xs={2}>
-            <Fab
-              variant="extended"
-              size="small"
-              color="primary"
-              sx={{
-                fontSize: "12px",
-                alignItems: "center",
-                borderRadius: 1,
-                height: "45px",
-              }}
-              onClick={handleAdd}
-            >
-              <AddIcon fontSize="small" />
-              Create Item
-            </Fab>
-          </Grid>
-        </Grid>
-      </Box> */}
-      {/* <Box sx={{ mt: 2 }}>
-        <SearchBar />
-      </Box> */}
       <Box
         sx={{
           border: "lightgrey solid",
           mt: 3,
-          pl: "2em",
-          pr: "2em",
-          pb: "2em",
+          p: 1,
           backgroundColor: "#e5e5e5",
           borderRadius: 1,
           width: "100%",
+          height: "100%",
         }}
       >
         <Tabs

@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,12 +29,14 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
   const [selectedRoomDetail, setSelectedRoomDetail] = useState<Room>(
     {} as Room
   );
-  const getCurrentStatusColor = (status: string) => {
+  const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      "10Full": "#409832",
-      "1 bed available": "#409832",
-      Available: "#409832",
-      "In use": "#B1190F",
+      Vacant: "#409832",
+      "Low Occupancy": "#9ACD32",
+      "Moderate Occupancy": "#B1840F",
+      "High Occupancy": "#FF8C00",
+      "Near Capacity": "#FF4500",
+      "Full Capacity": "#B1190F",
     };
     return colors[status] || "#000";
   };
@@ -101,17 +104,34 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Room Number</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
-              <TableSortLabel active={true}>Capacity</TableSortLabel>
+            <TableCell align="center" sx={{ fontWeight: 700 }}>
+              <TableSortLabel active={true}>
+                Capacity (Available / Total)
+              </TableSortLabel>
             </TableCell>
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Current Status</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "15%" }}>
               Actions
             </TableCell>
           </TableRow>
         </TableHead>
+        {dataSource.length === 0 && (
+          <TableBody>
+            <TableRow>
+              <TableCell
+                align="center"
+                colSpan={5}
+                sx={{ backgroundColor: "#f5f5f5" }}
+              >
+                <Typography variant="h5" sx={{ color: "#989A9D" }}>
+                  No Data
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
         <TableBody>
           {dataSource.map((data, index) => (
             <TableRow
@@ -125,10 +145,12 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
                 {data.name}
               </TableCell>
               <TableCell align="left">{data.location}</TableCell>
-              <TableCell align="left">{data.capacity}</TableCell>
+              <TableCell align="center">
+                {data.currentCapacity} / {data.capacity}
+              </TableCell>
               <TableCell
                 align="left"
-                style={{ color: getCurrentStatusColor(data.status) }}
+                style={{ color: getStatusColor(data.status) }}
               >
                 {data.status}
               </TableCell>
@@ -142,7 +164,6 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
                 </Button>
                 <IconButton
                   size="medium"
-                  sx={{ ml: 3 }}
                   onClick={() => handleDelete(data._id || "")}
                 >
                   <DeleteIcon />

@@ -1,4 +1,15 @@
-import { TextField, Button, Box, Typography, Modal } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Modal,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+
 import { useEffect, useState } from "react";
 
 interface ModalProps {
@@ -8,6 +19,19 @@ interface ModalProps {
   title: string;
   item?: any;
 }
+
+const statusOptions = ["In Stock", "Low Stock", "Out of Stock", "On Order"];
+const medicialEquipmentCategories = [
+  "Diagonose Equipment",
+  "Therapeutic Equipment",
+  "Surgical Equipment",
+  "Monitoring Equipment",
+  "Laboratory Equipment",
+  "Medical Consumables",
+  "Radiology Equipment",
+  "Durable Medical Equipment",
+  "Others",
+];
 
 export default function ModalMedicalEquipment({
   open,
@@ -102,22 +126,49 @@ export default function ModalMedicalEquipment({
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
-          {/* <TextField
-            required
-            id="classification"
-            label="Classification"
-            sx={textFieldStyles} // Added more vertical spacing
-            onChange={(e) => setName(e.target.value)}
-          /> */}
-          {/* Not sure what classification is for? */}
-          <TextField
-            required
-            id="category"
-            label="Category"
-            sx={textFieldStyles} // Added more vertical spacing
-            onChange={(e) => setCategory(e.target.value)}
-            value={category}
-          />
+          <FormControl required sx={textFieldStyles}>
+            <InputLabel id="medical-equipment-category">Category</InputLabel>
+            <Select
+              labelId="medical-equipment-category"
+              id="medical-equipment-category"
+              value={category}
+              label="Category"
+              onChange={(e) => setCategory(e.target.value)}
+              sx={{
+                color: "white",
+                "& .MuiSvgIcon-root": { color: "white" },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 30 * 4.5,
+                    width: "inherit",
+                  },
+                  sx: {
+                    "&::-webkit-scrollbar": {
+                      width: "10px", // adjust scrollbar width
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "rgba(0,0,0,0.5)", // scrollbar color
+                      borderRadius: "4px", // scrollbar corner radius
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "white", // scrollbar track color
+                    },
+                    "&.MuiPaper-root": {
+                      overflowY: "scroll", // Ensures scrollbar is always shown
+                    },
+                  },
+                },
+              }}
+            >
+              {medicialEquipmentCategories.map((category, index) => (
+                <MenuItem value={category} key={category + index}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             required
             id="quantity"
@@ -126,14 +177,33 @@ export default function ModalMedicalEquipment({
             onChange={(e) => setQuantity(e.target.value)}
             value={quantity}
           />
-          <TextField
-            required
-            id="status"
-            label="Status"
-            sx={textFieldStyles} // Added more vertical spacing
-            onChange={(e) => setStatus(e.target.value)}
-            value={status}
-          />
+          <FormControl required sx={textFieldStyles}>
+            <InputLabel id="medical-equipment-status">Status</InputLabel>
+            <Select
+              labelId="medical-equipment-status"
+              id="medical-equipment-status"
+              value={status}
+              label="Status"
+              onChange={(e) => setStatus(e.target.value)}
+              sx={{
+                color: "white",
+                "& .MuiSvgIcon-root": { color: "white" },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    width: "inherit",
+                  },
+                },
+              }}
+            >
+              {statusOptions.map((option, index) => (
+                <MenuItem value={option} key={option + index}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"

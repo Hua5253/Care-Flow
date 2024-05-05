@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -97,14 +98,29 @@ export default function TableMedicine({ dataSource, onEdit, onDelete }: Prop) {
             <TableCell align="left" sx={{ fontWeight: 700 }}>
               <TableSortLabel active={true}>Packaging</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "14%" }}>
               <TableSortLabel active={true}>Stock Quantity</TableSortLabel>
             </TableCell>
-            <TableCell align="left" sx={{ fontWeight: 700 }}>
+            <TableCell align="left" sx={{ fontWeight: 700, width: "15%" }}>
               Actions
             </TableCell>
           </TableRow>
         </TableHead>
+        {dataSource.length === 0 && (
+          <TableBody>
+            <TableRow>
+              <TableCell
+                align="center"
+                colSpan={6}
+                sx={{ backgroundColor: "#f5f5f5" }}
+              >
+                <Typography variant="h5" sx={{ color: "#989A9D" }}>
+                  No Data
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
         <TableBody>
           {dataSource.map((data, index) => (
             <TableRow
@@ -131,7 +147,6 @@ export default function TableMedicine({ dataSource, onEdit, onDelete }: Prop) {
                 </Button>
                 <IconButton
                   size="medium"
-                  sx={{ ml: 3 }}
                   onClick={() => handleDelete(data._id || "")}
                 >
                   <DeleteIcon />

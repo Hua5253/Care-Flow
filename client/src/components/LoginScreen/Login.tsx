@@ -31,8 +31,13 @@ interface Prop {
 
 export default function Login({ closeAlert }: Prop) {
   const { auth } = useContext<any>(AuthContext);
-  const [error, setError] = useState("");
+  const [credentialError, setCredentialError] = useState("");
+
   useEffect(() => {
+    if (auth?.user) {
+      closeAlert();
+      reset();
+    }
     const role = auth?.user?.role;
     if (role === "admin") {
       navigate("/accounts");
@@ -46,7 +51,7 @@ export default function Login({ closeAlert }: Prop) {
   }, [auth?.user]);
 
   useEffect(() => {
-    setError(auth?.errorMsg);
+    setCredentialError(auth?.errorMsg);
   }, [auth?.errorMsg]);
   // Should we put these stylings into css files separately?
 
@@ -92,20 +97,17 @@ export default function Login({ closeAlert }: Prop) {
   } = useForm<FormData>();
 
   const onSubmit = handleSubmit((data: FormData) => {
-    reset();
-    closeAlert();
-
     //login to the user using auth.login
     auth.loginUser(data.username, data.password);
   });
 
   return (
     <Box sx={boxStyle} id="login-modal">
-      <Container>
+      <Container onSubmit={onSubmit}>
         <Typography variant="h3" gutterBottom component="h1" sx={{ mt: 4 }}>
           CareFlow
         </Typography>
-        {error && <Alert severity="error">{error}</Alert>}
+        {credentialError && <Alert severity="error">{credentialError}</Alert>}
         <Box sx={{ mt: 2 }} component="form" onSubmit={onSubmit}>
           <TextField
             {...register("username", { required: "Username is required" })}
@@ -117,7 +119,7 @@ export default function Login({ closeAlert }: Prop) {
             InputProps={{
               startAdornment: <AccountCircle sx={{ mr: 1, my: 0.5 }} />,
             }}
-            error={Boolean(errors.username)}
+            error={Boolean(errors.username) || Boolean(credentialError)}
             helperText={errors.username?.message}
             onChange={() => {
               clearErrors("username");
@@ -148,11 +150,11 @@ export default function Login({ closeAlert }: Prop) {
                 </InputAdornment>
               ),
             }}
-            error={Boolean(errors.password)}
+            error={Boolean(errors.password) || Boolean(credentialError)}
             helperText={errors.password?.message}
             onChange={() => {
-              clearErrors("password");
               clearErrors("username");
+              clearErrors("password");
             }}
           />
           <Link

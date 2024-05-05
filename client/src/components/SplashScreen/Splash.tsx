@@ -24,15 +24,18 @@ export default function Splash() {
       backgroundColor: "#0d47a1", // Darker shade for hover state
     },
     color: "white",
-    margin: "1em",
+    margin: { m: "1em" },
     border: "1px solid #A8A8A8",
   };
   const iconStyle: SxProps<Theme> = {
-    height: 233,
-    width: 350,
-    maxHeight: { xs: 233, md: 167 },
-    maxWidth: { xs: 350, md: 250 },
+    height: "auto", // maintain aspect ratio
+    width: "100%",
     textAlign: "center",
+    maxWidth: {
+      xs: "100%", // 100% of the container width on extra small screens
+      sm: "200px", // max 200px on small screens
+      md: "250px", // max 250px on medium screens
+    },
   };
   const navigate = useNavigate();
   const handleClick = () => {
@@ -54,6 +57,7 @@ export default function Splash() {
           sx={iconStyle}
           alt="Hospital illustration"
           src="https://i.imgur.com/KoIVCtj.png"
+          style={{ width: "100%" }}
         />
         <div>
           <Button sx={buttonStyle} onClick={handleClick} id="login">

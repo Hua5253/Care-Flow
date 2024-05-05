@@ -31,16 +31,27 @@ export default function ContactBar(props: ContactBarProps) {
     <Paper
       variant="outlined"
       sx={{
-        width: "30%",
+        width: "fit-content",
         flexShrink: 0,
         overflow: "auto",
+        pt: 0,
+        pr: 1,
+        pl: 1,
+        height: "80vh",
+        border: "0.5px solid #989A9D",
+        borderTopRightRadius: "0",
+        borderBottomRightRadius: "0",
       }}
     >
       <Box sx={{ overflow: "auto" }}>
         <List>
           <ListItem>
             <ListItemText
-              primary={<Typography variant="h6">Messaging</Typography>}
+              primary={
+                <Typography variant="h5" fontWeight="bolder">
+                  Messaging
+                </Typography>
+              }
             />
           </ListItem>
           <ListItem>
@@ -56,17 +67,27 @@ export default function ContactBar(props: ContactBarProps) {
             <ListItem
               key={contact.id}
               sx={{
-                borderBottom: 1,
+                borderBottom: "0.5px solid #989A9D",
                 cursor: "pointer",
                 background: current === contact.id ? "#42a5f5" : "",
+                "&:hover": {
+                  backgroundColor:
+                    current === contact.id ? "#42a5f5" : "#f5f5f5",
+                },
               }}
               onClick={() => handleCurrent(contact.id)}
             >
               <ListItemAvatar>
-                <Avatar src={contact.avatar} />
+                <Avatar src={contact.avatar}>
+                  {contact.name[0].toUpperCase()}
+                </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={contact.name}
+                primary={
+                  contact.name.length > 15
+                    ? contact.name.substring(0, 15) + "..."
+                    : contact.name
+                }
                 secondary={contact.lastMessage}
               />
             </ListItem>

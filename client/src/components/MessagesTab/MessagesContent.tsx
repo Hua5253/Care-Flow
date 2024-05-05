@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
 import ContactBar from "./ContactBar";
 import ChatBox from "./ChatBox";
 import userService, { User } from "../../services/user-service";
@@ -110,14 +110,16 @@ export default function MessagesContent() {
   }, [current, location.search]);
 
   return (
-    <Box
+    <Container
       sx={{
         display: "flex",
-        marginTop: "64px",
-        width: "100%",
         flexDirection: "row",
-        alignItems: "self-start",
-        gap: 2,
+        flexShrink: 3,
+        pt: 3,
+        pr: 1,
+        pb: 3,
+        pl: 0,
+        height: "fit-content",
       }}
     >
       <ContactBar
@@ -136,6 +138,6 @@ export default function MessagesContent() {
         setMessage={setMessage}
         onMessageSend={handleMessageSend}
       />
-    </Box>
+    </Container>
   );
 }

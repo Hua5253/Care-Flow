@@ -81,27 +81,54 @@ export const getRoomById: RequestHandler = async (request, response, next) => {
 };
 
 const updateRoom: RequestHandler = async (request, response, next) => {
-  const roomId = request.params.id;
-
-  const { name, location, capacity, status, schedule } = request.body;
-
-  if (name && location && capacity && status && schedule === undefined) {
-    return response.status(400).json({ error: "all fields must be provided" });
-  }
-
   try {
-    const updates = { name, location, capacity, status, schedule };
+    // const updates = { name, location, capacity, status, schedule };
+    const roomId = request.params.id;
+
+    const { name, location, capacity, status, schedule } = request.body;
+
+    const existingRoom = await RoomModel.findById(roomId);
+    if (!existingRoom) {
+      return response.status(404).json({ error: "Room not found" });
+    }
+
+    if (name && location && capacity && status && schedule === undefined) {
+      return response
+        .status(400)
+        .json({ error: "all fields must be provided" });
+    }
+
+    const updates: any = {};
+
+    // Compare and add to updates if different
+    if (name !== undefined && name !== existingRoom.name) updates.name = name;
+    if (location !== undefined && location !== existingRoom.location)
+      updates.location = location;
+    if (capacity !== undefined && capacity !== existingRoom.capacity)
+      updates.capacity = capacity;
+    if (status !== undefined && status !== existingRoom.status)
+      updates.status = status;
+    if (
+      schedule !== undefined &&
+      JSON.stringify(schedule) !== JSON.stringify(existingRoom.schedule)
+    ) {
+      updates.schedule = schedule;
+    }
+
+    console.log("updated request.body fields", updates);
+
+    if (Object.keys(updates).length === 0) {
+      return response.status(200).json({ message: "No changes detected" });
+    }
 
     const updatedRoom = await RoomModel.findByIdAndUpdate(
       roomId,
       { $set: updates },
       { new: true, runValidators: true }
     );
-
     if (!updatedRoom) {
       return response.status(404).json({ error: "Room not found" });
     }
-
     response.status(200).json(updatedRoom);
   } catch (error) {
     next(error);

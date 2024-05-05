@@ -8,6 +8,8 @@ import {
   ListItemText,
   ListItemIcon,
   Typography,
+  Divider,
+  Fade,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -42,6 +44,34 @@ const formatContent = (content?: String) => {
   ]
     .filter((i) => i)
     .join(",");
+};
+
+const UpcomingProcedureNotificationStyle = {
+  backgroundColor: "#e0e0e0",
+  //border: "0.5px solid grey",
+  borderBottom: "1px solid #f9f9f9",
+  boxShadow: 1,
+  mb: 1,
+  mt: 1,
+  width: "100%",
+  borderRadius: "10px", // rounded corners
+  "&:last-child": { mb: 0 }, // remove bottom margin for the last item
+  "&:hover": {
+    backgroundColor: "#B8BEC1", // change background color on hover
+  },
+};
+
+const MessageNotificationStyle = {
+  backgroundColor: "#9DB4C0",
+  mb: 1, // margin bottom for spacing
+  borderRadius: "10px", // rounded corners
+  borderBottom: "1px solid #f9f9f9",
+  boxShadow: 1,
+  width: "100%",
+  mt: 1,
+  "&:hover": {
+    backgroundColor: "#7D9BA6", // change background color on hover
+  },
 };
 
 export default function Notifications(props: NotificationsProps) {
@@ -81,8 +111,20 @@ export default function Notifications(props: NotificationsProps) {
   };
 
   return (
-    <Box sx={{ paddingLeft: "1em" }}>
-      <IconButton color="inherit" onClick={handleClick}>
+    <Box
+      sx={{
+        //paddingLeft: "1em",
+        display: "flex",
+        alignItem: "center",
+        justifyContent: "center",
+      }}
+    >
+      <IconButton
+        color="inherit"
+        onClick={handleClick}
+        size="large"
+        aria-describedby={id}
+      >
         <NotificationsIcon />
       </IconButton>
       <Popover
@@ -92,20 +134,43 @@ export default function Notifications(props: NotificationsProps) {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
+          horizontal: "center",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "left",
+          horizontal: "center",
         }}
+        color="#f3f6f4"
+        TransitionComponent={Fade}
         sx={{
+          mt: 1.5,
           "& .MuiPopover-paper": {
-            width: "20em",
-            backgroundColor: "#5C6B73", // Outer popover background
+            width: "20vw", // Adjust width to your requirement
+            backgroundColor: "#ffffff",
+            p: 2,
+            borderRadius: 1, // Slightly rounded corners,
+            boxShadow: 10,
+            overflow: "visible", // Hide the overflow
+            "&::before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              left: "50%",
+              width: 20,
+              height: 20,
+              bgcolor: "background.paper",
+              transform: "translateX(-50%) translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+              overflow: "scroll", // Hide the overflow
+            },
           },
         }}
       >
-        <Typography sx={{ p: 2, color: "white" }}>Notifications</Typography>
+        <Typography sx={{ p: 2, cursor: "default" }} variant="h6">
+          Notifications
+        </Typography>
+        <Divider sx={{ borderColor: "#bcbcbc" }} />
         <List sx={{ pt: 0 }}>
           {dataSource.map((i) =>
             i.type === "message" ? (
@@ -117,12 +182,7 @@ export default function Notifications(props: NotificationsProps) {
                     type: i.type,
                   })
                 }
-                sx={{
-                  backgroundColor: "#9DB4C0",
-                  mb: 1,
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                }}
+                sx={MessageNotificationStyle}
               >
                 <ListItemIcon>
                   <ChatIcon color="action" />
@@ -141,13 +201,7 @@ export default function Notifications(props: NotificationsProps) {
                     type: i.type,
                   })
                 }
-                sx={{
-                  backgroundColor: "#9DB4C0",
-                  mb: 1,
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                  "&:last-child": { mb: 0 },
-                }}
+                sx={UpcomingProcedureNotificationStyle}
               >
                 <ListItemIcon>
                   <EventNoteIcon color="action" />
@@ -167,10 +221,12 @@ export default function Notifications(props: NotificationsProps) {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
+              mt: 1,
+              p: 2,
             }}
           >
             <Typography variant="caption" component="div" gutterBottom>
-              No Data Here
+              No New Notifications
             </Typography>
           </Box>
         )}

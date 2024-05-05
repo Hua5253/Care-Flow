@@ -5,6 +5,7 @@ export interface Room {
   name: string;
   location: string;
   capacity: number;
+  currentCapacity?: number;
   status: string;
 }
 

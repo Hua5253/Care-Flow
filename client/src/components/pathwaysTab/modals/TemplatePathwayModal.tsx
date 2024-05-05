@@ -49,7 +49,7 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
 
   const handleChange = (event: SelectChangeEvent) => {
     const selectedTemplatePathway = allTemplatePathways.find(
-      pathway => pathway.name === event.target.value
+      (pathway) => pathway.name === event.target.value
     );
     setTemplate(selectedTemplatePathway || null);
   };
@@ -60,45 +60,47 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
     const newPathway = { ...template, is_template: false };
     pathwayService
       .create<Pathway>(newPathway as Pathway)
-      .then(({ data: new_pathway }) => navigate("/pathways" + "/" + new_pathway._id))
-      .catch(err => console.log(err));
+      .then(({ data: new_pathway }) =>
+        navigate("/manager-pathway" + "/" + new_pathway._id)
+      )
+      .catch((err) => console.log(err));
   };
 
   return (
     <>
       <Modal
         open={true}
-        aria-labelledby='child-modal-title'
-        aria-describedby='child-modal-description'
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
       >
         <Box sx={{ ...style, width: 200, textAlign: "center" }}>
           <IconButton
-            aria-label='close'
+            aria-label="close"
             onClick={handleClose}
             sx={{
               position: "absolute",
               right: 8,
               top: 8,
-              color: theme => theme.palette.grey[500],
+              color: (theme) => theme.palette.grey[500],
             }}
           >
             <CloseIcon />
           </IconButton>
-          <h2 id='child-modal-title'>Create Pathway</h2>
+          <h2 id="child-modal-title">Create Pathway</h2>
           <p>Procedure Template</p>
           <FormControl fullWidth>
-            <InputLabel id='procedure-template-label'>
+            <InputLabel id="procedure-template-label">
               Choose a template
             </InputLabel>
             <Select
-              labelId='procedure-template-label'
-              id='procedure-template-select'
+              labelId="procedure-template-label"
+              id="procedure-template-select"
               value={template ? template.name : ""}
-              label='Procedure Template'
+              label="Procedure Template"
               onChange={handleChange}
               sx={{ mb: 2 }}
             >
-              {allTemplatePathways.map(templatePathway => (
+              {allTemplatePathways.map((templatePathway) => (
                 <MenuItem
                   key={templatePathway._id}
                   value={templatePathway.name}
@@ -108,7 +110,7 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
               ))}
             </Select>
           </FormControl>
-          <Button variant='contained' onClick={handleCreatePathwayFromTemplate}>
+          <Button variant="contained" onClick={handleCreatePathwayFromTemplate}>
             Create
           </Button>
         </Box>

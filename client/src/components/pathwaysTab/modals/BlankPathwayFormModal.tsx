@@ -26,10 +26,10 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
 
     pathwayService
       .create(newPathway)
-      .then(res => {
-        navigate("/pathways" + "/" + res.data._id);
+      .then((res) => {
+        navigate("/manager-pathway" + "/" + res.data._id);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 
     handleClose();
   };
@@ -49,27 +49,27 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
     <Modal
       open={open}
       onClose={handleClose}
-      aria-labelledby='blank-pathway-modal-title'
+      aria-labelledby="blank-pathway-modal-title"
     >
       <Box sx={modalStyle}>
-        <Typography id='blank-pathway-modal-title' variant='h6' component='h2'>
+        <Typography id="blank-pathway-modal-title" variant="h6" component="h2">
           Create New Pathway
         </Typography>
         <TextField
           fullWidth
-          margin='normal'
+          margin="normal"
           required
-          label='Pathway Name'
+          label="Pathway Name"
           value={pathwayName}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
         <TextField
           fullWidth
-          margin='normal'
+          margin="normal"
           required
-          label='Patient'
+          label="Patient"
           value={patient}
-          onChange={e => setPatient(e.target.value)}
+          onChange={(e) => setPatient(e.target.value)}
         />
         <Box
           sx={{
@@ -78,10 +78,10 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
             justifyContent: "space-between",
           }}
         >
-          <Button variant='contained' color='primary' onClick={handleSubmit}>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
             Confirm
           </Button>
-          <Button variant='contained' onClick={handleClose}>
+          <Button variant="contained" onClick={handleClose}>
             Cancel
           </Button>
         </Box>

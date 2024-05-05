@@ -117,27 +117,29 @@ export default function AccountsTable({ searchInput }: Props) {
               cursor: "default",
             }}
           >
-            <TableCell align="left" sx={headerFontStyle}>
-              <TableSortLabel active={true}>ID</TableSortLabel>
-            </TableCell>
-            <TableCell align="left" sx={headerFontStyle}>
-              <TableSortLabel active={true}>Name</TableSortLabel>
-            </TableCell>
-            <TableCell align="left" sx={headerFontStyle}>
-              <TableSortLabel active={true}>Username</TableSortLabel>
-            </TableCell>
-            <TableCell align="center" sx={headerFontStyle}>
-              <TableSortLabel active={true}>Email</TableSortLabel>
-            </TableCell>
-            <TableCell align="left" sx={headerFontStyle}>
-              <TableSortLabel active={true}>Phone Number</TableSortLabel>
-            </TableCell>
-            <TableCell align="left" sx={headerFontStyle}>
-              <TableSortLabel active={true}>Role</TableSortLabel>
-            </TableCell>
-            <TableCell align="center" sx={headerFontStyle} width="25%">
-              Actions
-            </TableCell>
+            <TableRow>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>ID</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Name</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Username</TableSortLabel>
+              </TableCell>
+              <TableCell align="center" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Email</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Phone Number</TableSortLabel>
+              </TableCell>
+              <TableCell align="left" sx={headerFontStyle}>
+                <TableSortLabel active={true}>Role</TableSortLabel>
+              </TableCell>
+              <TableCell align="center" sx={headerFontStyle} width="25%">
+                Actions
+              </TableCell>
+            </TableRow>
           </TableHead>
           <TableBody
             sx={{

@@ -15,19 +15,25 @@ import AuthWrapper from "./auth/requireAuth";
 
 const router = createBrowserRouter([
   { path: "/", element: <SplashScreen /> },
-  { path: "/manager-pathway", element: <PathwayScreen /> },
-  { path: "/manager-pathway/:id", element: <ProcedureScreen /> },
-  { path: "/manager-template", element: <TemplatePathwayScreen /> },
-  { path: "/manager-template/:id", element: <TemplateProcedureScreen /> },
-  { path: "/resources", element: <ResourceScreen /> },
-  { path: "/accounts", element: <AccountsScreen /> },
-  { path: "/messages/admin", element: <MessagesTab /> },
-  { path: "/messages/manager", element: <MessagesTab /> },
-  { path: "/messages/caregiver", element: <MessagesTab /> },
   { path: "/login", element: <LoginScreen /> },
   { path: "/forgetPassword", element: <ForgetPasswordScreen /> },
-  { path: "/schedule", element: <CaregiverScreen /> },
-  { path: "/schedule/:id", element: <ViewProcedureScreen /> },
+
+  // manager routes
+  { path: "/manager-pathway", element: <AuthWrapper allowedRoles={['manager']}><PathwayScreen /></AuthWrapper> },
+  { path: "/manager-pathway/:id", element: <AuthWrapper allowedRoles={['manager']}> <ProcedureScreen /></AuthWrapper> },
+  { path: "/manager-template", element: <AuthWrapper allowedRoles={['manager']}><TemplatePathwayScreen /></AuthWrapper> },
+  { path: "/manager-template/:id", element: <AuthWrapper allowedRoles={['manager']}><TemplateProcedureScreen /></AuthWrapper> },
+  { path: "/resources", element: <AuthWrapper allowedRoles={['manager']}><ResourceScreen /></AuthWrapper> },
+  { path: "/messages/manager", element: <AuthWrapper allowedRoles={['manager']}><MessagesTab /></AuthWrapper> },
+
+  // admin routes
+  { path: "/accounts", element: <AuthWrapper allowedRoles={['admin']}><AccountsScreen /></AuthWrapper> },
+  { path: "/messages/admin", element: <AuthWrapper allowedRoles={['admin']}><MessagesTab /> </AuthWrapper>},
+
+  // caregiver routes
+  { path: "/messages/caregiver", element: <AuthWrapper allowedRoles={['caregiver']}><MessagesTab /></AuthWrapper> },
+  { path: "/schedule", element: <AuthWrapper allowedRoles={['caregiver']}><CaregiverScreen /></AuthWrapper> },
+  { path: "/schedule/:id", element: <AuthWrapper allowedRoles={['caregiver']}><ViewProcedureScreen /></AuthWrapper> },
 ]);
 
 export default router;

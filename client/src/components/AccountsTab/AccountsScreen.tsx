@@ -1,32 +1,18 @@
 import { Box, Container } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AppBanner from "../AppBanner/AppBanner";
 import Accounts from "./Accounts";
 import CreateNewUserModal from "./Modals/CreateNewUserModal";
 import AdminSideBar from "../SideBar/AdminSideBar";
-import userService, { User } from "../../services/user-service";
 
 export default function AccountsScreen() {
   const [createUserModal, setCreateUserModal] = useState(false);
-  const [userList, setUserList] = useState<User[]>([]);
   const toggleCreateNewUserModal = () => {
     setCreateUserModal(true);
   };
   const toggleClose = () => {
     setCreateUserModal(false);
   };
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const response = await userService.getAll<User>();
-        setUserList(response.data);
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      }
-    };
-
-    getUserData();
-  }, [createImageBitmap]);
   return (
     <Container
       id="accountScreen"

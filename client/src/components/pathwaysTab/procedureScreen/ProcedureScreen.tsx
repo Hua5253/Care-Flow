@@ -26,26 +26,32 @@ function ProcedureScreen() {
   const { id } = useParams();
 
   const [pathway, setPathway] = useState<Pathway>({} as Pathway);
+  const [refetchToggle, setRefetchToggle] = useState(false);
+
   const navigate = useNavigate();
+
+  const toggleRefetch = () => {
+    setRefetchToggle((prev) => !prev);
+  };
 
   useEffect(() => {
     pathwayService
       .getById<Pathway>(id as string)
-      .then(res => setPathway(res.data))
-      .catch(err => console.log(err));
+      .then((res) => setPathway(res.data))
+      .catch((err) => console.log(err));
   }, []);
 
   const handleDeletePathway = (id: string) => {
     pathwayService
       .deleteById(id)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
 
     for (let procedureId of pathway.procedures) {
       procedureService
         .deleteById(procedureId)
-        .then(res => console.log(res.data))
-        .catch(err => console.log(err));
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
     }
 
     navigate("/manager-pathway");
@@ -61,8 +67,35 @@ function ProcedureScreen() {
     setShowDeleteProcedureModal(true);
   };
 
+  const addProcedureToPathway = (newProcedureId: string) => {
+    const updatedProcedures = [...pathway.procedures, newProcedureId];
+    const updatedPathway = { ...pathway, procedures: updatedProcedures };
+    setPathway(updatedPathway);
+  };
+
+  const removeProcedureFromPathway = (deletedProcedureId: string) => {
+    const updatedProcedures = pathway.procedures.filter(
+      (id) => id !== deletedProcedureId
+    );
+    const updatedPathway = { ...pathway, procedures: updatedProcedures };
+    setPathway(updatedPathway);
+  };
+
+  const publishPathway = () => {
+    const updatedPathway: Pathway = {
+      ...pathway,
+      status: "waiting",
+    };
+
+    pathwayService
+      .updateById<Pathway>(pathway._id as string, updatedPathway)
+      .then(({data}) => {
+        setPathway(data)
+      }).catch(err => console.log(err));
+  };
+
   return (
-    <Container id='app'>
+    <Container id="app">
       <Box sx={{ flexGrow: 1, mt: 8 }}>
         <AppBanner cred={true} />
         <ManagerSideBar />
@@ -72,31 +105,37 @@ function ProcedureScreen() {
           inEdit={inEdit}
           handleDeleteProcedure={handleDeleteProcedure}
           handleEditProcedure={handleEditProcedure}
+          refetchToggle={refetchToggle}
         />
         <ProcedureButtons
           inEdit={inEdit}
+          pathway={pathway}
           handleEditClick={() => setInEdit(true)}
           handleSaveClick={() => setInEdit(false)}
           handleAddProcedure={() => setShowAddProcedureModal(true)}
           handleDeletePathway={() => setShowDeletePathwayModal(true)}
+          handlePublishPathway={publishPathway}
         />
         <EditProcedureModal
           modalOpen={showEditProcedureModal}
           procedureToEditId={procedureToEditId}
           handleClose={() => setShowEditProcedureModal(false)}
           pathway={pathway}
+          refetchProcedures={toggleRefetch}
         />
         {showDeleteProcedureModal && (
           <DeleteProcedureModal
             handleCloseModal={() => setShowDeleteProcedureModal(false)}
             pathway={pathway}
             procedureToDeleteId={procedureToDeleteId}
+            removeProcedureFromPathway={removeProcedureFromPathway}
           />
         )}
         {showAddProcedureModal && (
           <AddProcedureModal
             pathway={pathway}
             handleClose={() => setShowAddProcedureModal(false)}
+            addProcedureToPathway={addProcedureToPathway}
           />
         )}
         {showDeletePathwayModal && (

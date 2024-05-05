@@ -17,21 +17,25 @@ interface Prop {
 }
 
 export default function NavBar({ cred }: Prop) {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { auth } = useContext<any>(AuthContext);
   const login = cred;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const navigate = useNavigate();
+
   const handleNavToLoginScreen = () => {
     navigate("/login");
   };
+
   const handleLogout = async () => {
     await auth.logoutUser();
     navigate("/");

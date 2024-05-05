@@ -5,6 +5,7 @@ import userService, { User } from "../../../services/user-service";
 import procedureService, {
   Procedure,
 } from "../../../services/procedure-service";
+import { socket } from "../../../socket";
 
 const style = {
   position: "absolute",
@@ -52,9 +53,14 @@ const textFieldStyles = {
 interface Props {
   pathway: Pathway;
   handleClose: () => void;
+  addProcedureToPathway: (id: string) => void;
 }
 
-export default function AddProcedureModal({ pathway, handleClose }: Props) {
+export default function AddProcedureModal({
+  pathway,
+  handleClose,
+  addProcedureToPathway,
+}: Props) {
   const [procedureName, setProcedureName] = useState("");
   const [caregiversNames, setCaregiversNames] = useState([""]);
   const [location, setLocation] = useState("");
@@ -62,6 +68,15 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
   const [endTime, setEndTime] = useState("");
   const [details, setDetails] = useState("");
   const [allUsers, setAllUsers] = useState<User[]>([]);
+
+  const [errors, setErrors] = useState({
+    procedureName: "",
+    caregivers: "",
+    location: "",
+    startTime: "",
+    endTime: "",
+    details: "",
+  });
 
   useEffect(() => {
     userService.getAll<User>().then((res) => setAllUsers(res.data));
@@ -87,15 +102,17 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
   };
 
   const confirmAddProcedure = () => {
+    if (!validate()) return;
+
+    const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     const caregivers: string[] = [];
     for (let user of allUsers) {
       if (caregiversNames.includes(user.name))
         caregivers.push(user._id as string);
     }
 
-    console.log(caregivers);
-
     const newProcedure: Procedure = {
+      posterId: profile._id,
       name: procedureName,
       caregiver: caregivers,
       location: location,
@@ -109,10 +126,20 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
     procedureService
       .create(newProcedure)
       .then((res) => {
+        addProcedureToPathway(res.data._id);
         const updatedPathway: Pathway = {
           ...pathway,
           procedures: [...pathway.procedures, res.data._id as string],
         };
+        if (newProcedure.caregiver && newProcedure.caregiver.length > 0) {
+          console.log(newProcedure.caregiver);
+          for (const receiverId of newProcedure.caregiver) {
+            socket.emit("notification", {
+              receiverId,
+              content: details,
+            });
+          }
+        }
         pathwayService
           .updateById<Pathway>(pathway._id as string, updatedPathway)
           .then((res) => console.log(res.data))
@@ -121,6 +148,52 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
       .catch((err) => console.log(err));
 
     handleClose();
+  };
+
+  const validate = () => {
+    let isValid = true;
+    let newErrors = {
+      procedureName: "",
+      caregivers: "",
+      location: "",
+      startTime: "",
+      endTime: "",
+      details: "",
+    };
+
+    if (!procedureName.trim()) {
+      newErrors.procedureName = "Procedure name is required.";
+      isValid = false;
+    }
+    if (
+      caregiversNames.length === 0 ||
+      caregiversNames.every((name) => !name.trim())
+    ) {
+      newErrors.caregivers = "At least one caregiver is required.";
+      isValid = false;
+    }
+    if (!location.trim()) {
+      newErrors.location = "Location is required.";
+      isValid = false;
+    }
+    if (!startTime.trim()) {
+      newErrors.startTime = "Start time is required.";
+      isValid = false;
+    }
+    if (!endTime.trim()) {
+      newErrors.endTime = "End time is required.";
+      isValid = false;
+    } else if (new Date(startTime) >= new Date(endTime)) {
+      newErrors.endTime = "End time must be later than start time.";
+      isValid = false;
+    }
+    if (!details.trim()) {
+      newErrors.details = "Details are required.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   return (
@@ -145,6 +218,8 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
             label="Procedure Name"
             value={procedureName}
             onChange={(event) => setProcedureName(event.target.value)}
+            error={!!errors.procedureName}
+            helperText={errors.procedureName}
             sx={textFieldStyles}
           />
           {caregiversNames.map((caregiver, index) => (
@@ -154,6 +229,8 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
                 label="Caregiver"
                 value={caregiver}
                 onChange={(event) => handleCaregiverChange(index, event)}
+                error={!!errors.caregivers && index === 0}
+                helperText={index === 0 ? errors.caregivers : ""}
                 sx={{ ...textFieldStyles, flex: 1 }}
               />
               <Button
@@ -172,7 +249,12 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
             id="location"
             label="Location"
             value={location}
-            onChange={(event) => setLocation(event.target.value)}
+            onChange={(event) => {
+              setLocation(event.target.value);
+              setErrors((prev) => ({ ...prev, location: "" }));
+            }}
+            error={!!errors.location}
+            helperText={errors.location}
             sx={textFieldStyles}
           />
           <TextField
@@ -181,7 +263,12 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
             label="Start Time"
             type="datetime-local"
             value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            onChange={(e) => {
+              setStartTime(e.target.value);
+              setErrors((prev) => ({ ...prev, startTime: "", endTime: "" }));
+            }}
+            error={!!errors.startTime}
+            helperText={errors.startTime}
             InputLabelProps={{
               shrink: true,
             }}
@@ -193,7 +280,12 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
             label="End Time"
             type="datetime-local"
             value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            onChange={(e) => {
+              setEndTime(e.target.value);
+              setErrors((prev) => ({ ...prev, endTime: "" }));
+            }}
+            error={!!errors.endTime}
+            helperText={errors.endTime}
             InputLabelProps={{
               shrink: true,
             }}
@@ -204,7 +296,12 @@ export default function AddProcedureModal({ pathway, handleClose }: Props) {
             id="procedure-detail"
             label="Procedure Detail"
             value={details}
-            onChange={(event) => setDetails(event.target.value)}
+            onChange={(event) => {
+              setDetails(event.target.value);
+              setErrors((prev) => ({ ...prev, details: "" })); 
+            }}
+            error={!!errors.details}
+            helperText={errors.details}
             multiline
             rows={4}
             sx={textFieldStyles}

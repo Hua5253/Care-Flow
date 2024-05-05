@@ -140,13 +140,17 @@ const getNotifications: RequestHandler = async (request, response, next) => {
     const list = [];
     if (user && user.notifications?.length > 0) {
       for (const notification of user.notifications) {
-        const notificationUserId = notification.content?.split(':')?.[0];
-        if (notificationUserId) {
-          const notificationUser = await UserModel.findById(notificationUserId);
-          list.push({
-            ...notification.toJSON(),
-            name: notificationUser?.name,
-          })
+        if (notification.type === 'message') {
+          const notificationUserId = notification.content?.split(':')?.[0];
+          if (notificationUserId) {
+            const notificationUser = await UserModel.findById(notificationUserId);
+            list.push({
+              ...notification.toJSON(),
+              name: notificationUser?.name,
+            })
+          }
+        } else {
+          list.push(notification.toJSON())
         }
       }
     }
@@ -163,7 +167,7 @@ const getNotifications: RequestHandler = async (request, response, next) => {
 
 const createNotification: RequestHandler = async (request, response, next) => {
   const userId = request.params.id;
-  const { sender, content } = request.body;  // Here, sender is the name of the person sending message, and content is the message; you should adjust this to fit your actual data
+  const { sender, content } = request.body;
 
   if (!sender || !content) {
     return response.status(400).json({ error: "Both sender and content must be defined" });
@@ -171,8 +175,8 @@ const createNotification: RequestHandler = async (request, response, next) => {
 
   const notification = {
     read_status: false,
-    type: "new_message",
-    content: `You have a new message from ${sender}: ${content}`,
+    type: "message",
+    content: `${sender}: ${content}`,
   };
 
   try {
@@ -194,7 +198,6 @@ const createNotification: RequestHandler = async (request, response, next) => {
 
 const updateNotificationsRead: RequestHandler = async (request, response, next) => {
   const { posterId } = request.body;
-  console.log('posterId', posterId)
   try {
     const updateUser = await UserModel.updateMany(
       { 'notifications.content': { $regex: new RegExp(`^${posterId}:`, 'g') } },

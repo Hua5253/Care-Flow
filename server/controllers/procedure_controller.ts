@@ -1,8 +1,9 @@
 import { RequestHandler } from "express";
 import ProcedureModel from "../models/procedure_schema";
+import UserModel from "../models/user_schema";
 
 const createProcedure: RequestHandler = async (request, response, next) => {
-  const { name, caregiver, patient, location, status, details, start, end } =
+  const { posterId, name, caregiver, patient, location, status, details, start, end } =
     request.body;
 
   if (!name) {
@@ -13,22 +14,22 @@ const createProcedure: RequestHandler = async (request, response, next) => {
   if (!caregiver) {
     return response
       .status(400)
-      .json({ error: "patient is required in the request body." });
+      .json({ error: "caregiver is required in the request body." });
   }
   if (!patient) {
     return response
       .status(400)
-      .json({ error: "status is required in the request body." });
+      .json({ error: "patient is required in the request body." });
   }
   if (!location) {
     return response
       .status(400)
-      .json({ error: "caregiver is required in the request body." });
+      .json({ error: "location is required in the request body." });
   }
   if (!status) {
     return response
       .status(400)
-      .json({ error: "location is required in the request body." });
+      .json({ error: "status is required in the request body." });
   }
   if (!details) {
     return response
@@ -58,6 +59,27 @@ const createProcedure: RequestHandler = async (request, response, next) => {
       end: end,
     });
 
+    if (caregiver && caregiver.length > 0) {
+      for (const userId of caregiver) {
+        const user = await UserModel.findOne({ _id: userId });
+        if (user && user.id) {
+          const notification = {
+            read_status: false,
+            type: "schedule",
+            content: `${posterId}:${name}:${patient}:${details}:${end}`,
+          };
+          const a = await UserModel.findByIdAndUpdate(
+            { _id: user.id },
+            {
+              $push: {
+                notifications: notification
+              }
+            },
+            { new: true, runValidators: true }
+          )
+        }
+      }
+    }
     response.status(201).json(newProcedure);
   } catch (error) {
     next(error);

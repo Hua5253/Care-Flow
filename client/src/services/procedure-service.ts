@@ -2,6 +2,7 @@ import create from "./http-service";
 
 export interface Procedure {
   _id?: string;
+  posterId?: string;
   name: string;
   caregiver?: string[];
   patient: string;

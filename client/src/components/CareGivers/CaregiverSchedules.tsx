@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Paper,
   Table,
@@ -11,24 +11,35 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import procedureService from "../../services/procedure-service";
+import procedureService, {Procedure} from "../../services/procedure-service";
+import {User} from "../../services/user-service";
+import AuthContext from "../../auth/auth";
 
 export default function ViewProcedure() {
-  const [procedures, setProcedures] = useState<any>([]);
+  const [procedures, setProcedures] = useState<Procedure[]>([]);
+  const [user, setUser] = useState<User>();
+
   const navigate = useNavigate();
+  const { auth } = useContext<any>(AuthContext);
+
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        await procedureService.getAll().then((res) => {
-          setProcedures(res.data);
-        });
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      if (auth?.user) {
+        const res = await procedureService.getAll();
+        const allProcedures = res.data as Procedure[];
+        const userProcedures = allProcedures.filter(proc =>
+          auth.user._id && proc.caregiver?.includes(auth.user._id)
+        );
+        setProcedures(userProcedures);
+      } else {
+        console.error("no user found");
       }
     }
     fetchData();
-  }, []);
+  }, [auth?.user]); 
+
+
 
   function formatDate(dateInput: Date | string): string {
     let date: Date;

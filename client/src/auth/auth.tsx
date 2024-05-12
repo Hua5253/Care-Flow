@@ -19,8 +19,9 @@ function AuthContextProvider({ children }: Props) {
     role: "",
     loggedIn: false,
     errorMsg: "",
-    accessToken: ""
+    accessToken: "",
   });
+
   const authReducer = (action: any) => {
     const { type, payload } = action;
     switch (type) {
@@ -30,7 +31,7 @@ function AuthContextProvider({ children }: Props) {
           loggedIn: payload.loggedIn,
           errorMsg: payload.errorMsg,
           role: payload.role,
-          accessToken: payload.accessToken
+          accessToken: payload.accessToken,
         });
       }
       case AuthActionType.LOGOUT_USER: {
@@ -39,7 +40,7 @@ function AuthContextProvider({ children }: Props) {
           loggedIn: false,
           errorMsg: "",
           role: "",
-          accessToken: ""
+          accessToken: "",
         });
       }
     }
@@ -58,11 +59,11 @@ function AuthContextProvider({ children }: Props) {
             role: response.data.user.role,
             loggedIn: true,
             errorMsg: null,
-            accessToken: accessToken
+            accessToken: accessToken,
           },
         });
         if (response.data.user) {
-          localStorage.setItem('profile', JSON.stringify(response.data.user))
+          localStorage.setItem("profile", JSON.stringify(response.data.user));
         }
 
         // navigate(`/`);
@@ -96,7 +97,9 @@ function AuthContextProvider({ children }: Props) {
     }
   };
   return (
-    <AuthContext.Provider value={{ auth,setAuth }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 export default AuthContext;

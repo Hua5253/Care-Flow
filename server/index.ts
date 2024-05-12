@@ -17,13 +17,12 @@ dotenv.config();
 interface UserSocket extends Socket {
   userId?: string;
 }
-
+const origin = ['test', 'dev'].includes(process.env.NODE_ENV || '') ? "http://localhost:5173" : "https://care-flow.vercel.app";
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    // origin: 'http://localhost:5173'
-    origin: "https://care-flow.vercel.app"
+    origin
   }
 });
 const onlineUsers: Record<string, string> = {};
@@ -57,8 +56,7 @@ const chat = io.of('/chatroom').on('connection', (socket: UserSocket) => {
 
 app.use(
   cors({
-    origin: "https://care-flow.vercel.app",
-    // origin: "http://localhost:5173",
+    origin,
     credentials: true,
   })
 );

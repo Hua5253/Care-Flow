@@ -47,6 +47,7 @@ const formatContent = (content?: String) => {
 };
 
 const UpcomingProcedureNotificationStyle = {
+  wordWrap: "break-word",
   backgroundColor: "#e0e0e0",
   //border: "0.5px solid grey",
   borderBottom: "1px solid #f9f9f9",

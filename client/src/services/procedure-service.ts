@@ -6,7 +6,7 @@ export interface Procedure {
   name: string;
   caregiver?: string[];
   patient: string;
-  status: "ongoing" | "completed" | "waiting" | "canceled";
+  status: "ongoing" | "completed" | "waiting" | "canceled" | "unpublished";
   location: string;
   details: string;
   start: Date;

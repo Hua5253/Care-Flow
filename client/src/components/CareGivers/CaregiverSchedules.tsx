@@ -29,7 +29,10 @@ export default function ViewProcedure() {
         const res = await procedureService.getAll();
         const allProcedures = res.data as Procedure[];
         const userProcedures = allProcedures.filter(proc =>
-          auth.user._id && proc.caregiver?.includes(auth.user._id)
+          auth.user._id && 
+          proc.caregiver?.includes(auth.user._id) && 
+          (proc.status == "ongoing"  ||
+          proc.status == "waiting")
         );
         setProcedures(userProcedures);
       } else {

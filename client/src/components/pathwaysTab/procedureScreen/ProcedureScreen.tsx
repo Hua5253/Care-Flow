@@ -94,6 +94,17 @@ function ProcedureScreen() {
       }).catch(err => console.log(err));
   };
 
+  const endPathway = () => {
+    const updatedPathway: Pathway = {
+      ...pathway,
+      status: "completed",
+    }
+
+    pathwayService.updateById<Pathway>(pathway._id as string, updatedPathway).then(({data}) => {
+      setPathway(data)
+    }).catch(err => console.log(err))
+  }
+
   return (
     <Container id="app">
       <Box sx={{ flexGrow: 1, mt: 8 }}>
@@ -115,6 +126,7 @@ function ProcedureScreen() {
           handleAddProcedure={() => setShowAddProcedureModal(true)}
           handleDeletePathway={() => setShowDeletePathwayModal(true)}
           handlePublishPathway={publishPathway}
+          handleEndPathway={endPathway}
         />
         <EditProcedureModal
           modalOpen={showEditProcedureModal}

@@ -11,6 +11,7 @@ interface Props {
   handleAddProcedure: () => void;
   handleDeletePathway: () => void;
   handlePublishPathway: () => void;
+  handleEndPathway: () => void;
 }
 
 // publish button will only be enable when the status of pathway is unpulished
@@ -23,7 +24,8 @@ function ProcedureButtons({
   handleSaveClick,
   handleAddProcedure,
   handleDeletePathway,
-  handlePublishPathway
+  handlePublishPathway,
+  handleEndPathway
 }: Props) {
   const [allProcedures, setAllProcedures] = useState<Procedure[]>([]);
   useEffect(() => {
@@ -46,6 +48,7 @@ function ProcedureButtons({
   let disableEndPathwayButton: boolean = false;
   if(pathway.procedures?.length === 0) disableEndPathwayButton = true;
   if(pathway.status === "unpublished") disableEndPathwayButton = true;
+  if(pathway.status === "completed") disableEndPathwayButton = true;
   for(let procedure of procedures) {
     if(procedure.status !== "completed") disableEndPathwayButton = true;
   }
@@ -87,7 +90,7 @@ function ProcedureButtons({
           <Button variant="contained" onClick={handleDeletePathway}>
             Delete Pathway
           </Button>
-          <Button variant="contained" disabled={disableEndPathwayButton}>End Pathway</Button>
+          <Button variant="contained" disabled={disableEndPathwayButton} onClick={handleEndPathway}>End Pathway</Button>
         </Box>
       </Box>
     );

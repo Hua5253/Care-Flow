@@ -25,3 +25,5 @@ services:
       context: ./client
       dockerfile: Dockerfile
     container_name: client
+    depends_on:
+      - server

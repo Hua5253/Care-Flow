@@ -1,4 +1,3 @@
-version: '3'
 services:
   nginx:
     image: nginx
@@ -13,7 +12,7 @@ services:
 
   server:
     env_file:
-      - .env
+      - ./server/.env
     build:
       context: ./server
       dockerfile: Dockerfile

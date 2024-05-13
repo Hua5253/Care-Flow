@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import VitePluginClose from './vite-plugin-close';
 
 export default defineConfig({
     build: {
@@ -21,4 +22,5 @@ export default defineConfig({
             }
         },
     },
+    plugins: [VitePluginClose()]
 })

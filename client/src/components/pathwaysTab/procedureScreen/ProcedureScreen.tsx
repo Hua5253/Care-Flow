@@ -99,25 +99,18 @@ function ProcedureScreen() {
   };
 
 
-  const publishPathway = () => {
-    const procedureUpdates = updateProceduresStatus(pathway.procedures, "waiting");
 
-    procedureUpdates.then(() => {
-      // Optionally check results for any rejected promises or failures
-      const updatedPathway: Pathway = {
-        ...pathway,
-        status: "waiting"
-      };
-  
-      pathwayService.updateById<Pathway>(pathway._id as string, updatedPathway)
-        .then(({data}) => {
-          setPathway(data);
-          // console.log("Pathway and procedures updated to 'waiting'");
-        })
-        .catch(err => console.error("Error updating pathway:", err));
-    })
-    .catch(err => console.error("Error updating procedures:", err));
-      
+  const publishPathway = () => {
+    const updatedPathway: Pathway = {
+      ...pathway,
+      status: "waiting",
+    };
+
+    pathwayService
+      .updateById<Pathway>(pathway._id as string, updatedPathway)
+      .then(({data}) => {
+        setPathway(data)
+      }).catch(err => console.log(err));
   };
     
 
@@ -127,13 +120,10 @@ function ProcedureScreen() {
       status: "completed",
     };
 
-    pathwayService
-      .updateById<Pathway>(pathway._id as string, updatedPathway)
-      .then(({ data }) => {
-        setPathway(data);
-      })
-      .catch((err) => console.log(err));
-  };
+    pathwayService.updateById<Pathway>(pathway._id as string, updatedPathway).then(({data}) => {
+      setPathway(data)
+    }).catch(err => console.log(err))
+  }
     
 
   return (

@@ -163,7 +163,7 @@ export default function EditTemplateProcedureModal({
       end: new Date(endTime),
       details: details,
       patient: pathway.patient,
-      status: "waiting",
+      status: "unpublished",
     };
 
     procedureService

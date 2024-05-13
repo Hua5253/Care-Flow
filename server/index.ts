@@ -17,7 +17,7 @@ dotenv.config();
 interface UserSocket extends Socket {
   userId?: string;
 }
-const origin = ['test', 'dev'].includes(process.env.NODE_ENV || '') ? "http://localhost:5173" : "https://care-flow.vercel.app";
+const origin = ['test', 'dev'].includes(process.env.NODE_ENV || '') ? "http://localhost:5173" : "https://3.142.237.164";
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {

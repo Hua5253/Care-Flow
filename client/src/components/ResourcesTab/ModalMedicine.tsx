@@ -199,6 +199,7 @@ export default function ModalMedicine({
             onChange={(e) => setPackaging(e.target.value)}
             value={packaging}
           />
+
           <TextField
             required
             id="quantity"

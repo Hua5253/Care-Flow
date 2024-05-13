@@ -1,5 +1,4 @@
 import { InferSchemaType, model, Schema, UpdateQuery } from "mongoose";
-const ObjectId = Schema.Types.ObjectId;
 
 const roomSchema = new Schema({
   name: { type: String, required: true },
@@ -41,17 +40,18 @@ roomSchema.pre("findOneAndUpdate", async function (next) {
       );
 
       let newCapacity = Number(fields.capacity);
-      if (newCapacity < inUse) {
-        // update.$set.capacity = item.capacity;
-        // newCapacity = item.capacity;
-        return next(
-          new Error(
-            "Cannot set capacity lower than the number of rooms currently in use"
-          )
-        );
-      } else {
-        update.$set.currentCapacity = newCapacity - inUse;
-      }
+      // if (newCapacity < inUse) {
+      //   // update.$set.capacity = item.capacity;
+      //   // newCapacity = item.capacity;
+      //   return next(
+      //     new Error(
+      //       "Cannot set capacity lower than the number of rooms currently in use"
+      //     )
+      //   );
+      // } else {
+      //   update.$set.currentCapacity = newCapacity - inUse;
+      // }
+      update.$set.currentCapacity = newCapacity - inUse;
 
       const ratio = inUse / newCapacity;
 

@@ -16,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModalRoom from "./ModalRoom";
 import { useEffect, useState } from "react";
 import roomService, { Room } from "../../services/room-service";
+import { set } from "react-hook-form";
 
 interface Props {
   dataSource: Room[];
@@ -29,6 +30,7 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
   const [selectedRoomDetail, setSelectedRoomDetail] = useState<Room>(
     {} as Room
   );
+  const [error, setError] = useState<string>("");
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       Vacant: "#409832",
@@ -52,7 +54,27 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
 
   //updates the data
   const onSubmit = (data: any) => {
-    // console.log(data);
+    console.log(Number(data.capacity));
+    console.log(Number(data.capacity));
+    console.log(
+      "current in use: ",
+      data.item.capacity - data.item.currentCapacity
+    );
+    if (
+      Number(data.capacity) <
+      data.item.capacity - data.item.currentCapacity
+    ) {
+      setError(
+        "Cannot set capacity lower than the number of rooms currently in use"
+      );
+      if (openId) {
+        roomService.getById(openId).then((res) => {
+          setSelectedRoomDetail(res.data as Room);
+          setShowModal(true);
+        });
+      }
+      return;
+    }
     roomService
       .updateById(openId, data)
       .then((res) => {
@@ -60,6 +82,7 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
         setShowModal(false);
         setOpenId("");
         onEdit();
+        setError("");
       })
       .catch((err): void => {
         console.log(err);
@@ -90,10 +113,12 @@ export default function TableRoom({ dataSource, onEdit, onDelete }: Props) {
         onClose={() => {
           setOpenId("");
           setShowModal(false);
+          setError("");
         }}
         onOk={onSubmit}
         title="Edit Room"
         item={selectedRoomDetail}
+        error={error}
       />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>

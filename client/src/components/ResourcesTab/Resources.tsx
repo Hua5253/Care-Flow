@@ -18,7 +18,8 @@ import equipmentService from "../../services/equipment-service";
 import medicineService from "../../services/medicine-service";
 import roomService from "../../services/room-service";
 
-const tabs: string[] = ["Medical Equipment", "Medicine", "Officers", "Room"];
+// const tabs: string[] = ["Medical Equipment", "Medicine", "Officers", "Room"];
+const tabs: string[] = ["Medical Equipment", "Medicine", "Room"];
 
 export default function Resources() {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -48,11 +49,11 @@ export default function Resources() {
             setMedicineData(res.data);
           });
           break;
+        // case 2:
+        //   // const officersData = await officersService.getAll();
+        //   // setData(officersData);
+        //   break;
         case 2:
-          // const officersData = await officersService.getAll();
-          // setData(officersData);
-          break;
-        case 3:
           await roomService.getAll().then((res) => {
             setRoomData(res.data);
           });
@@ -91,11 +92,11 @@ export default function Resources() {
           setOpen("");
         });
         break;
+      // case 2:
+      //   // const officersData = await officersService.getAll();
+      //   // setData(officersData);
+      //   break;
       case 2:
-        // const officersData = await officersService.getAll();
-        // setData(officersData);
-        break;
-      case 3:
         roomService.create(data).then((res) => {
           setRoomData([...roomData, res.data]);
           setOpen("");
@@ -217,7 +218,9 @@ export default function Resources() {
     />,
     <ModalRoom
       open={open === "Room"}
-      onClose={() => setOpen("")}
+      onClose={() => {
+        setOpen("");
+      }}
       onOk={(data) => {
         handleSubmit(data);
       }}
@@ -236,7 +239,7 @@ export default function Resources() {
       onEdit={handleEdit}
       onDelete={handleDelete}
     />,
-    <TableOfficers />,
+    // <TableOfficers />,
     <TableRoom
       dataSource={roomDataAfterFilter}
       onEdit={handleEdit}

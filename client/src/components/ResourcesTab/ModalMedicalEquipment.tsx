@@ -18,9 +18,15 @@ interface ModalProps {
   onOk: (data: any) => void;
   title: string;
   item?: any;
+  error?: string;
 }
 
-const statusOptions = ["In Stock", "Low Stock", "Out of Stock", "On Order"];
+const statusOptions = [
+  "All Available",
+  "Some Available",
+  "All in Use",
+  "On Order",
+];
 const medicialEquipmentCategories = [
   "Diagonose Equipment",
   "Therapeutic Equipment",
@@ -39,6 +45,7 @@ export default function ModalMedicalEquipment({
   onOk,
   title,
   item,
+  error,
 }: ModalProps) {
   const style = {
     position: "absolute",
@@ -118,6 +125,11 @@ export default function ModalMedicalEquipment({
           >
             {title}
           </Typography>
+          {error && (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          )}
           <TextField
             required
             id="name"
@@ -210,7 +222,7 @@ export default function ModalMedicalEquipment({
               color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
               onClick={() => {
-                onOk({ name, category, quantity, status });
+                onOk({ name, category, quantity, status, item: item });
                 resetForm();
               }}
             >

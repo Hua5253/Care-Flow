@@ -16,7 +16,7 @@ import ModalMedicalEquipment from "./ModalMedicalEquipment";
 import { useEffect, useState } from "react";
 import { Equipment } from "../../services/equipment-service";
 import equipmentService from "../../services/equipment-service";
-
+import { set } from "react-hook-form";
 interface Prop {
   dataSource: Equipment[];
   onEdit: () => void;
@@ -32,16 +32,16 @@ export default function TableMedicalEquipment({
   const [selectedEqDetail, setSelectedEqDetail] = useState<Equipment>(
     {} as Equipment
   );
+  const [error, setError] = useState<string>("");
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      "In Stock": "#409832",
-      "Low Stock": "#B1840F",
-      "Out of Stock": "#B1190F",
+      "All Available": "#409832",
+      "Some Available": "#B1840F",
+      "All in Use": "#B1190F",
       "On Order": "#2686AF",
     };
     return colors[status] || "#000";
   };
-
   useEffect(() => {
     if (openId) {
       equipmentService.getById(openId).then((res) => {
@@ -54,6 +54,21 @@ export default function TableMedicalEquipment({
   //updates the data
   const onSubmit = (data: any) => {
     // console.log(data);
+    if (
+      Number(data.quantity) <
+      data.item.quantity - data.item.currentQuantity
+    ) {
+      setError(
+        "Cannot set quantity lower than the number of equipments currently in use"
+      );
+      if (openId) {
+        equipmentService.getById(openId).then((res) => {
+          setSelectedEqDetail(res.data as Equipment);
+          setShowModal(true);
+        });
+      }
+      return;
+    }
     equipmentService
       .updateById(openId, data)
       .then((res) => {
@@ -61,6 +76,7 @@ export default function TableMedicalEquipment({
         setShowModal(false);
         setOpenId("");
         onEdit();
+        setError("");
       })
       .catch((err): void => {
         console.log(err);
@@ -91,10 +107,12 @@ export default function TableMedicalEquipment({
         onClose={() => {
           setOpenId("");
           setShowModal(false);
+          setError("");
         }}
         onOk={onSubmit}
         title="Edit Medical Equipment"
         item={selectedEqDetail}
+        error={error}
       />
       <Table aria-label="simple table" stickyHeader sx={{ width: "100%" }}>
         <TableHead>

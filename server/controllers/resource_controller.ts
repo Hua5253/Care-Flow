@@ -238,7 +238,27 @@ const updateEquipment: RequestHandler = async (request, response, next) => {
   }
 
   try {
-    const updates = { name, category, quantity, status };
+    const existing: any = await EquipmentModel.findById(equipmentId);
+    if (!existing) {
+      return response.status(404).json({ error: "Room not found" });
+    }
+
+    const updates: any = {};
+
+    // Compare and add to updates if different
+    if (name !== undefined && name !== existing.name) updates.name = name;
+    if (category !== undefined && category !== existing.category)
+      updates.category = category;
+    if (quantity !== undefined && quantity !== existing.quantity)
+      updates.quantity = quantity;
+    if (status !== undefined && status !== existing.status)
+      updates.status = status;
+
+    console.log("updated request.body fields", updates);
+
+    if (Object.keys(updates).length === 0) {
+      return response.status(200).json({ message: "No changes detected" });
+    }
 
     const updatedEquipment = await EquipmentModel.findByIdAndUpdate(
       equipmentId,

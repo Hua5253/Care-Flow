@@ -17,6 +17,7 @@ interface ModalProps {
   onOk: (data: any) => void;
   title: string;
   item?: any;
+  error?: string;
 }
 
 const roomOccupacyOptions = [
@@ -34,6 +35,7 @@ export default function ModalRoom({
   onOk,
   title,
   item,
+  error,
 }: ModalProps) {
   const style = {
     position: "absolute",
@@ -113,6 +115,11 @@ export default function ModalRoom({
           >
             {title}
           </Typography>
+          {error && (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          )}
           <TextField
             required
             id="name"
@@ -192,6 +199,7 @@ export default function ModalRoom({
                   capacity,
                   status,
                   schedule: [] as any[],
+                  item: item,
                 });
                 resetForm();
               }}

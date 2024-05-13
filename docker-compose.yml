@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   nginx:
     image: nginx
@@ -14,14 +14,9 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    ports:
-      - 4000:4000
     restart: always
 
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
-    ports:
-      - 80:80
-    restart: always

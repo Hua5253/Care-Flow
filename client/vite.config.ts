@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     build: {
+        minify: 'esbuild',
+        outDir: "build",
         chunkSizeWarningLimit: 100,
         rollupOptions: {
             onwarn(warning, warn) {
@@ -9,7 +11,14 @@ export default defineConfig({
                     return;
                 }
                 warn(warning);
+            },
+            output: {
+                manualChunks: (id) => {
+                    if (id.includes('node_modules')) {
+                        return 'vendor';
+                    }
+                }
             }
-        }
+        },
     },
 })

@@ -120,7 +120,7 @@ export default function AddProcedureModal({
       end: new Date(endTime),
       details: details,
       patient: pathway.patient,
-      status: "waiting",
+      status: "unpublished",
     };
 
     procedureService

@@ -10,7 +10,7 @@ import AddProcedureModal from "../modals/AddProcedureModal";
 import ManagerSideBar from "../../SideBar/ManagerSideBar";
 import ProcedureButtons from "./ProcedureButtons";
 import DeletePathwayModal from "../modals/DeletePathwayModal";
-import procedureService from "../../../services/procedure-service";
+import procedureService, {Procedure} from "../../../services/procedure-service";
 import EditProcedureModal from "../modals/EditProcedureModal";
 
 function ProcedureScreen() {
@@ -81,18 +81,43 @@ function ProcedureScreen() {
     setPathway(updatedPathway);
   };
 
-  const publishPathway = () => {
-    const updatedPathway: Pathway = {
-      ...pathway,
-      status: "waiting",
-    };
+  type ProcedureStatus = "ongoing" | "completed" | "waiting" | "canceled" | "unpublished";
 
-    pathwayService
-      .updateById<Pathway>(pathway._id as string, updatedPathway)
-      .then(({data}) => {
-        setPathway(data)
-      }).catch(err => console.log(err));
+  const updateProceduresStatus = async (procedureIds: string[], status: ProcedureStatus) => {
+    const fetchAndUpdatePromises = procedureIds.map(async (id) => {
+      try {
+        const { data: procedure } = await procedureService.getById<Procedure>(id.toString());
+        return procedureService.updateById<Procedure>(id.toString(), { ...procedure, status });
+      } catch (error) {
+        console.error(`Error fetching or updating procedure with ID ${id}:`, error);
+        throw error; // Rethrow to handle in Promise.allSettled or Promise.all
+      }
+    });
+    return Promise.allSettled(fetchAndUpdatePromises);
   };
+
+
+  const publishPathway = () => {
+    const procedureUpdates = updateProceduresStatus(pathway.procedures, "waiting");
+
+    procedureUpdates.then(() => {
+      // Optionally check results for any rejected promises or failures
+      const updatedPathway: Pathway = {
+        ...pathway,
+        status: "waiting"
+      };
+  
+      pathwayService.updateById<Pathway>(pathway._id as string, updatedPathway)
+        .then(({data}) => {
+          setPathway(data);
+          // console.log("Pathway and procedures updated to 'waiting'");
+        })
+        .catch(err => console.error("Error updating pathway:", err));
+    })
+    .catch(err => console.error("Error updating procedures:", err));
+      
+  };
+    
 
   const endPathway = () => {
     const updatedPathway: Pathway = {

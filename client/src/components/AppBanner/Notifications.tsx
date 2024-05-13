@@ -10,6 +10,7 @@ import {
   Typography,
   Divider,
   Fade,
+  Badge,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -120,14 +121,29 @@ export default function Notifications(props: NotificationsProps) {
         justifyContent: "center",
       }}
     >
-      <IconButton
-        color="inherit"
-        onClick={handleClick}
-        size="large"
-        aria-describedby={id}
+      <Badge
+        badgeContent={dataSource.length}
+        color="error"
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        sx={{
+          "& .MuiBadge-badge": {
+            right: 8,
+            top: 10,
+          },
+        }}
       >
-        <NotificationsIcon />
-      </IconButton>
+        <IconButton
+          color="inherit"
+          onClick={handleClick}
+          size="medium"
+          aria-describedby={id}
+        >
+          <NotificationsIcon />
+        </IconButton>
+      </Badge>
       <Popover
         id={id}
         open={open}

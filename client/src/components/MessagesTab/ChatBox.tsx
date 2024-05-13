@@ -228,6 +228,7 @@ export default function ChatBox(props: ChatBoxProps) {
               background: "white",
               boxShadow: 2,
             }}
+            onSubmit={onMessageSend}
           >
             <InputBase
               onChange={(e) => setMessage(e.target.value)}

@@ -22,7 +22,8 @@ function TemplateProcedureScreen() {
     useState(false);
   const [showEditTemplateProcedureModal, setShowEditTemplateProcedureModal] =
     useState(false);
-  const [templateProcedureToEditId, setTemplateProcedureToEditId] = useState("");
+  const [templateProcedureToEditId, setTemplateProcedureToEditId] =
+    useState("");
 
   const [allProcedures, setAllProcedures] = useState<Procedure[]>([]);
   const [refetchToggle, setRefetchToggle] = useState(false);
@@ -90,9 +91,23 @@ function TemplateProcedureScreen() {
 
   return (
     <Container id="app">
-      <Box sx={{ flexGrow: 1, mt: 8 }}>
-        <AppBanner cred={true} />
-        <ManagerSideBar />
+      <AppBanner cred={true} />
+      <ManagerSideBar />
+      <Box
+        component="main"
+        sx={{
+          mt: "75px",
+          ml: { sm: "100px", md: "120px" },
+          pl: { sm: "50px", md: "40px" },
+          backgroundColor: "#f5f5f5",
+          width: "80%",
+          height: "90%",
+          pr: 9,
+          pt: 2,
+          pb: 2,
+          overflow: "scroll",
+        }}
+      >
         <TemplateProcedureBanner templatePathway={templatePathway} />
         <TemplateProcedureList
           templatePathway={templatePathway}

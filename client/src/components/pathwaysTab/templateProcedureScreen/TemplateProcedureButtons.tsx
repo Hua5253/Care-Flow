@@ -6,8 +6,8 @@ interface Props {
 
 function TemplateProcedureButtons({ handleAddProcedure }: Props) {
   return (
-    <Box display='flex' justifyContent='space-between' padding={2}>
-      <Button variant='contained' color='primary' onClick={handleAddProcedure}>
+    <Box display="flex" justifyContent="space-between" padding={2}>
+      <Button variant="contained" color="primary" onClick={handleAddProcedure}>
         Add Procedure
       </Button>
       <Box sx={{ display: "flex", gap: 1 }}></Box>

@@ -11,7 +11,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "#5C6B73",
-  border: "2px solid #000",
+  // border: "2px solid #000",
   boxShadow: 24,
   pt: 2,
   px: 4,
@@ -53,7 +53,9 @@ function createPathwayModal({ handleClose, createBlankPathway }: Props) {
           >
             <CloseIcon />
           </IconButton>
-          <h2 id="parent-modal-title">Create Pathway</h2>
+          <h2 id="parent-modal-title" style={{ color: "white" }}>
+            Create Pathway
+          </h2>
           <Button
             variant="contained"
             onClick={() => {
@@ -62,7 +64,9 @@ function createPathwayModal({ handleClose, createBlankPathway }: Props) {
           >
             Template
           </Button>
-          <Button variant="contained" onClick={createBlankPathway}>Blank Pathway</Button>
+          <Button variant="contained" onClick={createBlankPathway}>
+            Blank Pathway
+          </Button>
           {showChildModal && (
             <TemplatePathwayModal
               handleClose={() => setShowChildModal(false)}

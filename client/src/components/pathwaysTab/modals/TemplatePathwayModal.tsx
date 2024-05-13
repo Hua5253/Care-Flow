@@ -23,7 +23,7 @@ const style = {
   width: 400,
   height: 400,
   bgcolor: "#5C6B73",
-  border: "2px solid #000",
+  // border: "2px solid #000",
   boxShadow: 24,
   pt: 2,
   px: 4,
@@ -33,6 +33,23 @@ const style = {
 interface closeModal {
   handleClose: () => void;
 }
+
+const selectStyles = {
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "white",
+    },
+    "&:hover fieldset": {
+      borderColor: "white",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "white",
+    },
+  },
+  "& .MuiSvgIcon-root": {
+    color: "white",
+  },
+};
 
 function TemplatePathwayModal({ handleClose }: closeModal) {
   const [allTemplatePathways, setAllTemplatePahtways] = useState<Pathway[]>([]);
@@ -86,10 +103,15 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
           >
             <CloseIcon />
           </IconButton>
-          <h2 id="child-modal-title">Create Pathway</h2>
-          <p>Procedure Template</p>
-          <FormControl fullWidth>
-            <InputLabel id="procedure-template-label">
+          <h2 id="child-modal-title" style={{ color: "white" }}>
+            Create Pathway
+          </h2>
+          <p style={{ color: "white" }}>Procedure Template</p>
+          <FormControl fullWidth sx={selectStyles}>
+            <InputLabel
+              id="procedure-template-label"
+              style={{ color: "white" }}
+            >
               Choose a template
             </InputLabel>
             <Select
@@ -98,7 +120,7 @@ function TemplatePathwayModal({ handleClose }: closeModal) {
               value={template ? template.name : ""}
               label="Procedure Template"
               onChange={handleChange}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2, color: "white" }}
             >
               {allTemplatePathways.map((templatePathway) => (
                 <MenuItem

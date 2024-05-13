@@ -3,6 +3,7 @@ import { Modal, Box, TextField, Button, Typography } from "@mui/material";
 import { Pathway } from "../../../services/pathway-service";
 import { useNavigate } from "react-router-dom";
 import pathwayService from "../../../services/pathway-service";
+import { textFieldStyles } from "./AddProcedureModal";
 
 interface Prop {
   open: boolean;
@@ -52,7 +53,12 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
       aria-labelledby="blank-pathway-modal-title"
     >
       <Box sx={modalStyle}>
-        <Typography id="blank-pathway-modal-title" variant="h6" component="h2">
+        <Typography
+          id="blank-pathway-modal-title"
+          variant="h6"
+          component="h2"
+          color="white"
+        >
           Create New Pathway
         </Typography>
         <TextField
@@ -62,6 +68,7 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
           label="Pathway Name"
           value={pathwayName}
           onChange={(e) => setName(e.target.value)}
+          sx={textFieldStyles}
         />
         <TextField
           fullWidth
@@ -70,6 +77,7 @@ function BlankPathwayFormModal({ open, handleClose }: Prop) {
           label="Patient"
           value={patient}
           onChange={(e) => setPatient(e.target.value)}
+          sx={textFieldStyles}
         />
         <Box
           sx={{

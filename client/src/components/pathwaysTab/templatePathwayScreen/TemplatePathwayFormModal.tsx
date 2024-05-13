@@ -14,6 +14,36 @@ function TemplatePathwayFormModal({ open, handleClose }: Prop) {
 
   const navigate = useNavigate();
 
+  const textFieldStyles = {
+    "& label.Mui-focused": {
+      color: "white",
+    },
+    "& label": {
+      color: "white",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "white",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "white",
+      },
+      "&:hover fieldset": {
+        borderColor: "white",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "white",
+      },
+      "& input": {
+        color: "white",
+      },
+      "& textarea": {
+        color: "white",
+      },
+    },
+    my: 2,
+  };
+
   const handleSubmit = () => {
     let newTemplatePathway: Pathway = {
       name: pathwayName,
@@ -51,8 +81,13 @@ function TemplatePathwayFormModal({ open, handleClose }: Prop) {
       aria-labelledby="blank-pathway-modal-title"
     >
       <Box sx={modalStyle}>
-        <Typography id="blank-pathway-modal-title" variant="h6" component="h2">
-          Create New Pathway
+        <Typography
+          id="blank-pathway-modal-title"
+          variant="h6"
+          component="h2"
+          sx={{ color: "white" }}
+        >
+          Create New Template Pathway
         </Typography>
         <TextField
           fullWidth
@@ -61,6 +96,7 @@ function TemplatePathwayFormModal({ open, handleClose }: Prop) {
           label="Pathway Name"
           value={pathwayName}
           onChange={(e) => setName(e.target.value)}
+          sx={textFieldStyles}
         />
         <Box
           sx={{

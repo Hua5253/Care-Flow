@@ -21,9 +21,6 @@ const style = {
 };
 
 const textFieldStyles = {
-  "& label.Mui-focused": {
-    color: "white",
-  },
   "& label": {
     color: "white",
   },
@@ -252,13 +249,24 @@ export default function EditProcedureModal({
               />
               <Button
                 onClick={() => removeCaregiverField(index)}
-                sx={{ mx: 1 }}
+                sx={{ mx: 1, color: "red" }}
               >
                 Remove
               </Button>
             </Box>
           ))}
-          <Button onClick={addCaregiverField} sx={{ my: 2 }}>
+          <Button
+            onClick={addCaregiverField}
+            sx={{
+              my: 2,
+              color: "common.white",
+              border: "solid black",
+              backgroundColor: "#253237",
+              "& hover": {
+                backgroundColor: "#253600",
+              },
+            }}
+          >
             Add Caregiver
           </Button>
           <TextField
@@ -288,6 +296,7 @@ export default function EditProcedureModal({
             helperText={errors.startTime}
             InputLabelProps={{
               shrink: true,
+              style: { color: "white" },
             }}
             sx={textFieldStyles}
           />
@@ -305,6 +314,7 @@ export default function EditProcedureModal({
             helperText={errors.endTime}
             InputLabelProps={{
               shrink: true,
+              style: { color: "white" },
             }}
             sx={textFieldStyles}
           />

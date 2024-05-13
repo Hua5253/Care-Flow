@@ -62,7 +62,7 @@ export default function EditTemplateProcedureModal({
   handleClose,
   procedureToEditId,
   pathway,
-  refetchProcedures
+  refetchProcedures,
 }: Props) {
   const [procedureName, setProcedureName] = useState("");
   const [caregiversNames, setCaregiversNames] = useState<string[]>([]);
@@ -252,13 +252,24 @@ export default function EditTemplateProcedureModal({
               />
               <Button
                 onClick={() => removeCaregiverField(index)}
-                sx={{ mx: 1 }}
+                sx={{ mx: 1, color: "red" }}
               >
                 Remove
               </Button>
             </Box>
           ))}
-          <Button onClick={addCaregiverField} sx={{ my: 2 }}>
+          <Button
+            onClick={addCaregiverField}
+            sx={{
+              my: 2,
+              color: "common.white",
+              border: "solid black",
+              backgroundColor: "#253237",
+              "& hover": {
+                backgroundColor: "#253600",
+              },
+            }}
+          >
             Add Caregiver
           </Button>
           <TextField

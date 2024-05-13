@@ -75,12 +75,12 @@ export default function SearchBarMedicalEquipment({ onSearch }: Props) {
             },
           }}
           aria-label="Search_by"
-          endIcon={<ExpandMoreTwoToneIcon />}
+          // endIcon={<ExpandMoreTwoToneIcon />}
           onClick={handleClick}
         >
-          Search By
+          Search
         </Button>
-        <Menu
+        {/* <Menu
           anchorEl={anchorEl}
           id="search_medicalEquipment_by"
           open={open}
@@ -92,7 +92,7 @@ export default function SearchBarMedicalEquipment({ onSearch }: Props) {
           <MenuItem>Status</MenuItem>
           <MenuItem>ID</MenuItem>
           <MenuItem>All</MenuItem>
-        </Menu>
+        </Menu> */}
       </Paper>
     </Box>
   );

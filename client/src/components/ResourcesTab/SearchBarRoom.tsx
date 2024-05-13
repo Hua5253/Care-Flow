@@ -74,12 +74,12 @@ export default function SearchBarRoom({ onSearch }: Props) {
             },
           }}
           aria-label="Search_by"
-          endIcon={<ExpandMoreTwoToneIcon />}
+          // endIcon={<ExpandMoreTwoToneIcon />}
           onClick={handleClick}
         >
-          Search By
+          Search
         </Button>
-        <Menu
+        {/* <Menu
           anchorEl={anchorEl}
           id="search_room_by"
           open={open}
@@ -90,7 +90,7 @@ export default function SearchBarRoom({ onSearch }: Props) {
           <MenuItem>Number</MenuItem>
           <MenuItem>Capacity</MenuItem>
           <MenuItem>All</MenuItem>
-        </Menu>
+        </Menu> */}
       </Paper>
     </Box>
   );

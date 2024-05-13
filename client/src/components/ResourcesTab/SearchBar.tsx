@@ -68,9 +68,9 @@ export default function SearchBar() {
           endIcon={<ExpandMoreTwoToneIcon />}
           onClick={handleClick}
         >
-          Search By
+          Search
         </Button>
-        <Menu
+        {/* <Menu
           anchorEl={anchorEl}
           id="search_resources_by"
           open={open}
@@ -82,7 +82,7 @@ export default function SearchBar() {
           <MenuItem>Officers</MenuItem>
           <MenuItem>Medicine</MenuItem>
           <MenuItem>All</MenuItem>
-        </Menu>
+        </Menu> */}
       </Paper>
     </Box>
   );

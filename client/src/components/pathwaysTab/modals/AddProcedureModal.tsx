@@ -1,11 +1,22 @@
-import { TextField, Button, Box, Typography, Modal } from "@mui/material";
-import { useEffect, useState } from "react";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Modal,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import pathwayService, { Pathway } from "../../../services/pathway-service";
 import userService, { User } from "../../../services/user-service";
 import procedureService, {
   Procedure,
 } from "../../../services/procedure-service";
 import { socket } from "../../../socket";
+import { UserContext } from "../UserContext";
 
 const style = {
   position: "absolute",
@@ -77,6 +88,9 @@ export default function AddProcedureModal({
     endTime: "",
     details: "",
   });
+  const users = useContext(UserContext);
+
+  console.log(users);
 
   useEffect(() => {
     userService.getAll<User>().then((res) => setAllUsers(res.data));
@@ -224,7 +238,7 @@ export default function AddProcedureModal({
           />
           {caregiversNames.map((caregiver, index) => (
             <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
-              <TextField
+              {/* <TextField
                 required
                 label="Caregiver"
                 value={caregiver}
@@ -232,7 +246,35 @@ export default function AddProcedureModal({
                 error={!!errors.caregivers && index === 0}
                 helperText={index === 0 ? errors.caregivers : ""}
                 sx={{ ...textFieldStyles, flex: 1 }}
-              />
+              /> */}
+              <FormControl
+                fullWidth
+                required
+                error={!!errors.caregivers && index === 0}
+                sx={{ ...textFieldStyles, flex: 1 }}
+              >
+                <InputLabel>Caregiver</InputLabel>
+                <Select
+                  value={caregiver}
+                  label="Caregiver"
+                  onChange={(event: any) => handleCaregiverChange(index, event)}
+                  sx={{
+                    color: "white",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "white",
+                    },
+                    "& .MuiSvgIcon-root": {
+                      color: "white",
+                    },
+                  }}
+                >
+                  {users.map((name, index) => (
+                    <MenuItem key={index} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <Button
                 onClick={() => removeCaregiverField(index)}
                 sx={{ mx: 1, color: "red" }}

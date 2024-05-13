@@ -4,7 +4,6 @@ import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
 import TableMedicalEquipment from "./TableMedicalEquipment";
 import TableMedicine from "./TableMedicine";
-import TableOfficers from "./TableOfficers";
 import TableRoom from "./TableRoom";
 import SearchBarMedicalEquipment from "./SearchBarMedicalEquipment";
 import SearchBarMedicine from "./SearchBarMedicine";
@@ -210,12 +209,12 @@ export default function Resources() {
       }}
       title="Create New Medicine"
     />,
-    <ModalOffice
-      open={open === "Officers"}
-      onClose={() => setOpen("")}
-      onOk={() => {}}
-      title="Create New Officer"
-    />,
+    // <ModalOffice
+    //   open={open === "Officers"}
+    //   onClose={() => setOpen("")}
+    //   onOk={() => {}}
+    //   title="Create New Officer"
+    // />,
     <ModalRoom
       open={open === "Room"}
       onClose={() => {
@@ -252,7 +251,7 @@ export default function Resources() {
       onSearch={(data) => handleSearch("Medical Equipment", data)}
     />,
     <SearchBarMedicine onSearch={(data) => handleSearch("Medicine", data)} />,
-    <SearchBarOfficers />,
+    // <SearchBarOfficers />,
     <SearchBarRoom onSearch={(data) => handleSearch("Room", data)} />,
   ];
 

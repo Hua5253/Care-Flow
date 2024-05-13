@@ -13,6 +13,8 @@ import DeletePathwayModal from "../modals/DeletePathwayModal";
 import procedureService from "../../../services/procedure-service";
 import EditProcedureModal from "../modals/EditProcedureModal";
 
+import UserProvider from "../UserContext";
+
 function ProcedureScreen() {
   const [inEdit, setInEdit] = useState(false);
   const [showDeleteProcedureModal, setShowDeleteProcedureModal] =
@@ -111,71 +113,73 @@ function ProcedureScreen() {
 
   return (
     <Container id="app">
-      <AppBanner cred={true} />
-      <ManagerSideBar />
-      <Box
-        component="main"
-        sx={{
-          mt: "75px",
-          ml: { sm: "100px", md: "120px" },
-          pl: { sm: "50px", md: "40px" },
-          backgroundColor: "#f5f5f5",
-          width: "80%",
-          height: "90%",
-          pr: 9,
-          pt: 2,
-          pb: 2,
-          overflow: "scroll",
-        }}
-      >
-        <ProcedureBanner pathway={pathway} />
-        <ProcedureList
-          pathway={pathway}
-          inEdit={inEdit}
-          handleDeleteProcedure={handleDeleteProcedure}
-          handleEditProcedure={handleEditProcedure}
-          refetchToggle={refetchToggle}
-        />
-        <ProcedureButtons
-          inEdit={inEdit}
-          pathway={pathway}
-          handleEditClick={() => setInEdit(true)}
-          handleSaveClick={() => setInEdit(false)}
-          handleAddProcedure={() => setShowAddProcedureModal(true)}
-          handleDeletePathway={() => setShowDeletePathwayModal(true)}
-          handlePublishPathway={publishPathway}
-          handleEndPathway={endPathway}
-        />
-        <EditProcedureModal
-          modalOpen={showEditProcedureModal}
-          procedureToEditId={procedureToEditId}
-          handleClose={() => setShowEditProcedureModal(false)}
-          pathway={pathway}
-          refetchProcedures={toggleRefetch}
-        />
-        {showDeleteProcedureModal && (
-          <DeleteProcedureModal
-            handleCloseModal={() => setShowDeleteProcedureModal(false)}
+      <UserProvider>
+        <AppBanner cred={true} />
+        <ManagerSideBar />
+        <Box
+          component="main"
+          sx={{
+            mt: "75px",
+            ml: { sm: "100px", md: "120px" },
+            pl: { sm: "50px", md: "40px" },
+            backgroundColor: "#f5f5f5",
+            width: "80%",
+            height: "90%",
+            pr: 9,
+            pt: 2,
+            pb: 2,
+            overflow: "scroll",
+          }}
+        >
+          <ProcedureBanner pathway={pathway} />
+          <ProcedureList
             pathway={pathway}
-            procedureToDeleteId={procedureToDeleteId}
-            removeProcedureFromPathway={removeProcedureFromPathway}
+            inEdit={inEdit}
+            handleDeleteProcedure={handleDeleteProcedure}
+            handleEditProcedure={handleEditProcedure}
+            refetchToggle={refetchToggle}
           />
-        )}
-        {showAddProcedureModal && (
-          <AddProcedureModal
+          <ProcedureButtons
+            inEdit={inEdit}
             pathway={pathway}
-            handleClose={() => setShowAddProcedureModal(false)}
-            addProcedureToPathway={addProcedureToPathway}
+            handleEditClick={() => setInEdit(true)}
+            handleSaveClick={() => setInEdit(false)}
+            handleAddProcedure={() => setShowAddProcedureModal(true)}
+            handleDeletePathway={() => setShowDeletePathwayModal(true)}
+            handlePublishPathway={publishPathway}
+            handleEndPathway={endPathway}
           />
-        )}
-        {showDeletePathwayModal && (
-          <DeletePathwayModal
-            handleConfirm={handleDeletePathway}
-            handleCancel={() => setShowDeletePathwayModal(false)}
-            pathwayId={id as string}
+          <EditProcedureModal
+            modalOpen={showEditProcedureModal}
+            procedureToEditId={procedureToEditId}
+            handleClose={() => setShowEditProcedureModal(false)}
+            pathway={pathway}
+            refetchProcedures={toggleRefetch}
           />
-        )}
-      </Box>
+          {showDeleteProcedureModal && (
+            <DeleteProcedureModal
+              handleCloseModal={() => setShowDeleteProcedureModal(false)}
+              pathway={pathway}
+              procedureToDeleteId={procedureToDeleteId}
+              removeProcedureFromPathway={removeProcedureFromPathway}
+            />
+          )}
+          {showAddProcedureModal && (
+            <AddProcedureModal
+              pathway={pathway}
+              handleClose={() => setShowAddProcedureModal(false)}
+              addProcedureToPathway={addProcedureToPathway}
+            />
+          )}
+          {showDeletePathwayModal && (
+            <DeletePathwayModal
+              handleConfirm={handleDeletePathway}
+              handleCancel={() => setShowDeletePathwayModal(false)}
+              pathwayId={id as string}
+            />
+          )}
+        </Box>
+      </UserProvider>
     </Container>
   );
 }

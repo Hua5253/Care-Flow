@@ -14,6 +14,8 @@ import procedureService, {
 } from "../../../services/procedure-service";
 import EditTemplateProcedureModal from "./EditTemplateProcedureModal";
 
+import UserProvider from "../UserContext";
+
 function TemplateProcedureScreen() {
   const [templatePathway, setTemplatePathway] = useState<Pathway>(
     {} as Pathway
@@ -91,49 +93,51 @@ function TemplateProcedureScreen() {
 
   return (
     <Container id="app">
-      <AppBanner cred={true} />
-      <ManagerSideBar />
-      <Box
-        component="main"
-        sx={{
-          mt: "75px",
-          ml: { sm: "100px", md: "120px" },
-          pl: { sm: "50px", md: "40px" },
-          backgroundColor: "#f5f5f5",
-          width: "80%",
-          height: "90%",
-          pr: 9,
-          pt: 2,
-          pb: 2,
-          overflow: "scroll",
-        }}
-      >
-        <TemplateProcedureBanner templatePathway={templatePathway} />
-        <TemplateProcedureList
-          templatePathway={templatePathway}
-          allProcedures={allProcedures}
-          handleDeleteProcedure={handleDeleteProcedure}
-          handleEditProcedure={handleEditTemplateProcedure}
-        />
-        <TemplateProcedureButtons
-          handleAddProcedure={() => {
-            setShowAddTemplateProcedureModal(true);
+      <UserProvider>
+        <AppBanner cred={true} />
+        <ManagerSideBar />
+        <Box
+          component="main"
+          sx={{
+            mt: "75px",
+            ml: { sm: "100px", md: "120px" },
+            pl: { sm: "50px", md: "40px" },
+            backgroundColor: "#f5f5f5",
+            width: "80%",
+            height: "90%",
+            pr: 9,
+            pt: 2,
+            pb: 2,
+            overflow: "scroll",
           }}
-        />
-        <AddTemplateProcedureModal
-          showModal={showAddTemplateProcedureModal}
-          handleClose={() => setShowAddTemplateProcedureModal(false)}
-          templatePathway={templatePathway}
-          updatePathway={updateTemplatePathwayWithNewProcedure}
-        />
-        <EditTemplateProcedureModal
-          modalOpen={showEditTemplateProcedureModal}
-          procedureToEditId={templateProcedureToEditId}
-          handleClose={() => setShowEditTemplateProcedureModal(false)}
-          pathway={templatePathway}
-          refetchProcedures={toggleRefetch}
-        />
-      </Box>
+        >
+          <TemplateProcedureBanner templatePathway={templatePathway} />
+          <TemplateProcedureList
+            templatePathway={templatePathway}
+            allProcedures={allProcedures}
+            handleDeleteProcedure={handleDeleteProcedure}
+            handleEditProcedure={handleEditTemplateProcedure}
+          />
+          <TemplateProcedureButtons
+            handleAddProcedure={() => {
+              setShowAddTemplateProcedureModal(true);
+            }}
+          />
+          <AddTemplateProcedureModal
+            showModal={showAddTemplateProcedureModal}
+            handleClose={() => setShowAddTemplateProcedureModal(false)}
+            templatePathway={templatePathway}
+            updatePathway={updateTemplatePathwayWithNewProcedure}
+          />
+          <EditTemplateProcedureModal
+            modalOpen={showEditTemplateProcedureModal}
+            procedureToEditId={templateProcedureToEditId}
+            handleClose={() => setShowEditTemplateProcedureModal(false)}
+            pathway={templatePathway}
+            refetchProcedures={toggleRefetch}
+          />
+        </Box>
+      </UserProvider>
     </Container>
   );
 }

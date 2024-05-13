@@ -59,7 +59,7 @@ export default function AddTemplateProcedureModal({
   showModal,
   templatePathway,
   handleClose,
-  updatePathway
+  updatePathway,
 }: Props) {
   const [procedureName, setProcedureName] = useState("");
   const [details, setDetails] = useState("");
@@ -78,7 +78,7 @@ export default function AddTemplateProcedureModal({
 
     procedureService
       .create<Procedure>(newProcedure)
-      .then(res => {
+      .then((res) => {
         updatePathway(res.data._id as string);
         const updatedPathway: Pathway = {
           ...templatePathway,
@@ -86,10 +86,10 @@ export default function AddTemplateProcedureModal({
         };
         pathwayService
           .updateById<Pathway>(templatePathway._id as string, updatedPathway)
-          .then(res => console.log(res.data))
-          .catch(err => console.log(err));
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 
     handleClose();
   };
@@ -99,46 +99,46 @@ export default function AddTemplateProcedureModal({
       <Modal
         open={showModal}
         onClose={handleClose}
-        aria-labelledby='procedure-modal-title'
+        aria-labelledby="procedure-modal-title"
       >
         <Box sx={style}>
           <Typography
-            id='procedure-modal-title'
-            variant='h6'
-            component='h2'
-            color='common.white'
+            id="procedure-modal-title"
+            variant="h6"
+            component="h2"
+            color="common.white"
           >
             Procedure Information
           </Typography>
           <TextField
             required
-            id='procedure-name'
-            label='Procedure Name'
+            id="procedure-name"
+            label="Procedure Name"
             value={procedureName}
-            onChange={event => setProcedureName(event.target.value)}
+            onChange={(event) => setProcedureName(event.target.value)}
             sx={textFieldStyles}
           />
           <TextField
-            id='procedure-detail'
-            label='Procedure Detail'
+            id="procedure-detail"
+            label="Procedure Detail"
             value={details}
-            onChange={event => setDetails(event.target.value)}
+            onChange={(event) => setDetails(event.target.value)}
             multiline
             rows={4}
             sx={textFieldStyles}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-around" }}>
             <Button
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
               onClick={confirmAddProcedure}
             >
               Confirm
             </Button>
             <Button
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               style={{ backgroundColor: "#253237", color: "#ffffff" }}
               onClick={handleClose}
             >

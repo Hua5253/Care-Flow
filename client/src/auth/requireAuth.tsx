@@ -13,7 +13,7 @@ const AuthWrapper = ({ children, allowedRoles }: AuthWrapperProps) => {
     const userHasRequiredRole = auth.role && allowedRoles.includes(auth.role);
     const isAuthenticated = auth.loggedIn && userHasRequiredRole;
 
-    return isAuthenticated ? children : <Navigate to="/login" replace />;
+    return isAuthenticated ? children : <Navigate to="/" replace />;
 };
 
 export default AuthWrapper;

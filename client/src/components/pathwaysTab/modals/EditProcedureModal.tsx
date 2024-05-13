@@ -70,6 +70,7 @@ export default function EditProcedureModal({
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [details, setDetails] = useState("");
+  const [status, setStatus] = useState<"ongoing" | "completed" | "waiting" | "canceled" | "unpublished">("unpublished");
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [errors, setErrors] = useState({
     procedureName: "",
@@ -83,6 +84,7 @@ export default function EditProcedureModal({
   useEffect(() => {
     userService.getAll<User>().then((res) => setAllUsers(res.data));
   }, []);
+  
 
   useEffect(() => {
     procedureService
@@ -107,6 +109,7 @@ export default function EditProcedureModal({
         }
         setStartTime(toLocalDateTimeString(procedure.start?.toString()) || "");
         setEndTime(toLocalDateTimeString(procedure.end?.toString()) || "");
+        setStatus(procedure.status);
         setDetails(procedure.details || "");
       })
       .catch((err) => console.log(err));
@@ -150,7 +153,7 @@ export default function EditProcedureModal({
       end: new Date(endTime),
       details: details,
       patient: pathway.patient,
-      status: "waiting",
+      status: status,
     };
 
     procedureService

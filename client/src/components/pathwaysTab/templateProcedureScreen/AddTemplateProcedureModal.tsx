@@ -73,7 +73,7 @@ export default function AddTemplateProcedureModal({
       end: new Date(),
       details: details,
       patient: "unknown",
-      status: "waiting",
+      status: "unpublished",
     };
 
     procedureService

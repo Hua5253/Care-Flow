@@ -12,6 +12,7 @@ import TemplateProcedureButtons from "./TemplateProcedureButtons";
 import procedureService, {
   Procedure,
 } from "../../../services/procedure-service";
+import EditTemplateProcedureModal from "./EditTemplateProcedureModal";
 
 function TemplateProcedureScreen() {
   const [templatePathway, setTemplatePathway] = useState<Pathway>(
@@ -19,7 +20,12 @@ function TemplateProcedureScreen() {
   );
   const [showAddTemplateProcedureModal, setShowAddTemplateProcedureModal] =
     useState(false);
+  const [showEditTemplateProcedureModal, setShowEditTemplateProcedureModal] =
+    useState(false);
+  const [templateProcedureToEditId, setTemplateProcedureToEditId] = useState("");
+
   const [allProcedures, setAllProcedures] = useState<Procedure[]>([]);
+  const [refetchToggle, setRefetchToggle] = useState(false);
 
   const { id } = useParams();
 
@@ -32,13 +38,17 @@ function TemplateProcedureScreen() {
 
   useEffect(() => {
     fetchAllProcedures();
-  }, [templatePathway]);
+  }, [templatePathway, refetchToggle]);
 
   const fetchAllProcedures = () => {
     procedureService
       .getAll<Procedure>()
       .then((res) => setAllProcedures(res.data))
       .catch((err) => console.log(err));
+  };
+
+  const toggleRefetch = () => {
+    setRefetchToggle((prev) => !prev);
   };
 
   const updateTemplatePathwayWithNewProcedure = (newProcedureId: string) => {
@@ -73,6 +83,11 @@ function TemplateProcedureScreen() {
       .catch((err) => console.log(err));
   };
 
+  const handleEditTemplateProcedure = (procedureId: string) => {
+    setTemplateProcedureToEditId(procedureId);
+    setShowEditTemplateProcedureModal(true);
+  };
+
   return (
     <Container id="app">
       <Box sx={{ flexGrow: 1, mt: 8 }}>
@@ -83,6 +98,7 @@ function TemplateProcedureScreen() {
           templatePathway={templatePathway}
           allProcedures={allProcedures}
           handleDeleteProcedure={handleDeleteProcedure}
+          handleEditProcedure={handleEditTemplateProcedure}
         />
         <TemplateProcedureButtons
           handleAddProcedure={() => {
@@ -94,6 +110,13 @@ function TemplateProcedureScreen() {
           handleClose={() => setShowAddTemplateProcedureModal(false)}
           templatePathway={templatePathway}
           updatePathway={updateTemplatePathwayWithNewProcedure}
+        />
+        <EditTemplateProcedureModal
+          modalOpen={showEditTemplateProcedureModal}
+          procedureToEditId={templateProcedureToEditId}
+          handleClose={() => setShowEditTemplateProcedureModal(false)}
+          pathway={templatePathway}
+          refetchProcedures={toggleRefetch}
         />
       </Box>
     </Container>

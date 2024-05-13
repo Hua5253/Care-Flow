@@ -13,12 +13,14 @@ interface Props {
   templatePathway: Pathway;
   allProcedures: Procedure[];
   handleDeleteProcedure: (id: string) => void;
+  handleEditProcedure: (id: string) => void;
 }
 
 function TemplateProcedureList({
   templatePathway,
   allProcedures,
   handleDeleteProcedure,
+  handleEditProcedure,
 }: Props) {
   const procedures: Procedure[] = [];
 
@@ -45,6 +47,7 @@ function TemplateProcedureList({
                   variant="outlined"
                   size="small"
                   sx={{ marginRight: "8px" }}
+                  onClick={() => handleEditProcedure(procedure._id as string)}
                 >
                   Edit
                 </Button>

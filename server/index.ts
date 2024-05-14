@@ -17,7 +17,7 @@ dotenv.config();
 interface UserSocket extends Socket {
   userId?: string;
 }
-const origin = ['test', 'dev'].includes(process.env.NODE_ENV || '') ? "http://localhost:5173" : "https://18.222.46.211";
+const origin = ['test', 'dev'].includes(process.env.NODE_ENV || '') ? "http://localhost:5173" : ["https://localhost", 'http://172.18.208.1', 'http://18.222.46.211'];
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {

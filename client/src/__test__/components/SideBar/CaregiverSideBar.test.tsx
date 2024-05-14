@@ -1,5 +1,5 @@
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CaregiverSideBar from "../../../components/SideBar/CaregiverSideBar";
 
@@ -39,27 +39,42 @@ describe("CaregiverSideBar Component", () => {
     pageContent = container.querySelector(".MessagePage");
     expect(pageContent).toBeInTheDocument();
   });
-  it("should set drawer width to 0 when between xs and md", () => {
-    const useMediaQuery = require("@mui/material/useMediaQuery").default;
-    useMediaQuery.mockImplementation(() => true);
-    const { container } = render(
-      <MemoryRouter>
-        <CaregiverSideBar />
-      </MemoryRouter>
-    );
-    const drawer = container.querySelector(".MuiDrawer-paper");
-    expect(drawer).toHaveStyle("width: 0px");
-  });
 
-  it("should set drawer width to 240 when not between xs and md", () => {
-    const useMediaQuery = require("@mui/material/useMediaQuery").default;
-    useMediaQuery.mockImplementation(() => false);
-    const { container } = render(
-      <MemoryRouter>
+  it("should apply correct styles based on location pathname", () => {
+    Object.defineProperty(window, "location", {
+      writable: true,
+      value: { pathname: "/schedule" },
+    });
+
+    const { getByTestId } = render(
+      <MemoryRouter initialEntries={["/"]}>
         <CaregiverSideBar />
+        <Routes>
+          <Route path="/" element={<div>Home</div>} />
+          <Route
+            path="/schedule"
+            element={<div className="SchedulePage">Schedule Page</div>}
+          />
+          <Route
+            path="/Messages/caregiver"
+            element={<div className="MessagePage">Message Page</div>}
+          />
+        </Routes>
       </MemoryRouter>
     );
-    const drawer = container.querySelector(".MuiDrawer-paper");
-    expect(drawer).toHaveStyle("width: 240px");
+
+    const scheduleSidebarItem = getByTestId("Schedule");
+    expect(scheduleSidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    fireEvent.mouseEnter(scheduleSidebarItem);
+    expect(scheduleSidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    expect(scheduleSidebarItem).toHaveStyle({
+      borderRight: "5px solid #2196f3",
+    });
+
+    const messageSidebarItem = getByTestId("Message");
+    expect(messageSidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(messageSidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
   });
 });

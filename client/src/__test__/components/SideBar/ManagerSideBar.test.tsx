@@ -1,5 +1,5 @@
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ManagerSideBar from "../../../components/SideBar/ManagerSideBar";
 
@@ -59,27 +59,116 @@ describe("ManagerSideBar Component", () => {
     pageContent = container.querySelector(".MessagePage");
     expect(pageContent).toBeInTheDocument();
   });
-  it("should set drawer width to 0 when between xs and md", () => {
-    const useMediaQuery = require("@mui/material/useMediaQuery").default;
-    useMediaQuery.mockImplementation(() => true);
-    const { container } = render(
-      <MemoryRouter>
+
+  it("should apply correct styles based on resources location pathname", () => {
+    Object.defineProperty(window, "location", {
+      writable: true,
+      value: { pathname: "/resources" },
+    });
+
+    const { getByTestId } = render(
+      <MemoryRouter initialEntries={["/"]}>
         <ManagerSideBar />
+        <Routes>
+          <Route path="/" element={<div>Home</div>} />
+          <Route
+            path="/resources"
+            element={<div className="ResourcePage">Resource Page</div>}
+          />
+          <Route
+            path="/manager-pathway"
+            element={<div className="PathwayPage">Pathway Page</div>}
+          />
+          <Route
+            path="/manager-template"
+            element={<div className="TemplatePage">Template Page</div>}
+          />
+          <Route
+            path="/Messages/manager"
+            element={<div className="MessagePage">Message Page</div>}
+          />
+        </Routes>
       </MemoryRouter>
     );
-    const drawer = container.querySelector(".MuiDrawer-paper");
-    expect(drawer).toHaveStyle("width: 0px");
+
+    const resourceSidebarItem = getByTestId("Resource");
+    expect(resourceSidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    fireEvent.mouseEnter(resourceSidebarItem);
+    expect(resourceSidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    expect(resourceSidebarItem).toHaveStyle({
+      borderRight: "5px solid #2196f3",
+    });
+
+    const pathwaySidebarItem = getByTestId("Pathway");
+    expect(pathwaySidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(pathwaySidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
+    const templateSidebarItem = getByTestId("Template");
+    expect(templateSidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(templateSidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
+    const messageSidebarItem = getByTestId("Message");
+    expect(messageSidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(messageSidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
   });
 
-  it("should set drawer width to 240 when not between xs and md", () => {
-    const useMediaQuery = require("@mui/material/useMediaQuery").default;
-    useMediaQuery.mockImplementation(() => false);
-    const { container } = render(
-      <MemoryRouter>
+  it("should apply correct styles based on manager-pathway location pathname", () => {
+    Object.defineProperty(window, "location", {
+      writable: true,
+      value: { pathname: "/manager-pathway" },
+    });
+
+    const { getByTestId } = render(
+      <MemoryRouter initialEntries={["/"]}>
         <ManagerSideBar />
+        <Routes>
+          <Route path="/" element={<div>Home</div>} />
+          <Route
+            path="/resources"
+            element={<div className="ResourcePage">Resource Page</div>}
+          />
+          <Route
+            path="/manager-pathway"
+            element={<div className="PathwayPage">Pathway Page</div>}
+          />
+          <Route
+            path="/manager-template"
+            element={<div className="TemplatePage">Template Page</div>}
+          />
+          <Route
+            path="/Messages/manager"
+            element={<div className="MessagePage">Message Page</div>}
+          />
+        </Routes>
       </MemoryRouter>
     );
-    const drawer = container.querySelector(".MuiDrawer-paper");
-    expect(drawer).toHaveStyle("width: 240px");
+
+    const pathwaySidebarItem = getByTestId("Pathway");
+    expect(pathwaySidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    fireEvent.mouseEnter(pathwaySidebarItem);
+    expect(pathwaySidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    expect(pathwaySidebarItem).toHaveStyle({
+      borderRight: "5px solid #2196f3",
+    });
+
+    const resourceSidebarItem = getByTestId("Resource");
+    expect(resourceSidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(resourceSidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
+    const templateSidebarItem = getByTestId("Template");
+    expect(templateSidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(templateSidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
+    const messageSidebarItem = getByTestId("Message");
+    expect(messageSidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(messageSidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
   });
 });

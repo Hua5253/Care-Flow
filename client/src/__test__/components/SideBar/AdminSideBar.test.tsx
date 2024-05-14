@@ -1,5 +1,5 @@
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AdminSideBar from "../../../components/SideBar/AdminSideBar";
 
@@ -40,27 +40,44 @@ describe("AdminSideBar Component", () => {
     pageContent = container.querySelector(".MessagesAdminPage");
     expect(pageContent).toBeInTheDocument();
   });
-  it("should set drawer width to 0 when between xs and md", () => {
-    const useMediaQuery = require("@mui/material/useMediaQuery").default;
-    useMediaQuery.mockImplementation(() => true);
-    const { container } = render(
-      <MemoryRouter>
-        <AdminSideBar />
-      </MemoryRouter>
-    );
-    const drawer = container.querySelector(".MuiDrawer-paper");
-    expect(drawer).toHaveStyle("width: 0px");
-  });
 
-  it("should set drawer width to 240 when not between xs and md", () => {
-    const useMediaQuery = require("@mui/material/useMediaQuery").default;
-    useMediaQuery.mockImplementation(() => false);
-    const { container } = render(
-      <MemoryRouter>
+  it("should apply correct styles based on location pathname", () => {
+    Object.defineProperty(window, "location", {
+      writable: true,
+      value: { pathname: "/accounts" },
+    });
+
+    const { getByTestId } = render(
+      <MemoryRouter initialEntries={["/accounts"]}>
         <AdminSideBar />
+        <Routes>
+          <Route path="/" element={<div>Home</div>} />
+          <Route
+            path="/accounts"
+            element={<div className="AccountsPage">Accounts Page</div>}
+          />
+          <Route
+            path="/Messages/admin"
+            element={
+              <div className="MessagesAdminPage">Messages Admin Page</div>
+            }
+          />
+        </Routes>
       </MemoryRouter>
     );
-    const drawer = container.querySelector(".MuiDrawer-paper");
-    expect(drawer).toHaveStyle("width: 240px");
+
+    const accountsSidebarItem = getByTestId("Accounts");
+    expect(accountsSidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    fireEvent.mouseEnter(accountsSidebarItem);
+    expect(accountsSidebarItem).toHaveStyle({ backgroundColor: "#cfe8fc" });
+    expect(accountsSidebarItem).toHaveStyle({
+      borderRight: "5px solid #2196f3",
+    });
+
+    const messageSidebarItem = getByTestId("Message");
+    expect(messageSidebarItem).toHaveStyle({ backgroundColor: "inherit" });
+    expect(messageSidebarItem).toHaveStyle({
+      borderRight: "none",
+    });
   });
 });

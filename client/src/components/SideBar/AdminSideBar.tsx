@@ -9,13 +9,14 @@ import GroupIcon from "@mui/icons-material/Group";
 import { Box, Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const drawerWidth = 240;
 export default function AdminSideBar() {
   const adminTabs = [
     { icon: <GroupIcon />, name: "Accounts", path: "/accounts" },
     { icon: <MailIcon />, name: "Message", path: "/Messages/admin" },
   ];
+
   const navigate = useNavigate();
+
   const goTo = (e: string) => {
     navigate(e);
   };
@@ -23,18 +24,12 @@ export default function AdminSideBar() {
   return (
     <Box>
       <Drawer
+        className="myDrawer"
         sx={{
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
             boxSizing: "border-box",
-          },
-          display: {
-            xs: "none",
-            s: "none",
-            md: "none",
-            lg: "block",
-            xl: "block",
+            width: { xs: 100, sm: 100, md: 100, lg: 240, xl: 240 },
           },
         }}
         variant="permanent"
@@ -45,6 +40,7 @@ export default function AdminSideBar() {
           {adminTabs.map(({ icon, name, path }, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton
+                data-testid={name}
                 onClick={() => goTo(path)}
                 sx={{
                   backgroundColor:
@@ -73,64 +69,18 @@ export default function AdminSideBar() {
                 >
                   {icon}
                 </ListItemIcon>
-                <ListItemText primary={name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-
-      <Drawer
-        open={true}
-        sx={{
-          flexShrink: 0,
-          display: { lg: "none", xl: "none" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: "100px",
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-      >
-        <Toolbar />
-        <List>
-          {adminTabs.map(({ icon, name, path }, index) => (
-            <ListItem key={index} disablePadding>
-              <ListItemButton
-                onClick={() => goTo(path)}
-                sx={{
-                  justifyContent: "center",
-                  pl: "auto",
-                  backgroundColor:
-                    location.pathname === path ||
-                    location.pathname.includes(path)
-                      ? "#cfe8fc"
-                      : "inherit", // Highlight if active
-                  "&:hover": {
-                    backgroundColor:
-                      location.pathname === path ||
-                      location.pathname.includes(path)
-                        ? "#cfe8fc"
-                        : "#f4f4f4", // Different hover color if not active
-                  },
-                  borderRight:
-                    location.pathname === path ||
-                    location.pathname.includes(path)
-                      ? "5px solid #2196f3"
-                      : "none",
-                }}
-              >
-                <ListItemIcon
+                <ListItemText
                   sx={{
-                    minWidth: "auto",
-                    "& .MuiSvgIcon-root": { fontSize: "2rem" },
+                    display: {
+                      xs: "none",
+                      sm: "none",
+                      md: "none",
+                      lg: "block",
+                      xl: "block",
+                    },
                   }}
-                  id={name}
-                >
-                  {icon}
-                </ListItemIcon>
-                {/* <ListItemText primary={name} /> */}
+                  primary={name}
+                />
               </ListItemButton>
             </ListItem>
           ))}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1714799441161" clover="3.2.0">
-  <project timestamp="1714799441161" name="All files">
-    <metrics statements="84" coveredstatements="84" conditionals="6" coveredconditionals="6" methods="13" coveredmethods="13" elements="103" coveredelements="103" complexity="0" loc="84" ncloc="84" packages="2" files="4" classes="4"/>
+<coverage generated="1715679475533" clover="3.2.0">
+  <project timestamp="1715679475533" name="All files">
+    <metrics statements="69" coveredstatements="69" conditionals="36" coveredconditionals="36" methods="13" coveredmethods="13" elements="118" coveredelements="118" complexity="0" loc="69" ncloc="69" packages="2" files="4" classes="4"/>
     <package name="Modals">
       <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="ConfirmationModal.tsx" path="D:\code\OT\Care-Flow\client\src\components\Modals\ConfirmationModal.tsx">
@@ -22,9 +22,9 @@
       </file>
     </package>
     <package name="SideBar">
-      <metrics statements="71" coveredstatements="71" conditionals="6" coveredconditionals="6" methods="12" coveredmethods="12"/>
+      <metrics statements="56" coveredstatements="56" conditionals="36" coveredconditionals="36" methods="12" coveredmethods="12"/>
       <file name="AdminSideBar.tsx" path="D:\code\OT\Care-Flow\client\src\components\SideBar\AdminSideBar.tsx">
-        <metrics statements="23" coveredstatements="23" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <metrics statements="18" coveredstatements="18" conditionals="12" coveredconditionals="12" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -35,22 +35,17 @@
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="5" type="stmt"/>
-        <line num="21" count="5" type="stmt"/>
-        <line num="22" count="5" type="stmt"/>
-        <line num="24" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="26" count="5" type="stmt"/>
-        <line num="27" count="2" type="stmt"/>
-        <line num="30" count="5" type="stmt"/>
-        <line num="45" count="10" type="stmt"/>
-        <line num="46" count="2" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="41" count="8" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
       </file>
       <file name="CaregiverSideBar.tsx" path="D:\code\OT\Care-Flow\client\src\components\SideBar\CaregiverSideBar.tsx">
-        <metrics statements="23" coveredstatements="23" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <metrics statements="18" coveredstatements="18" conditionals="12" coveredconditionals="12" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -61,22 +56,17 @@
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="5" type="stmt"/>
-        <line num="21" count="5" type="stmt"/>
-        <line num="22" count="5" type="stmt"/>
-        <line num="23" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="25" count="5" type="stmt"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="29" count="5" type="stmt"/>
-        <line num="44" count="10" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="22" count="4" type="stmt"/>
+        <line num="38" count="8" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
       </file>
       <file name="ManagerSideBar.tsx" path="D:\code\OT\Care-Flow\client\src\components\SideBar\ManagerSideBar.tsx">
-        <metrics statements="25" coveredstatements="25" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <metrics statements="20" coveredstatements="20" conditionals="12" coveredconditionals="12" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -89,19 +79,14 @@
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="7" type="stmt"/>
-        <line num="25" count="7" type="stmt"/>
-        <line num="26" count="7" type="stmt"/>
-        <line num="27" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="7" type="stmt"/>
-        <line num="30" count="4" type="stmt"/>
-        <line num="33" count="7" type="stmt"/>
-        <line num="48" count="28" type="stmt"/>
-        <line num="49" count="4" type="stmt"/>
+        <line num="15" count="7" type="stmt"/>
+        <line num="21" count="7" type="stmt"/>
+        <line num="23" count="7" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="27" count="7" type="stmt"/>
+        <line num="43" count="28" type="stmt"/>
+        <line num="46" count="4" type="stmt"/>
       </file>
     </package>
   </project>

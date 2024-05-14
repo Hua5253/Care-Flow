@@ -12,12 +12,10 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import procedureService, {Procedure} from "../../services/procedure-service";
-import {User} from "../../services/user-service";
 import AuthContext from "../../auth/auth";
 
 export default function ViewProcedure() {
   const [procedures, setProcedures] = useState<Procedure[]>([]);
-  const [user, setUser] = useState<User>();
 
   const navigate = useNavigate();
   const { auth } = useContext<any>(AuthContext);

@@ -3,13 +3,10 @@ import {
   Button,
   Divider,
   InputBase,
-  Menu,
-  MenuItem,
   Paper,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 interface Props {
   onSearch: (searchInput: string) => void;
 }
@@ -17,17 +14,15 @@ interface Props {
 export default function SearchBarMedicine({ onSearch }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchInput, setSearchInput] = React.useState<string>("");
-  const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(searchInput);
+    console.log(anchorEl);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
   useEffect(() => {
     onSearch(searchInput);
   }, [searchInput]);

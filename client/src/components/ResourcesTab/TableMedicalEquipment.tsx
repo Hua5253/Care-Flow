@@ -16,7 +16,6 @@ import ModalMedicalEquipment from "./ModalMedicalEquipment";
 import { useEffect, useState } from "react";
 import { Equipment } from "../../services/equipment-service";
 import equipmentService from "../../services/equipment-service";
-import { set } from "react-hook-form";
 interface Prop {
   dataSource: Equipment[];
   onEdit: () => void;

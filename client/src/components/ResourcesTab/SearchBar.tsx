@@ -3,8 +3,6 @@ import {
   Button,
   Divider,
   InputBase,
-  Menu,
-  MenuItem,
   Paper,
 } from "@mui/material";
 import React from "react";
@@ -14,15 +12,13 @@ import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 export default function SearchBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchInput, setSearchInput] = React.useState<string>("");
-  const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(anchorEl);
     console.log(searchInput);
   };
   return (
@@ -70,19 +66,6 @@ export default function SearchBar() {
         >
           Search
         </Button>
-        {/* <Menu
-          anchorEl={anchorEl}
-          id="search_resources_by"
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-        >
-          <MenuItem>Medical equipment</MenuItem>
-          <MenuItem>Room</MenuItem>
-          <MenuItem>Officers</MenuItem>
-          <MenuItem>Medicine</MenuItem>
-          <MenuItem>All</MenuItem>
-        </Menu> */}
       </Paper>
     </Box>
   );

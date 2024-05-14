@@ -3,13 +3,10 @@ import {
   Button,
   Divider,
   InputBase,
-  Menu,
-  MenuItem,
   Paper,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 interface Props {
   onSearch: (searchInput: string) => void;
 }
@@ -17,16 +14,13 @@ interface Props {
 export default function SearchBarMedicalEquipment({ onSearch }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchInput, setSearchInput] = React.useState<string>("");
-  const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
   };
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(searchInput);
+    console.log(anchorEl);
   };
 
   useEffect(() => {
@@ -75,24 +69,10 @@ export default function SearchBarMedicalEquipment({ onSearch }: Props) {
             },
           }}
           aria-label="Search_by"
-          // endIcon={<ExpandMoreTwoToneIcon />}
           onClick={handleClick}
         >
           Search
         </Button>
-        {/* <Menu
-          anchorEl={anchorEl}
-          id="search_medicalEquipment_by"
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-        >
-          <MenuItem>Name</MenuItem>
-          <MenuItem>Category</MenuItem>
-          <MenuItem>Status</MenuItem>
-          <MenuItem>ID</MenuItem>
-          <MenuItem>All</MenuItem>
-        </Menu> */}
       </Paper>
     </Box>
   );

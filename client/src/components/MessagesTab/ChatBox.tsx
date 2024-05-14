@@ -24,8 +24,6 @@ interface ChatBoxProps {
   scrollRef: React.RefObject<HTMLDivElement>;
 }
 
-const profile = JSON.parse(localStorage.getItem("profile") || "{}");
-
 function formatTime(timestamp: string) {
   const now = new Date();
   const date = new Date(timestamp);
@@ -65,11 +63,12 @@ export default function ChatBox(props: ChatBoxProps) {
     loading,
   } = props;
   const [user, setUser] = useState<User>();
-
+  const profile = JSON.parse(localStorage.getItem("profile") || "{}");
   const msglist = messages.map((i) => ({
     ...i,
     self: profile._id === i.poster,
   }));
+
   const fetchUser = async () => {
     const { data } = await userService.getById<User>(current);
     if (data.id) {

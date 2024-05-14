@@ -52,7 +52,7 @@ export default function NavBar({ cred }: Prop) {
     const profile = JSON.parse(localStorage.getItem("profile") || "{}");
     const { data = [] } = await NotificationService.getAll<Notification>({
       userId: profile._id,
-    });
+    }).catch(() => ({ data: [] }));
     setNotifications(data.filter((i) => !i.read_status));
   };
 

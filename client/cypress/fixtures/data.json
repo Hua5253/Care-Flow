@@ -1,4 +1,7 @@
 {
-    "username": "johnA",
-    "password": "12345"
+    "socketA": "socketA_test_noDel",
+    "socketB": "socketB_test_noDel",
+    "manager": "procedure_manager_noDel",
+    "caregiver": "procedure_caregiver_noDel",
+    "password": "123456"
 }

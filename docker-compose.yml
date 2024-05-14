@@ -1,0 +1,28 @@
+version: '3'
+services:
+  server:
+    env_file:
+      - ./server/.env
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: server
+    depends_on:
+      - client
+    restart: always
+    ports:
+      - 4000:4000
+    networks:
+      - my-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - 80:80
+    networks:
+      - my-network
+networks:
+  my-network:

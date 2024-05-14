@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=dev vite --host 0.0.0.0",
     "build": "tsc && vite build",
+    "build:noTsc": "tsc --noEmit & vite build --debug",
+    "postbuild": "ls",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "cypress": "cypress open",
     "preview": "vite preview",

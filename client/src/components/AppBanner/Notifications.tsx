@@ -100,9 +100,11 @@ export default function Notifications(props: NotificationsProps) {
     type: String;
   }) => {
     const profile = JSON.parse(localStorage.getItem("profile") || "{}");
-    const { data } = await notificationService.updateByPath("status/read", {
-      posterId: id,
-    });
+    const { data } = await notificationService
+      .updateByPath("status/read", {
+        posterId: id,
+      })
+      .catch(() => ({ data: null }));
     if (data) {
       if (type === "message") {
         navigate(`/messages/${profile.role}?id=${id}`);
